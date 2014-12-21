@@ -1,5 +1,4 @@
-﻿
-using Tracer.Classes.Util;
+﻿using Tracer.Classes.Util;
 
 namespace Tracer.Classes.Objects
 {

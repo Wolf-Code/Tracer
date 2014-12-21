@@ -13,7 +13,6 @@ namespace Tracer
 {
     public partial class Menu : Form
     {
-        private Thread RenderThread;
         public static Camera Cam;
         private Color [ , ] Img;
         private int Done;

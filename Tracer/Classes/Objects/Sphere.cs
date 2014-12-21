@@ -8,8 +8,6 @@ namespace Tracer.Classes.Objects
     /// </summary>
     class Sphere : GraphicsObject
     {
-        public Material Material { set; get; }
-
         /// <summary>
         /// The sphere's position.
         /// </summary>
@@ -33,7 +31,6 @@ namespace Tracer.Classes.Objects
             #region Distance
 
             // Created after http://wiki.cgsociety.org/index.php/Ray_Sphere_Intersection
-            float Distance;
             float A = R.Direction.Dot( R.Direction );
             float B = 2 * R.Direction.Dot( R.Start - this.Center );
             float C = ( R.Start - this.Center ).Dot( R.Start - this.Center ) - ( this.Radius * this.Radius );
@@ -63,21 +60,14 @@ namespace Tracer.Classes.Objects
             if ( T1 < 0 )
                 return Result;
 
-            // Intersection at T1
-            if ( T0 < 0 )
-                Distance = T1;
-            // Otherwise at T0
-            else
-                Distance = T0;
-
-            Result.Distance = Distance;
+            Result.Distance = T0 < 0 ? T1 : T0;
             Result.Hit = true;
 
             #endregion
 
             if ( Result.Hit )
             {
-                Vector3 Position = R.Start + R.Direction * Distance;
+                Vector3 Position = R.Start + R.Direction * Result.Distance;
                 //Vector3 North = new Vector3( 0, 1, 0 );
                 //Vector3 East = new Vector3( -1, 0, 0 );
                 Vector3 Normal = ( Position - this.Center ).Normalized( );

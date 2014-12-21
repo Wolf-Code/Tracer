@@ -3,7 +3,7 @@
 namespace Tracer.Classes.Objects
 {
     /// <summary>
-    /// A sphere object.
+    /// A plane object.
     /// </summary>
     class Plane : GraphicsObject
     {
