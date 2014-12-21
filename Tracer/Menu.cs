@@ -28,10 +28,13 @@ namespace Tracer
         {
             base.OnLoad( e );
 
-            Cam = new Camera( 1000, 1000, 80 );
+            Cam = new Camera( 750, 750, 80 );
 
-            Sphere S = new Sphere( Cam.Angle.Forward * 50, 20 );
-            RayCaster.Objects.Add( S );
+            RayCaster.Objects.Add( new Sphere( Cam.Angle.Forward * 50, 20 ) );
+            RayCaster.Objects.Add( new Sphere( Cam.Angle.Forward * 40 + Cam.Angle.Up * 5 + Cam.Angle.Right * 5, 10 )
+            {
+                Material = new Material { Color = new Color( 1f, 0f, 0f ) }
+            } );
         }
 
         private void RenderImage( int W, int H )
@@ -80,16 +83,14 @@ namespace Tracer
             Status_Label.Text = Resources.Statuses_Drawing;
             Bitmap B = new Bitmap( Img.GetLength( 0 ), Img.GetLength( 1 ) );
             Done = 0;
-            using ( Graphics G = Graphics.FromImage( B ) )
+
+            for ( int X = 0; X < Cam.Resolution.X; X++ )
             {
-                for ( int X = 0; X < Cam.Resolution.X; X++ )
+                for ( int Y = 0; Y < Cam.Resolution.Y; Y++ )
                 {
-                    for ( int Y = 0; Y < Cam.Resolution.Y; Y++ )
-                    {
-                        G.DrawRectangle( new Pen( Img[ X, Y ].DrawingColor ), X, Y, 1, 1 );
-                        Done++;
-                        this.Invoke( ( MethodInvoker ) ( ( ) => this.Status_Progress.Value = Done ) );
-                    }
+                    B.SetPixel( X, Y, Img[ X, Y ].DrawingColor );
+                    Done++;
+                    this.Invoke( ( MethodInvoker ) ( ( ) => this.Status_Progress.Value = Done ) );
                 }
             }
 

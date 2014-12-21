@@ -3,33 +3,27 @@ namespace Tracer.Classes.Util
 {
     public struct Color
     {
-        public float R;
-        public float G;
-        public float B;
+        public byte R;
+        public byte G;
+        public byte B;
 
         public System.Drawing.Color DrawingColor
         {
-            get
-            {
-                return System.Drawing.Color.FromArgb(
-                    ( int ) ( R * 255f ),
-                    ( int ) ( G * 255f ),
-                    ( int ) ( B * 255f ) );
-            }
+            get { return System.Drawing.Color.FromArgb( R, G, B ); }
         }
 
-        public Color( float R, float G, float B )
+        public Color( byte R, byte G, byte B )
         {
             this.R = R;
             this.G = G;
             this.B = B;
         }
 
-        public Color( byte R, byte G, byte B )
+        public Color( float R, float G, float B )
         {
-            this.R = R / 255f;
-            this.G = G / 255f;
-            this.B = B / 255f;
+            this.R = ( byte ) ( R * 255 );
+            this.G = ( byte ) ( G * 255 );
+            this.B = ( byte ) ( B * 255 );
         }
 
         public override string ToString( )
