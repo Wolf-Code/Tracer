@@ -1,4 +1,5 @@
-﻿using Tracer.Classes.Interfaces;
+﻿using Tracer.Classes.Objects;
+using Tracer.Classes.Util;
 
 namespace Tracer.Classes
 {
@@ -23,8 +24,13 @@ namespace Tracer.Classes
         public Vector3 Normal;
 
         /// <summary>
+        /// The distance from the start of the ray to the collision.
+        /// </summary>
+        public float Distance;
+
+        /// <summary>
         /// The object with which there was a collision.
         /// </summary>
-        public IGraphicsObject Object;
+        public GraphicsObject Object;
     }
 }

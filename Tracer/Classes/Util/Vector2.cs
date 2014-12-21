@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Tracer.Classes
+namespace Tracer.Classes.Util
 {
     /// <summary>
-    /// A class representing a 3D vector.
+    /// A class representing a 2D vector.
     /// </summary>
-    public class Vector3
+    public class Vector2
     {
         /// <summary>
         /// The X-coordinate.
@@ -18,16 +18,11 @@ namespace Tracer.Classes
         public float Y;
 
         /// <summary>
-        /// The Z-coordinate.
-        /// </summary>
-        public float Z;
-
-        /// <summary>
         /// The squared length of this vector.
         /// </summary>
         public float LengthSquared
         {
-            get { return X * X + Y * Y + Z * Z; }
+            get { return X * X + Y * Y; }
         }
 
         /// <summary>
@@ -36,6 +31,17 @@ namespace Tracer.Classes
         public float Length
         {
             get { return ( float )Math.Sqrt( LengthSquared ); }
+        }
+
+        /// <summary>
+        /// Creates a new vector2.
+        /// </summary>
+        /// <param name="X">The X-coordinate.</param>
+        /// <param name="Y">The Y-coordinate.</param>
+        public Vector2( float X, float Y )
+        {
+            this.X = X;
+            this.Y = Y;
         }
     }
 }

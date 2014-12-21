@@ -114,4 +114,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+    <data name="Status_Rendering" xml:space="preserve">
+    <value>Rendering image</value>
+  </data>
+    <data name="Statuses_Drawing" xml:space="preserve">
+    <value>Drawing image to bitmap</value>
+  </data>
 </root>
