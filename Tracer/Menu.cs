@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
@@ -33,7 +34,20 @@ namespace Tracer
             RayCaster.Objects.Add( new Sphere( Cam.Angle.Forward * 50, 20 ) );
             RayCaster.Objects.Add( new Sphere( Cam.Angle.Forward * 40 + Cam.Angle.Up * 5 + Cam.Angle.Right * 5, 10 )
             {
-                Material = new Material { Color = new Color( 1f, 0f, 0f ) }
+                Material = new Material { Color = new Color( 255, 0, 0 ) }
+            } );
+            RayCaster.Objects.Add( new Sphere( Cam.Angle.Forward * 42 + Cam.Angle.Up * 25, 3f )
+            {
+                Material = new Material { Color = new Color( 0, 255, 0 ) }
+            } );
+
+            RayCaster.Lights.Add( new Light
+            {
+                DiffuseColor = new Color( 255, 255, 255 ),
+                Position = Cam.Angle.Forward * 48 + Cam.Angle.Up * 38,
+                FallOffDistance = 150,
+                AmbientIntensity = .05f,
+                Intensity = 1f
             } );
         }
 
@@ -59,42 +73,50 @@ namespace Tracer
 
                     Img[ X, Y ] = RayCaster.Cast( Cam.GetRay( X, Y ) );
                     Interlocked.Increment( ref D );
-                    if ( D % Percentage == 0 )
-                    {
-                        Done = D;
-                        this.Invoke( ( MethodInvoker )( ( ) => this.Status_Progress.Value = Done ) );
-                    }
+                    if ( D % Percentage != 0 ) return;
+
+                    Done = D;
+                    this.Invoke( ( MethodInvoker )( ( ) => this.Status_Progress.Value = Done ) );
                 } );
                 this.Invoke( ( MethodInvoker )( ( ) => this.Status_Label.Text = Resources.Statuses_Drawing ) );
             };
 
             Worker.RunWorkerCompleted += ( Obj, Args ) => new Thread( ( ) =>
             {
-                Bitmap B = DrawRenderedImage( );
-                this.Invoke( ( MethodInvoker ) ( ( ) => pictureBox1.Image = B ) );
+                foreach ( Bitmap B in DrawRenderedImage( ) )
+                    this.Invoke( ( MethodInvoker ) ( ( ) => pictureBox1.Image = B ) );
                 Rendering = false;
             } ).Start( );
 
             Worker.RunWorkerAsync( );
         }
 
-        private Bitmap DrawRenderedImage( )
+        private IEnumerable<Bitmap> DrawRenderedImage( )
         {
             Status_Label.Text = Resources.Statuses_Drawing;
             Bitmap B = new Bitmap( Img.GetLength( 0 ), Img.GetLength( 1 ) );
             Done = 0;
+
+            int Percentage = ( int ) ( Max * 0.01f );
 
             for ( int X = 0; X < Cam.Resolution.X; X++ )
             {
                 for ( int Y = 0; Y < Cam.Resolution.Y; Y++ )
                 {
                     B.SetPixel( X, Y, Img[ X, Y ].DrawingColor );
-                    Done++;
-                    this.Invoke( ( MethodInvoker ) ( ( ) => this.Status_Progress.Value = Done ) );
+                    if ( Done++ % Percentage == 0 )
+                    {
+                        this.Invoke( ( MethodInvoker ) ( ( ) =>
+                        {
+                            this.Status_Progress.Value = Done;
+                        } ) );
+
+                        yield return B.Clone( new Rectangle( 0, 0, B.Width, B.Height ), B.PixelFormat );
+                    }
                 }
             }
 
-            return B;
+            yield return B;
         }
 
         private void Button_Render_Click( object sender, EventArgs e )

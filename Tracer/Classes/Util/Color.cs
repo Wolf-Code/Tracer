@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Tracer.Classes.Util
 {
     public struct Color
@@ -7,6 +9,27 @@ namespace Tracer.Classes.Util
         public byte G;
         public byte B;
 
+        public float fR
+        {
+            get { return R / 255f; }
+        }
+
+        public float fG
+        {
+            get
+            {
+                return G / 255f;
+            }
+        }
+
+        public float fB
+        {
+            get
+            {
+                return B / 255f;
+            }
+        }
+
         public System.Drawing.Color DrawingColor
         {
             get { return System.Drawing.Color.FromArgb( R, G, B ); }
@@ -14,9 +37,9 @@ namespace Tracer.Classes.Util
 
         public Color( byte R, byte G, byte B )
         {
-            this.R = R;
-            this.G = G;
-            this.B = B;
+            this.R = Math.Min( ( byte ) 255, R );
+            this.G = Math.Min( ( byte ) 255, G );
+            this.B = Math.Min( ( byte ) 255, B );
         }
 
         public Color( float R, float G, float B )
@@ -30,5 +53,24 @@ namespace Tracer.Classes.Util
         {
             return string.Format( "R: {0}, G: {1}, B: {2}", this.R, this.G, this.B );
         }
+
+        #region Operators
+
+        public static Color operator *( Color C1, float M )
+        {
+            return new Color( C1.fR * M, C1.fG * M, C1.fB * M );
+        }
+
+        public static Color operator +( Color C1, Color C2 )
+        {
+            return new Color( C1.fR + C2.fR, C1.fG + C2.fG, C1.fB + C2.fB );
+        }
+
+        public static Color operator *( Color C1, Color C2 )
+        {
+            return new Color( C1.fR * C2.fR, C1.fG * C2.fG, C1.fB * C2.fB );
+        }
+
+        #endregion
     }
 }

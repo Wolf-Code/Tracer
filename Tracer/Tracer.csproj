@@ -46,9 +46,11 @@
   <ItemGroup>
     <Compile Include="Classes\Camera.cs" />
     <Compile Include="Classes\CollisionResult.cs" />
+    <Compile Include="Classes\Effects.cs" />
     <Compile Include="Classes\Objects\GraphicsObject.cs" />
     <Compile Include="Classes\Material.cs" />
     <Compile Include="Classes\MathHelper.cs" />
+    <Compile Include="Classes\Objects\Light.cs" />
     <Compile Include="Classes\Objects\Ray.cs" />
     <Compile Include="Classes\Objects\Plane.cs" />
     <Compile Include="Classes\Objects\Sphere.cs" />
