@@ -41,7 +41,7 @@ namespace Tracer.Classes
 
         private float A;
 
-        public Camera( int Width, int Height, int FOV )
+        public Camera( int Width, int Height, float FOV )
         {
             this.Angle = new Angle( );
             this.Position = new Vector3( 0, 0, 0 );

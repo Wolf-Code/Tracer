@@ -120,4 +120,7 @@
     <data name="Statuses_Drawing" xml:space="preserve">
     <value>Drawing image to bitmap</value>
   </data>
+    <data name="Settings_ImageFolder_Description" xml:space="preserve">
+    <value>The directory where all rendered images will be stored.</value>
+  </data>
 </root>

@@ -61,6 +61,15 @@ namespace Tracer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The directory where all rendered images will be stored..
+        /// </summary>
+        internal static string Settings_ImageFolder_Description {
+            get {
+                return ResourceManager.GetString("Settings_ImageFolder_Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rendering image.
         /// </summary>
         internal static string Status_Rendering {
