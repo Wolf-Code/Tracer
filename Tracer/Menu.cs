@@ -25,23 +25,23 @@ namespace Tracer
             base.OnLoad( e );
             Renderer.Initialize( this );
 
-            RayCaster.Objects.Add( new Sphere( Renderer.Cam.Angle.Forward * 70, 20 ) );
-            RayCaster.Objects.Add( new Sphere( Renderer.Cam.Angle.Forward * 40 + Renderer.Cam.Angle.Up * 5 + Renderer.Cam.Angle.Right * 15, 10 )
+            Renderer.Cam.Position = new Vector3( 100, 30, 200 );
+            Renderer.Cam.Angle = new Angle { Pitch = -20, Yaw = 0, Roll = 0f };
+
+            for ( int Q = 0; Q < 5; Q++ )
             {
-                Material = new Material { Color = new Color( 255, 0, 0 ) }
-            } );
-            RayCaster.Objects.Add( new Sphere( Renderer.Cam.Angle.Forward * 42 + Renderer.Cam.Angle.Up * 25, 3f )
-            {
-                Material = new Material { Color = new Color( 0, 255, 0 ) }
-            } );
+                float Sz = 20 + Q * 5;
+                Sphere S = new Sphere( new Vector3( ( Sz + 20 ) * Q, Sz / 2f, -40 ), Sz );
+                RayCaster.Objects.Add( S );
+            }
             RayCaster.Objects.Add( new Plane( new Vector3( 0, 1, 0 ), 20 ) );
 
             RayCaster.Lights.Add( new Light
             {
                 DiffuseColor = new Color( 255, 255, 255 ),
-                Position = Renderer.Cam.Angle.Forward * 48 + Renderer.Cam.Angle.Up * 38,
-                FallOffDistance = 150,
-                AmbientIntensity = .4f,
+                Position = new Vector3( 0, 60, -48 ),
+                FallOffDistance = 500,
+                AmbientIntensity = .01f,
                 Intensity = 1f
             } );
         }

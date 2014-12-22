@@ -66,7 +66,7 @@ namespace Tracer.Classes
                 LightDirection /= Length;
                 float Intensity = DistDiv * Math.Max( 0, Res.Normal.Dot( LightDirection ) ) * L.Intensity;
                 float ShadowMul = ShadowMultiplier( Shadowed );
-                C += L.DiffuseColor * Intensity * ShadowMul;
+                C += L.DiffuseColor * Intensity * ShadowMul + L.DiffuseColor * L.AmbientIntensity;
             }
 
             return C;

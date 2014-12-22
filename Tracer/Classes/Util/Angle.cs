@@ -66,9 +66,9 @@ namespace Tracer.Classes.Util
             {
                 if ( RefreshForward )
                 {
-                    float X = ( float ) ( Math.Cos( YawRadians ) * Math.Cos( PitchRadians ) );
-                    float Y = ( float ) ( Math.Sin( YawRadians ) * Math.Cos( PitchRadians ) );
-                    float Z = ( float ) Math.Sin( PitchRadians );
+                    float X = ( float ) ( Math.Sin( YawRadians ) * Math.Cos( PitchRadians ) );
+                    float Y = ( float ) ( Math.Sin( PitchRadians ) );
+                    float Z = ( float ) ( -Math.Cos( YawRadians ) * Math.Cos( PitchRadians ) );
 
                     m_Forward = new Vector3( X, Y, Z ).Normalized( );
                     RefreshForward = false;
@@ -89,7 +89,7 @@ namespace Tracer.Classes.Util
                 {
                     float X = ( float ) ( Math.Sin( YawRadians ) * Math.Cos( MathHelper.ToRadians( Pitch + 90 ) ) );
                     float Y = ( float ) Math.Sin( MathHelper.ToRadians( Pitch + 90 ) );
-                    float Z = -( float ) ( Math.Cos( YawRadians ) * Math.Cos( MathHelper.ToRadians( Pitch + 90 ) ) );
+                    float Z = ( float ) ( -Math.Cos( YawRadians ) * Math.Cos( MathHelper.ToRadians( Pitch + 90 ) ) );
 
                     m_Up = new Vector3( X, Y, Z ).Normalized( );
                     RefreshUp = false;
