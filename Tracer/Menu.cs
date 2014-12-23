@@ -26,7 +26,7 @@ namespace Tracer
             Renderer.Initialize( this );
 
             Renderer.Cam.Position = new Vector3( 100, 30, 200 );
-            Renderer.Cam.Angle = new Angle { Pitch = -20, Yaw = 0, Roll = 0f };
+            Renderer.Cam.Angle = new Angle { Pitch = -10, Yaw = 0, Roll = 0f };
 
             for ( int Q = 0; Q < 5; Q++ )
             {

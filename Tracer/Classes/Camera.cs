@@ -57,9 +57,12 @@ namespace Tracer.Classes
         /// <returns>The ray belonging to this pixel.</returns>
         public Ray GetRay( int PixelX, int PixelY )
         {
+            // Calculate aspect ratio
+            float WH = this.Resolution.X / this.Resolution.Y;
+
             Ray R = new Ray { Start = this.Position };
-            Vector3 Dir = this.Angle.Forward * A + 
-                          this.Angle.Right * ( PixelX / Resolution.X - 0.5f ) - 
+            Vector3 Dir = this.Angle.Forward * A +
+                          this.Angle.Right * ( PixelX / Resolution.X - 0.5f ) * WH -
                           this.Angle.Up * ( PixelY / Resolution.Y - 0.5f );
 
             R.Direction = Dir.Normalized(  );

@@ -5,6 +5,16 @@ namespace Tracer.Classes.Util
 {
     public struct Color
     {
+        public static Color White
+        {
+            get { return new Color( 1f, 1f, 1f ); }
+        }
+
+        public static Color Black
+        {
+            get { return new Color( 0f, 0f, 0f ); }
+        }
+
         public byte R;
         public byte G;
         public byte B;
