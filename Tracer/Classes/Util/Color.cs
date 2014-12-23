@@ -71,6 +71,11 @@ namespace Tracer.Classes.Util
             return new Color( C1.fR * M, C1.fG * M, C1.fB * M );
         }
 
+        public static Color operator /( Color C1, float M )
+        {
+            return new Color( C1.fR / M, C1.fG / M, C1.fB / M );
+        }
+
         public static Color operator +( Color C1, Color C2 )
         {
             return new Color( C1.fR + C2.fR, C1.fG + C2.fG, C1.fB + C2.fB );
@@ -79,6 +84,16 @@ namespace Tracer.Classes.Util
         public static Color operator *( Color C1, Color C2 )
         {
             return new Color( C1.fR * C2.fR, C1.fG * C2.fG, C1.fB * C2.fB );
+        }
+
+        public static bool operator ==( Color C1, Color C2 )
+        {
+            return C1.R == C2.R && C1.G == C2.G && C1.B == C2.B;
+        }
+
+        public static bool operator !=( Color C1, Color C2 )
+        {
+            return !( C1 == C2 );
         }
 
         #endregion

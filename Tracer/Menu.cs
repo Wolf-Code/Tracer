@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -25,22 +26,74 @@ namespace Tracer
             base.OnLoad( e );
             Renderer.Initialize( this );
 
-            Renderer.Cam.Position = new Vector3( 100, 30, 200 );
+            Renderer.Cam.Position = new Vector3( 140, 30, 120 );
             Renderer.Cam.Angle = new Angle { Pitch = -10, Yaw = 0, Roll = 0f };
 
             for ( int Q = 0; Q < 5; Q++ )
             {
                 float Sz = 20 + Q * 5;
-                Sphere S = new Sphere( new Vector3( ( Sz + 20 ) * Q, Sz / 2f, -40 ), Sz );
+                Sphere S = new Sphere( new Vector3( ( Sz + 20 ) * Q, Sz / 2f, -40 ), Sz )
+                {
+                    Material = { Radiance = Color.White }
+                };
                 RayCaster.Objects.Add( S );
             }
-            RayCaster.Objects.Add( new Plane( new Vector3( 0, 1, 0 ), 20 ) );
+
+            // Floor
+            RayCaster.Objects.Add( new Plane( new Vector3( 0, 1, 0 ), 0 )
+            {
+                Material = new Material
+                {
+                    Color = new Color( 1f, 1f, 1f ),
+                    Reflectance = 1f
+                }
+            } );
+
+            // Back
+            RayCaster.Objects.Add( new Plane( new Vector3( 0, 0, 1 ), 70 )
+            {
+                Material = new Material
+                {
+                    Color = new Color( 1f, 1f, 1f ),
+                    Reflectance = 1f
+                }
+            } );
+            
+            // Ceiling
+            RayCaster.Objects.Add( new Plane( new Vector3( 0, -1, 0 ), 90 )
+            {
+                Material = new Material
+                {
+                    Color = new Color( 1f, 1f, 1f ),
+                    Reflectance = 1f
+                }
+            } );
+
+            // Left
+            RayCaster.Objects.Add( new Plane( new Vector3( 1, 0, 0 ), 70 )
+            {
+                Material = new Material
+                {
+                    Color = new Color( 1f, 0f, 0f ),
+                    Reflectance = 1f
+                }
+            } );
+
+            // Right
+            RayCaster.Objects.Add( new Plane( new Vector3( -1, 0, 0 ), 220 )
+            {
+                Material = new Material
+                {
+                    Color = new Color( 0f, 0f, 1f ),
+                    Reflectance = 1f
+                }
+            } );
 
             RayCaster.Lights.Add( new Light
             {
                 DiffuseColor = new Color( 255, 255, 255 ),
-                Position = new Vector3( 0, 60, -48 ),
-                FallOffDistance = 500,
+                Position = new Vector3( 0, 60, -35 ),
+                FallOffDistance = 300f,
                 AmbientIntensity = .01f,
                 Intensity = 1f
             } );
@@ -95,14 +148,13 @@ namespace Tracer
 
             SaveFileDialog Dialog = new SaveFileDialog
             {
-                Filter = "*PNG (*.png)|*.png",
+                Filter = "PNG (*.png)|*.png",
                 InitialDirectory = Settings.Default.Image_Folder,
                 FileName = DateTime.Now.ToShortDateString( ) + "_" + DateTime.Now.ToLongTimeString(  ).Replace( ':', '-' ) + ".png"
             };
+
             if ( Dialog.ShowDialog( ) == DialogResult.OK )
-            {
                 this.RenderImage.Image.Save( Dialog.FileName );
-            }
         }
     }
 }

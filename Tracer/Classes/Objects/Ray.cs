@@ -5,7 +5,7 @@ namespace Tracer.Classes.Objects
     /// <summary>
     /// A class representing a ray in 3D space.
     /// </summary>
-    public class Ray
+    public struct Ray
     {
         /// <summary>
         /// The start of the ray.
@@ -17,9 +17,11 @@ namespace Tracer.Classes.Objects
         /// </summary>
         public Vector3 Direction;
 
+
+
         /// <summary>
         /// The amount of times this ray has been reflected already.
         /// </summary>
-        public int Bounces;
+        public int Depth;
     }
 }

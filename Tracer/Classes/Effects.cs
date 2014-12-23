@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Drawing.Drawing2D;
 using Tracer.Classes.Objects;
 using Tracer.Classes.Util;
 
@@ -39,17 +40,17 @@ namespace Tracer.Classes
 
             CollisionResult ShadowRes = RayCaster.Trace( R );
 
-            return ShadowRes.Hit;
+            return ShadowRes.Distance < ( R.Start - L.Position ).Length;
         }
 
         public static float ShadowMultiplier( bool InShadow )
         {
-            return ( InShadow ? 0.1f : 1f );
+            return ( InShadow ? 0.05f : 1f );
         }
 
         public static Color DiffuseLightColor( Ray R, CollisionResult Res )
         {
-            Color C = new Color( 0, 0, 0 );
+            Vector3 C = new Vector3( 0, 0, 0 );
             foreach ( Light L in RayCaster.Lights )
             {
                 bool Shadowed = IsInShadow( Res, L );
@@ -66,10 +67,45 @@ namespace Tracer.Classes
                 LightDirection /= Length;
                 float Intensity = DistDiv * Math.Max( 0, Res.Normal.Dot( LightDirection ) ) * L.Intensity;
                 float ShadowMul = ShadowMultiplier( Shadowed );
-                C += L.DiffuseColor * Intensity * ShadowMul + L.DiffuseColor * L.AmbientIntensity;
+                C += Utilities.ColorToVector( L.DiffuseColor ) * Intensity * ShadowMul +
+                     Utilities.ColorToVector( L.DiffuseColor ) * L.AmbientIntensity;
             }
 
-            return C;
+            return Utilities.VectorToColor( C );
+        }
+
+        public static Color Radiance( Ray R )
+        {
+            if ( R.Depth >= RayCaster.MaxDepth )
+                return Color.Black;
+
+            CollisionResult Res = RayCaster.Trace( R );
+            if ( !Res.Hit )
+                return Color.Black;
+
+            Color Rad = Res.Object.Material.Radiance;
+            Vector3 Rd = new Vector3( Rad.fR, Rad.fG, Rad.fB );
+            Vector3 C = new Vector3( 0, 0, 0 );
+            for ( int Q = 0; Q < RayCaster.Samples; Q++ )
+            {
+                Ray New = new Ray
+                {
+                    Depth = R.Depth + 1,
+                    Direction = Utilities.RandomDirectionInSameDirection( Res.Normal ),
+                    Start = Res.Position + Res.Normal * ShadowBias
+                };
+
+                // Compute the BRDF for this ray (assuming Lambertian reflection)
+                float cos_theta = Math.Max( 0, New.Direction.Dot( Res.Normal ) );
+                float BDRF = 2 * Res.Object.Material.Reflectance * cos_theta;
+                Color reflected = Radiance( New );
+                Color Refd = ( reflected * BDRF * Res.Object.Material.Color );
+                C += Rd + new Vector3( reflected.fR + Refd.fR, reflected.fG + Refd.fG, reflected.fB + Refd.fB );
+            }
+            Vector3 Div = C / RayCaster.Samples;
+            Div.Normalize( );
+
+            return new Color( Div.X, Div.Y, Div.Z );
         }
     }
 }

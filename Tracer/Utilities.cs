@@ -1,5 +1,7 @@
 ﻿using System.Drawing;
 using System.IO;
+using Tracer.Classes;
+using Tracer.Classes.Util;
 
 namespace Tracer
 {
@@ -11,6 +13,25 @@ namespace Tracer
             {
                 return ( Bitmap ) Image.FromStream( M );
             }
+        }
+
+        public static Vector3 RandomDirectionInSameDirection( Vector3 Original )
+        {
+            Vector3 New = new Vector3( RNG.GetUnitFloat( ), RNG.GetUnitFloat( ), RNG.GetUnitFloat( ) ).Normalized( );
+            if ( New.Dot( Original ) < 0 )
+                New *= -1;
+
+            return New;
+        }
+
+        public static Classes.Util.Color VectorToColor( Vector3 V )
+        {
+            return new Classes.Util.Color( V.X, V.Y, V.Z );
+        }
+
+        public static Vector3 ColorToVector( Classes.Util.Color C )
+        {
+            return new Vector3( C.fR, C.fG, C.fB );
         }
     }
 }

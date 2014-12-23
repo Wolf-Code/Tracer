@@ -6,13 +6,13 @@ namespace Tracer.Classes
     {
         public Color Color;
         public Color Radiance;
-        public float Shininess;
+        public float Reflectance;
 
         public Material( )
         {
             Radiance = Color.Black;
             Color = Color.White;
-            Shininess = 0f;
+            Reflectance = 0f;
         }
     }
 }

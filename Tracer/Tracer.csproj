@@ -50,11 +50,13 @@
     <Compile Include="Classes\Objects\GraphicsObject.cs" />
     <Compile Include="Classes\Material.cs" />
     <Compile Include="Classes\MathHelper.cs" />
+    <Compile Include="Classes\Objects\LightSphere.cs" />
     <Compile Include="Classes\Objects\Light.cs" />
     <Compile Include="Classes\Objects\Ray.cs" />
     <Compile Include="Classes\Objects\Plane.cs" />
     <Compile Include="Classes\Objects\Sphere.cs" />
     <Compile Include="Classes\RayCaster.cs" />
+    <Compile Include="Classes\RNG.cs" />
     <Compile Include="Classes\Util\Angle.cs" />
     <Compile Include="Classes\Util\Color.cs" />
     <Compile Include="Classes\Util\Vector2.cs" />
