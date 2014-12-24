@@ -45,12 +45,52 @@ namespace Tracer.Classes
 
         public static float ShadowMultiplier( bool InShadow )
         {
-            return ( InShadow ? 0.05f : 1f );
+            return ( InShadow ? 0.4f : 1f );
+        }
+
+        public static Color SamplePixel( Ray R, CollisionResult Res )
+        {
+            if ( R.Depth > RayCaster.MaxDepth )
+                return Color.Black;
+
+            if ( !Res.Hit )
+                return Color.Black;
+
+            Color Own = Res.Object.Material.Color * ( DiffuseLightColor( R, Res ) + PhongColor( R, Res ) );
+
+            return Own;
+        }
+
+        public static Color Calculate( Ray R, CollisionResult Res )
+        {
+            return SamplePixel( R, Res );
+        }
+
+        public static Color PhongColor( Ray R, CollisionResult Res )
+        {
+            Color C = Color.Black;
+            foreach ( Light L in RayCaster.Lights )
+            {
+                float ShadowMul = ShadowMultiplier( IsInShadow( Res, L ) );
+
+                Vector3 LDir = ( L.Position - Res.Position ).Normalized( );
+                Vector3 VDir = Renderer.Cam.Angle.Forward;
+                Vector3 H = ( LDir + VDir );
+                H.Normalize( );
+
+                float I = Res.Normal.Dot( H );
+                if ( I < 0 )
+                    continue;
+
+                C += Color.White * ShadowMul * ( float ) Math.Pow( I, Res.Object.Material.Specular );
+            }
+
+            return C;
         }
 
         public static Color DiffuseLightColor( Ray R, CollisionResult Res )
         {
-            Vector3 C = new Vector3( 0, 0, 0 );
+            Color C = Color.Black;
             foreach ( Light L in RayCaster.Lights )
             {
                 bool Shadowed = IsInShadow( Res, L );
@@ -59,7 +99,7 @@ namespace Tracer.Classes
                 float Length = LightDirection.Length;
                 float DistDiv = ( L.FallOffDistance - Length ) / L.FallOffDistance;
                 if ( DistDiv < 0 )
-                    DistDiv = 0;
+                    break;
 
                 if ( DistDiv > 1f )
                     DistDiv = 1f;
@@ -67,11 +107,11 @@ namespace Tracer.Classes
                 LightDirection /= Length;
                 float Intensity = DistDiv * Math.Max( 0, Res.Normal.Dot( LightDirection ) ) * L.Intensity;
                 float ShadowMul = ShadowMultiplier( Shadowed );
-                C += Utilities.ColorToVector( L.DiffuseColor ) * Intensity * ShadowMul +
-                     Utilities.ColorToVector( L.DiffuseColor ) * L.AmbientIntensity;
+
+                C += L.DiffuseColor * ( ShadowMul * Intensity + L.AmbientIntensity );
             }
 
-            return Utilities.VectorToColor( C );
+            return C;
         }
 
         public static Color Radiance( Ray R )
@@ -84,8 +124,7 @@ namespace Tracer.Classes
                 return Color.Black;
 
             Color Rad = Res.Object.Material.Radiance;
-            Vector3 Rd = new Vector3( Rad.fR, Rad.fG, Rad.fB );
-            Vector3 C = new Vector3( 0, 0, 0 );
+            Color C = new Color( 0, 0, 0 );
             for ( int Q = 0; Q < RayCaster.Samples; Q++ )
             {
                 Ray New = new Ray
@@ -97,15 +136,14 @@ namespace Tracer.Classes
 
                 // Compute the BRDF for this ray (assuming Lambertian reflection)
                 float cos_theta = Math.Max( 0, New.Direction.Dot( Res.Normal ) );
-                float BDRF = 2 * Res.Object.Material.Reflectance * cos_theta;
+                float BDRF = 2 * Res.Object.Material.Specular * cos_theta;
                 Color reflected = Radiance( New );
                 Color Refd = ( reflected * BDRF * Res.Object.Material.Color );
-                C += Rd + new Vector3( reflected.fR + Refd.fR, reflected.fG + Refd.fG, reflected.fB + Refd.fB );
+                C += Rad + Refd;
             }
-            Vector3 Div = C / RayCaster.Samples;
-            Div.Normalize( );
+            Color Div = C / RayCaster.Samples;
 
-            return new Color( Div.X, Div.Y, Div.Z );
+            return Div;
         }
     }
 }

@@ -15,48 +15,51 @@ namespace Tracer.Classes.Util
             get { return new Color( 0f, 0f, 0f ); }
         }
 
-        public byte R;
-        public byte G;
-        public byte B;
+        public float R;
+        public float G;
+        public float B;
 
-        public float fR
+        public byte bR
         {
-            get { return R / 255f; }
+            get { return ( byte ) ( R * 255f ); }
         }
 
-        public float fG
+        public byte bG
         {
-            get
-            {
-                return G / 255f;
-            }
+            get { return ( byte ) ( G * 255f ); }
         }
 
-        public float fB
+        public byte bB
         {
-            get
-            {
-                return B / 255f;
-            }
+            get { return ( byte ) ( B * 255f ); }
         }
 
         public System.Drawing.Color DrawingColor
         {
-            get { return System.Drawing.Color.FromArgb( R, G, B ); }
+            get
+            {
+                Color C = Clamped;
+                return System.Drawing.Color.FromArgb( C.bR, C.bG, C.bB );
+            }
+        }
+
+        public Color Clamped
+        {
+            get { return new Color( Math.Min( 1f, this.R ), Math.Min( 1f, this.G ), Math.Min( 1f, this.B ) ); }
         }
 
         public Color( byte R, byte G, byte B )
         {
-            this.R = Math.Min( ( byte ) 255, R );
-            this.G = Math.Min( ( byte ) 255, G );
-            this.B = Math.Min( ( byte ) 255, B );
+            this.R = R / 255f;
+            this.G = G / 255f;
+            this.B = B / 255f;
         }
 
         public Color( float R, float G, float B )
         {
-            this.R = ( byte ) ( R * 255 );
-            this.G = ( byte ) ( G * 255 );
-            this.B = ( byte ) ( B * 255 );
+            this.R = R;
+            this.G = G;
+            this.B = B;
         }
 
         public override string ToString( )
@@ -68,27 +71,27 @@ namespace Tracer.Classes.Util
 
         public static Color operator *( Color C1, float M )
         {
-            return new Color( C1.fR * M, C1.fG * M, C1.fB * M );
+            return new Color( C1.R * M, C1.G * M, C1.B * M );
         }
 
         public static Color operator /( Color C1, float M )
         {
-            return new Color( C1.fR / M, C1.fG / M, C1.fB / M );
+            return new Color( C1.R / M, C1.G / M, C1.B / M );
         }
 
         public static Color operator +( Color C1, Color C2 )
         {
-            return new Color( C1.fR + C2.fR, C1.fG + C2.fG, C1.fB + C2.fB );
+            return new Color( C1.R + C2.R, C1.G + C2.G, C1.B + C2.B );
         }
 
         public static Color operator *( Color C1, Color C2 )
         {
-            return new Color( C1.fR * C2.fR, C1.fG * C2.fG, C1.fB * C2.fB );
+            return new Color( C1.R * C2.R, C1.G * C2.G, C1.B * C2.B );
         }
 
         public static bool operator ==( Color C1, Color C2 )
         {
-            return C1.R == C2.R && C1.G == C2.G && C1.B == C2.B;
+            return C1.bR == C2.bR && C1.bG == C2.bG && C1.bB == C2.bB;
         }
 
         public static bool operator !=( Color C1, Color C2 )

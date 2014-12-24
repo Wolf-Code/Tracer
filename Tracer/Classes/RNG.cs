@@ -24,5 +24,14 @@ namespace Tracer.Classes
         {
             return Rnd.Next( -( int ) Mul, ( int ) Mul ) / Mul;
         }
+
+        /// <summary>
+        /// Returns a float between 0f and 1f.
+        /// </summary>
+        /// <returns></returns>
+        public static float GetPositiveUnitFloat( )
+        {
+            return ( GetUnitFloat( ) + 1f ) / 2f;
+        }
     }
 }

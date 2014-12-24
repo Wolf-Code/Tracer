@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tracer.Classes;
 using Tracer.Classes.Objects;
@@ -34,7 +28,12 @@ namespace Tracer
                 float Sz = 20 + Q * 5;
                 Sphere S = new Sphere( new Vector3( ( Sz + 20 ) * Q, Sz / 2f, -40 ), Sz )
                 {
-                    Material = { Radiance = Color.White }
+                    Material =
+                    {
+                        Radiance = Color.White,
+                        Color = new Color(RNG.GetPositiveUnitFloat(  ),RNG.GetPositiveUnitFloat(  ),RNG.GetPositiveUnitFloat(  )),
+                        Specular = 1f
+                    }
                 };
                 RayCaster.Objects.Add( S );
             }
@@ -45,7 +44,7 @@ namespace Tracer
                 Material = new Material
                 {
                     Color = new Color( 1f, 1f, 1f ),
-                    Reflectance = 1f
+                    Specular = 20f
                 }
             } );
 
@@ -55,7 +54,7 @@ namespace Tracer
                 Material = new Material
                 {
                     Color = new Color( 1f, 1f, 1f ),
-                    Reflectance = 1f
+                    Specular = 20f
                 }
             } );
             
@@ -65,7 +64,7 @@ namespace Tracer
                 Material = new Material
                 {
                     Color = new Color( 1f, 1f, 1f ),
-                    Reflectance = 1f
+                    Specular = 20f
                 }
             } );
 
@@ -75,24 +74,24 @@ namespace Tracer
                 Material = new Material
                 {
                     Color = new Color( 1f, 0f, 0f ),
-                    Reflectance = 1f
+                    Specular = 20f
                 }
             } );
 
             // Right
-            RayCaster.Objects.Add( new Plane( new Vector3( -1, 0, 0 ), 220 )
+            RayCaster.Objects.Add( new Plane( new Vector3( -1, 0, 0 ), 300 )
             {
                 Material = new Material
                 {
                     Color = new Color( 0f, 0f, 1f ),
-                    Reflectance = 1f
+                    Specular = 20f
                 }
             } );
 
             RayCaster.Lights.Add( new Light
             {
                 DiffuseColor = new Color( 255, 255, 255 ),
-                Position = new Vector3( 0, 60, -35 ),
+                Position = new Vector3( 150, 70, -35 ),
                 FallOffDistance = 300f,
                 AmbientIntensity = .01f,
                 Intensity = 1f

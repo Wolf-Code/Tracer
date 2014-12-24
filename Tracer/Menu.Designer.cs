@@ -29,8 +29,8 @@
         private void InitializeComponent( )
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Objects");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Lights");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Objects");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Lights");
             this.Status = new System.Windows.Forms.StatusStrip();
             this.Status_Progress = new System.Windows.Forms.ToolStripProgressBar();
             this.Status_Label = new System.Windows.Forms.ToolStripStatusLabel();
@@ -137,11 +137,12 @@
             // 
             // RenderImage
             // 
+            this.RenderImage.Cursor = System.Windows.Forms.Cursors.Cross;
             this.RenderImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RenderImage.Location = new System.Drawing.Point(0, 0);
             this.RenderImage.Name = "RenderImage";
             this.RenderImage.Size = new System.Drawing.Size(576, 430);
-            this.RenderImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.RenderImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.RenderImage.TabIndex = 0;
             this.RenderImage.TabStop = false;
             // 
@@ -345,13 +346,13 @@
             this.SceneTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SceneTree.Location = new System.Drawing.Point(0, 0);
             this.SceneTree.Name = "SceneTree";
-            treeNode1.Name = "Objects";
-            treeNode1.Text = "Objects";
-            treeNode2.Name = "Lights";
-            treeNode2.Text = "Lights";
+            treeNode7.Name = "Objects";
+            treeNode7.Text = "Objects";
+            treeNode8.Name = "Lights";
+            treeNode8.Text = "Lights";
             this.SceneTree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode7,
+            treeNode8});
             this.SceneTree.Size = new System.Drawing.Size(152, 177);
             this.SceneTree.TabIndex = 0;
             // 
@@ -375,7 +376,6 @@
             this.Status.ResumeLayout(false);
             this.Status.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);

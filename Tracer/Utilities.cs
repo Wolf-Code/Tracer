@@ -31,7 +31,12 @@ namespace Tracer
 
         public static Vector3 ColorToVector( Classes.Util.Color C )
         {
-            return new Vector3( C.fR, C.fG, C.fB );
+            return new Vector3( C.R, C.G, C.B );
+        }
+
+        public static Vector3 Reflect( Vector3 V, Vector3 Normal )
+        {
+            return V - 2 * V.Dot( Normal ) * Normal;
         }
     }
 }
