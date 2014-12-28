@@ -24,6 +24,14 @@ namespace Tracer
             return New;
         }
 
+        public static Vector3 RandomCosineDirectionInSameDirection( Vector3 Original )
+        {
+            Vector3 First = RandomDirectionInSameDirection( Original );
+            First = ( First + Original ).Normalized( );
+
+            return First;
+        }
+
         public static Classes.Util.Color VectorToColor( Vector3 V )
         {
             return new Classes.Util.Color( V.X, V.Y, V.Z );

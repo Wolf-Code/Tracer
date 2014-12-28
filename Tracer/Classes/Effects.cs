@@ -116,7 +116,7 @@ namespace Tracer.Classes
 
         public static Color Radiance( Ray R )
         {
-            if ( R.Depth >= RayCaster.MaxDepth )
+            if ( R.Depth > RayCaster.MaxDepth )
                 return Color.Black;
 
             CollisionResult Res = RayCaster.Trace( R );
@@ -124,26 +124,26 @@ namespace Tracer.Classes
                 return Color.Black;
 
             Color Rad = Res.Object.Material.Radiance;
+            if ( Rad.R >= 1f || Rad.G >= 1f || Rad.B >= 1f )
+                return Rad;
+
             Color C = new Color( 0, 0, 0 );
             for ( int Q = 0; Q < RayCaster.Samples; Q++ )
             {
                 Ray New = new Ray
                 {
                     Depth = R.Depth + 1,
-                    Direction = Utilities.RandomDirectionInSameDirection( Res.Normal ),
+                    Direction = Utilities.RandomCosineDirectionInSameDirection( Res.Normal ),
                     Start = Res.Position + Res.Normal * ShadowBias
                 };
 
                 // Compute the BRDF for this ray (assuming Lambertian reflection)
                 float cos_theta = Math.Max( 0, New.Direction.Dot( Res.Normal ) );
-                float BDRF = 2 * Res.Object.Material.Specular * cos_theta;
-                Color reflected = Radiance( New );
-                Color Refd = ( reflected * BDRF * Res.Object.Material.Color );
-                C += Rad + Refd;
+                float BDRF = 2 * cos_theta;
+                C += Rad + Res.Object.Material.Color * ( Radiance( New ) * BDRF );
             }
-            Color Div = C / RayCaster.Samples;
 
-            return Div;
+            return C;
         }
     }
 }

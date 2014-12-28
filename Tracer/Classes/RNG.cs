@@ -9,7 +9,6 @@ namespace Tracer.Classes
     public class RNG
     {
         private static Random Rnd;
-        private const float Mul = 1000;
 
         static RNG( )
         {
@@ -22,7 +21,7 @@ namespace Tracer.Classes
         /// <returns></returns>
         public static float GetUnitFloat( )
         {
-            return Rnd.Next( -( int ) Mul, ( int ) Mul ) / Mul;
+            return ( float )( Rnd.NextDouble( ) * 2.0 - 1.0 );
         }
 
         /// <summary>
@@ -31,7 +30,7 @@ namespace Tracer.Classes
         /// <returns></returns>
         public static float GetPositiveUnitFloat( )
         {
-            return ( GetUnitFloat( ) + 1f ) / 2f;
+            return ( float ) Rnd.NextDouble( );
         }
     }
 }

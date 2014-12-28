@@ -17,8 +17,6 @@ namespace Tracer.Classes.Objects
         /// </summary>
         public Vector3 Direction;
 
-
-
         /// <summary>
         /// The amount of times this ray has been reflected already.
         /// </summary>

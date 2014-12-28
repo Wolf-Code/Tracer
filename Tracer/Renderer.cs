@@ -1,10 +1,8 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tracer.Classes;
 using Tracer.Properties;
@@ -56,33 +54,32 @@ namespace Tracer
             Menu.Status_Label.Text = Resources.Status_Rendering;
             Img = new Color[ W, H ];
             Rendering = true;
-            int Percentage = ( int )( Max * 0.05f );
+            int Percentage = ( int )( Max * 0.03f );
+
+            Thread T = new Thread( ( ) =>
+            {
+                
+            } );
+            T.Start( );
 
             BackgroundWorker Worker = new BackgroundWorker( );
-            Worker.DoWork += ( Obj, Args ) =>
+            Worker.DoWork += ( Sender, Args ) =>
             {
-                int D = 0;
-                Parallel.For( 0, Max, Var =>
-                {
-                    int X = Var % W;
-                    int Y = Var / W;
-
-                    Img[ X, Y ] = RayCaster.Cast( Cam.GetRay( X, Y ) );
-                    Interlocked.Increment( ref D );
-                    if ( D % Percentage != 0 ) return;
-
-                    Done = D;
-                    Menu.Invoke( ( MethodInvoker )( ( ) => Menu.Status_Progress.Value = Done ) );
-                } );
-                Menu.Invoke( ( MethodInvoker )( ( ) => Menu.Status_Label.Text = Resources.Statuses_Drawing ) );
+                for ( int X = 0; X < W; X++ )
+                    for ( int Y = 0; Y < H; Y++ )
+                    {
+                        Img[ X, Y ] = RayCaster.Cast( Cam.GetRay( X, Y ) );
+                        if( Done++ % Percentage == 0 )
+                            Menu.Invoke( ( MethodInvoker )( ( ) => Menu.Status_Progress.Value = Done ) );
+                    }
             };
 
-            Worker.RunWorkerCompleted += ( Obj, Args ) => new Thread( ( ) =>
+            Worker.RunWorkerCompleted += ( Sender, Args ) =>
             {
                 foreach ( Bitmap B in DrawRenderedImage( ) )
                     Menu.Invoke( ( MethodInvoker )( ( ) => Menu.RenderImage.Image = B ) );
                 Rendering = false;
-            } ).Start( );
+            };
 
             Worker.RunWorkerAsync( );
         }

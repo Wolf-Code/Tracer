@@ -48,6 +48,11 @@ namespace Tracer.Classes.Util
             get { return new Color( Math.Min( 1f, this.R ), Math.Min( 1f, this.G ), Math.Min( 1f, this.B ) ); }
         }
 
+        public Color Normalized
+        {
+            get { return Utilities.VectorToColor( Utilities.ColorToVector( this ).Normalized( ) ); }
+        }
+
         public Color( byte R, byte G, byte B )
         {
             this.R = R / 255f;

@@ -20,23 +20,20 @@ namespace Tracer
             base.OnLoad( e );
             Renderer.Initialize( this );
 
-            Renderer.Cam.Position = new Vector3( 140, 30, 120 );
-            Renderer.Cam.Angle = new Angle { Pitch = -10, Yaw = 0, Roll = 0f };
+            Renderer.Cam.Position = new Vector3( 0, 45, 90 );
+            Renderer.Cam.Angle = new Angle { Pitch = 0, Yaw = 0, Roll = 0f };
 
-            for ( int Q = 0; Q < 5; Q++ )
+            // Light
+            float LightSize = 2000;
+            RayCaster.Objects.Add( new Sphere( new Vector3( 0, LightSize + 90 - .5f, 0 ), LightSize )
             {
-                float Sz = 20 + Q * 5;
-                Sphere S = new Sphere( new Vector3( ( Sz + 20 ) * Q, Sz / 2f, -40 ), Sz )
+                Material = new Material
                 {
-                    Material =
-                    {
-                        Radiance = Color.White,
-                        Color = new Color(RNG.GetPositiveUnitFloat(  ),RNG.GetPositiveUnitFloat(  ),RNG.GetPositiveUnitFloat(  )),
-                        Specular = 1f
-                    }
-                };
-                RayCaster.Objects.Add( S );
-            }
+                    Color = new Color( 1f, 1f, 1f ),
+                    Specular = 1F,
+                    Radiance = new Color( 1f, 1f, 1f )
+                }
+            } );
 
             // Floor
             RayCaster.Objects.Add( new Plane( new Vector3( 0, 1, 0 ), 0 )
@@ -44,17 +41,17 @@ namespace Tracer
                 Material = new Material
                 {
                     Color = new Color( 1f, 1f, 1f ),
-                    Specular = 20f
+                    Specular = .1f
                 }
             } );
 
             // Back
-            RayCaster.Objects.Add( new Plane( new Vector3( 0, 0, 1 ), 70 )
+            RayCaster.Objects.Add( new Plane( new Vector3( 0, 0, 1 ), 90 )
             {
                 Material = new Material
                 {
                     Color = new Color( 1f, 1f, 1f ),
-                    Specular = 20f
+                    Specular = .1f
                 }
             } );
             
@@ -64,27 +61,27 @@ namespace Tracer
                 Material = new Material
                 {
                     Color = new Color( 1f, 1f, 1f ),
-                    Specular = 20f
+                    Specular = .1f
                 }
             } );
 
             // Left
-            RayCaster.Objects.Add( new Plane( new Vector3( 1, 0, 0 ), 70 )
+            RayCaster.Objects.Add( new Plane( new Vector3( 1, 0, 0 ), 90 )
             {
                 Material = new Material
                 {
                     Color = new Color( 1f, 0f, 0f ),
-                    Specular = 20f
+                    Specular = .1f
                 }
             } );
 
             // Right
-            RayCaster.Objects.Add( new Plane( new Vector3( -1, 0, 0 ), 300 )
+            RayCaster.Objects.Add( new Plane( new Vector3( -1, 0, 0 ), 90 )
             {
                 Material = new Material
                 {
                     Color = new Color( 0f, 0f, 1f ),
-                    Specular = 20f
+                    Specular = .1f
                 }
             } );
 

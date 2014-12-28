@@ -10,8 +10,8 @@ namespace Tracer.Classes
         public static Color BackgroundColor = new Color( 0, 0, 0.2f );
         public static List<GraphicsObject> Objects = new List<GraphicsObject>( );
         public static List<Light> Lights = new List<Light>( );
-        public static uint MaxDepth = 4;
-        public static uint Samples = 5;
+        public static uint MaxDepth = 2;
+        public static uint Samples = 10;
 
         /// <summary>
         /// Casts the given ray and returns the color belonging to this ray.
@@ -38,9 +38,8 @@ namespace Tracer.Classes
         /// <returns>The color belonging to it.</returns>
         public static Color Cast( Ray R )
         {
-            CollisionResult Res = Trace( R );
-
-            return Effects.Calculate( R, Res ); //!Res.Hit ? BackgroundColor : Effects.Calculate( R, Res );
+            return Effects.Radiance( R );
+                //Effects.Calculate( R, Trace( R ) ); //!Res.Hit ? BackgroundColor : Effects.Calculate( R, Res );
         }
     }
 }
