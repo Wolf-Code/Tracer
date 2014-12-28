@@ -29,7 +29,6 @@ namespace Tracer.Classes.Objects
             CollisionResult Result = new CollisionResult( );
 
             #region Distance
-
             // Created after http://wiki.cgsociety.org/index.php/Ray_Sphere_Intersection
             float A = R.Direction.Dot( R.Direction );
             float B = 2 * R.Direction.Dot( R.Start - this.Center );
@@ -62,7 +61,6 @@ namespace Tracer.Classes.Objects
 
             Result.Distance = T0 < 0 ? T1 : T0;
             Result.Hit = true;
-
             #endregion
 
             if ( Result.Hit )

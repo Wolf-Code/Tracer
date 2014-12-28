@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tracer.Classes;
 using Tracer.Properties;
@@ -16,9 +17,16 @@ namespace Tracer
         private static Menu Menu;
 
         private static Color[ , ] Img;
-        private static int Done;
-        private static int Max;
+
+        public static int Done
+        {
+            get { return m_Done; }
+        }
+
+        private static int m_Done;
+        public static int Max { private set; get; }
         public static bool Rendering { private set; get; }
+        private static BackgroundWorker Worker;
 
         public static void Initialize( Menu M )
         {
@@ -38,6 +46,14 @@ namespace Tracer
             }
 
             Menu.Settings_ImageFolder.Text = Settings.Default.Image_Folder;
+            Menu.Settings_Samples.Value = Settings.Default.Render_Samples;
+            Menu.Settings_Depth.Value = Settings.Default.Render_MaxDepth;
+        }
+
+        public static void CancelRendering( )
+        {
+            if ( Worker.IsBusy )
+                Worker.CancelAsync( );
         }
 
         public static void RenderImage( )
@@ -49,37 +65,30 @@ namespace Tracer
             int H = ( int )Cam.Resolution.Y;
 
             Max = W * H;
-            Done = 0;
+            m_Done = 0;
             Menu.Status_Progress.Maximum = Max;
             Menu.Status_Label.Text = Resources.Status_Rendering;
             Img = new Color[ W, H ];
             Rendering = true;
-            int Percentage = ( int )( Max * 0.03f );
 
-            Thread T = new Thread( ( ) =>
+            Worker = new BackgroundWorker( ) { WorkerSupportsCancellation = true };
+            Worker.DoWork += ( Sender, Args ) => Parallel.For( 0, Max, (Var, LoopState) =>
             {
-                
+                if ( Args.Cancel )
+                    LoopState.Stop( );
+
+                int X = Var % W;
+                int Y = Var / W;
+                Img[ X, Y ] = RayCaster.Cast( X, Y );
+                Interlocked.Increment( ref m_Done );
             } );
-            T.Start( );
 
-            BackgroundWorker Worker = new BackgroundWorker( );
-            Worker.DoWork += ( Sender, Args ) =>
-            {
-                for ( int X = 0; X < W; X++ )
-                    for ( int Y = 0; Y < H; Y++ )
-                    {
-                        Img[ X, Y ] = RayCaster.Cast( Cam.GetRay( X, Y ) );
-                        if( Done++ % Percentage == 0 )
-                            Menu.Invoke( ( MethodInvoker )( ( ) => Menu.Status_Progress.Value = Done ) );
-                    }
-            };
-
-            Worker.RunWorkerCompleted += ( Sender, Args ) =>
-            {
-                foreach ( Bitmap B in DrawRenderedImage( ) )
-                    Menu.Invoke( ( MethodInvoker )( ( ) => Menu.RenderImage.Image = B ) );
-                Rendering = false;
-            };
+            Worker.RunWorkerCompleted += ( Sender, Args ) => new Thread( ( ) =>
+                {
+                    foreach ( Bitmap B in DrawRenderedImage( ) )
+                        Menu.Invoke( ( MethodInvoker ) ( ( ) => Menu.RenderImage.Image = B ) );
+                    Rendering = false;
+                } ).Start( );
 
             Worker.RunWorkerAsync( );
         }
@@ -88,7 +97,7 @@ namespace Tracer
         {
             Menu.Status_Label.Text = Resources.Statuses_Drawing;
             Bitmap B = new Bitmap( Img.GetLength( 0 ), Img.GetLength( 1 ) );
-            Done = 0;
+            m_Done = 0;
 
             int Percentage = ( int )( Max * 0.01f );
 
@@ -97,7 +106,7 @@ namespace Tracer
                 for ( int Y = 0; Y < Cam.Resolution.Y; Y++ )
                 {
                     B.SetPixel( X, Y, Img[ X, Y ].DrawingColor );
-                    if ( Done++ % Percentage != 0 ) continue;
+                    if ( m_Done++ % Percentage != 0 ) continue;
 
                     Menu.Invoke( ( MethodInvoker )( ( ) =>
                     {

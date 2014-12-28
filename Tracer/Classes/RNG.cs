@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace Tracer.Classes
 {
     public class RNG
     {
-        private static Random Rnd;
+        // Made after http://stackoverflow.com/questions/19270507/correct-way-to-use-random-in-multithread-application
+        static int Seed = Environment.TickCount;
 
-        static RNG( )
-        {
-            Rnd = new Random( );
-        }
+        static readonly ThreadLocal<Random> Rnd =
+            new ThreadLocal<Random>( ( ) => new Random( Interlocked.Increment( ref Seed ) ) );
 
         /// <summary>
         /// Returns a float between -1f and 1f.
@@ -21,7 +17,7 @@ namespace Tracer.Classes
         /// <returns></returns>
         public static float GetUnitFloat( )
         {
-            return ( float )( Rnd.NextDouble( ) * 2.0 - 1.0 );
+            return ( float )( Rnd.Value.NextDouble( ) * 2.0 - 1.0 );
         }
 
         /// <summary>
@@ -30,7 +26,7 @@ namespace Tracer.Classes
         /// <returns></returns>
         public static float GetPositiveUnitFloat( )
         {
-            return ( float ) Rnd.NextDouble( );
+            return ( float ) Rnd.Value.NextDouble( );
         }
     }
 }

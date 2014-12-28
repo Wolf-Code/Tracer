@@ -70,6 +70,15 @@ namespace Tracer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Done.
+        /// </summary>
+        internal static string Status_Done {
+            get {
+                return ResourceManager.GetString("Status_Done", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Rendering image.
         /// </summary>
         internal static string Status_Rendering {

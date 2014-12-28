@@ -11,7 +11,7 @@ namespace Tracer.Classes
         public static List<GraphicsObject> Objects = new List<GraphicsObject>( );
         public static List<Light> Lights = new List<Light>( );
         public static uint MaxDepth = 2;
-        public static uint Samples = 10;
+        public static uint Samples = 5;
 
         /// <summary>
         /// Casts the given ray and returns the color belonging to this ray.
@@ -40,6 +40,16 @@ namespace Tracer.Classes
         {
             return Effects.Radiance( R );
                 //Effects.Calculate( R, Trace( R ) ); //!Res.Hit ? BackgroundColor : Effects.Calculate( R, Res );
+        }
+
+        public static Color Cast( int X, int Y )
+        {
+            Ray R = Renderer.Cam.GetRay( X, Y );
+            Color C = Color.Black;
+            for ( int Q = 0; Q < Samples; Q++ )
+                C += Effects.Radiance2( R );
+
+            return C / Samples;
         }
     }
 }

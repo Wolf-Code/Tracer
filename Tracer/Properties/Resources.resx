@@ -123,4 +123,7 @@
     <data name="Settings_ImageFolder_Description" xml:space="preserve">
     <value>The directory where all rendered images will be stored.</value>
   </data>
+    <data name="Status_Done" xml:space="preserve">
+    <value>Done</value>
+  </data>
 </root>

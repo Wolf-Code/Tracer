@@ -70,5 +70,29 @@ namespace Tracer.Properties {
                 this["Image_Folder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public uint Render_Samples {
+            get {
+                return ((uint)(this["Render_Samples"]));
+            }
+            set {
+                this["Render_Samples"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public uint Render_MaxDepth {
+            get {
+                return ((uint)(this["Render_MaxDepth"]));
+            }
+            set {
+                this["Render_MaxDepth"] = value;
+            }
+        }
     }
 }

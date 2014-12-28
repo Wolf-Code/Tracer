@@ -10,6 +10,8 @@ namespace Tracer
 {
     public partial class Menu : Form
     {
+        private int LastDone;
+
         public Menu( )
         {
             InitializeComponent( );
@@ -22,15 +24,22 @@ namespace Tracer
 
             Renderer.Cam.Position = new Vector3( 0, 45, 90 );
             Renderer.Cam.Angle = new Angle { Pitch = 0, Yaw = 0, Roll = 0f };
+            
+            RayCaster.Objects.Add( new Sphere( new Vector3( -20, 50, -30 ), 20 )
+            {
+                Material = new Material
+                {
+                    Color = new Color( 0f, 1f, 0f )
+                }
+            } );
 
             // Light
             float LightSize = 2000;
-            RayCaster.Objects.Add( new Sphere( new Vector3( 0, LightSize + 90 - .5f, 0 ), LightSize )
+            RayCaster.Objects.Add( new Sphere( new Vector3( 0, LightSize + 90 - .1f, 0 ), LightSize )
             {
                 Material = new Material
                 {
                     Color = new Color( 1f, 1f, 1f ),
-                    Specular = 1F,
                     Radiance = new Color( 1f, 1f, 1f )
                 }
             } );
@@ -40,8 +49,7 @@ namespace Tracer
             {
                 Material = new Material
                 {
-                    Color = new Color( 1f, 1f, 1f ),
-                    Specular = .1f
+                    Color = new Color( 1f, 1f, 1f )
                 }
             } );
 
@@ -50,8 +58,7 @@ namespace Tracer
             {
                 Material = new Material
                 {
-                    Color = new Color( 1f, 1f, 1f ),
-                    Specular = .1f
+                    Color = new Color( 1f, 1f, 1f )
                 }
             } );
             
@@ -60,8 +67,7 @@ namespace Tracer
             {
                 Material = new Material
                 {
-                    Color = new Color( 1f, 1f, 1f ),
-                    Specular = .1f
+                    Color = new Color( 1f, 1f, 1f )
                 }
             } );
 
@@ -70,8 +76,7 @@ namespace Tracer
             {
                 Material = new Material
                 {
-                    Color = new Color( 1f, 0f, 0f ),
-                    Specular = .1f
+                    Color = new Color( 1f, 0f, 0f )
                 }
             } );
 
@@ -80,8 +85,7 @@ namespace Tracer
             {
                 Material = new Material
                 {
-                    Color = new Color( 0f, 0f, 1f ),
-                    Specular = .1f
+                    Color = new Color( 0f, 0f, 1f )
                 }
             } );
 
@@ -97,7 +101,10 @@ namespace Tracer
 
         private void Button_Render_Click( object sender, EventArgs e )
         {
-            Renderer.RenderImage( );
+            if ( !Renderer.Rendering )
+                Renderer.RenderImage( );
+            else
+                Renderer.CancelRendering( );
         }
 
         private void Settings_Resolution_Width_ValueChanged( object sender, EventArgs e )
@@ -151,6 +158,38 @@ namespace Tracer
 
             if ( Dialog.ShowDialog( ) == DialogResult.OK )
                 this.RenderImage.Image.Save( Dialog.FileName );
+        }
+
+        private void Settings_Depth_ValueChanged( object sender, EventArgs e )
+        {
+            RayCaster.MaxDepth = ( uint ) Settings_Depth.Value;
+            Settings.Default[ "Render_MaxDepth" ] = RayCaster.MaxDepth;
+            Settings.Default.Save( );
+        }
+
+        private void Settings_Samples_ValueChanged( object sender, EventArgs e )
+        {
+            RayCaster.Samples = ( uint )Settings_Samples.Value;
+            Settings.Default[ "Render_Samples" ] = RayCaster.Samples;
+            Settings.Default.Save( );
+        }
+
+        private void Progress_Timer_Tick( object sender, EventArgs e )
+        {
+            if ( Renderer.Rendering )
+            {
+                Status_Progress.Value = Renderer.Done;
+                float Progress = Status_Progress.Value - LastDone;
+                LastDone = Status_Progress.Value;
+                float Req = ( Renderer.Max - Status_Progress.Value );
+
+                float TicksLeft = Req / Progress;
+                float SecondsLeft = TicksLeft * ( Progress_Timer.Interval / 1000f );
+                if ( !float.IsInfinity( SecondsLeft ) )
+                    Status_Label.Text = Resources.Status_Rendering + ": " + TimeSpan.FromSeconds( SecondsLeft );
+            }
+            else
+                Status_Label.Text = Resources.Status_Done;
         }
     }
 }

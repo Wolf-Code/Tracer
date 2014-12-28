@@ -44,3 +44,5 @@ Temporary Items
 Tracer/obj/*
 Tracer/bin/*
 *.suo
+*.vspx
+*.psess

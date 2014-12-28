@@ -56,7 +56,7 @@ namespace Tracer.Classes
             if ( !Res.Hit )
                 return Color.Black;
 
-            Color Own = Res.Object.Material.Color * ( DiffuseLightColor( R, Res ) + PhongColor( R, Res ) );
+            Color Own = Res.Object.Material.Color * DiffuseLightColor( R, Res );
 
             return Own;
         }
@@ -64,28 +64,6 @@ namespace Tracer.Classes
         public static Color Calculate( Ray R, CollisionResult Res )
         {
             return SamplePixel( R, Res );
-        }
-
-        public static Color PhongColor( Ray R, CollisionResult Res )
-        {
-            Color C = Color.Black;
-            foreach ( Light L in RayCaster.Lights )
-            {
-                float ShadowMul = ShadowMultiplier( IsInShadow( Res, L ) );
-
-                Vector3 LDir = ( L.Position - Res.Position ).Normalized( );
-                Vector3 VDir = Renderer.Cam.Angle.Forward;
-                Vector3 H = ( LDir + VDir );
-                H.Normalize( );
-
-                float I = Res.Normal.Dot( H );
-                if ( I < 0 )
-                    continue;
-
-                C += Color.White * ShadowMul * ( float ) Math.Pow( I, Res.Object.Material.Specular );
-            }
-
-            return C;
         }
 
         public static Color DiffuseLightColor( Ray R, CollisionResult Res )
@@ -140,10 +118,39 @@ namespace Tracer.Classes
                 // Compute the BRDF for this ray (assuming Lambertian reflection)
                 float cos_theta = Math.Max( 0, New.Direction.Dot( Res.Normal ) );
                 float BDRF = 2 * cos_theta;
-                C += Rad + Res.Object.Material.Color * ( Radiance( New ) * BDRF );
+                C += Rad + Res.Object.Material.Color * ( Radiance( New ) * BDRF * ( float ) ( 1f / Math.PI ) );
             }
 
             return C;
+        }
+
+        public static Color Radiance2( Ray R )
+        {
+            if ( R.Depth > RayCaster.MaxDepth )
+                return Color.Black;
+
+            Color C = Color.Black;
+
+            CollisionResult Res = RayCaster.Trace( R );
+            if ( !Res.Hit )
+                return C;
+
+            Color Rad = Res.Object.Material.Radiance;
+            if ( Rad.R >= 1f || Rad.G >= 1f || Rad.B >= 1f )
+                return Rad;
+
+            R = new Ray
+            {
+                Depth = R.Depth + 1,
+                Direction = Utilities.RandomCosineDirectionInSameDirection( Res.Normal ),
+                Start = Res.Position + Res.Normal * ShadowBias
+            };
+
+            // Compute the BRDF for this ray (assuming Lambertian reflection)
+            float cos_theta = Math.Max( 0, R.Direction.Dot( Res.Normal ) );
+            float BDRF = 2 * cos_theta;
+
+            return Rad + Res.Object.Material.Color * ( Radiance2( R ) * BDRF );;
         }
     }
 }
