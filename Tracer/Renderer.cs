@@ -95,7 +95,7 @@ namespace Tracer
 
         private static IEnumerable<Bitmap> DrawRenderedImage( )
         {
-            Menu.Status_Label.Text = Resources.Statuses_Drawing;
+            Menu.Invoke( ( MethodInvoker ) ( ( ) => Menu.Status_Label.Text = Resources.Statuses_Drawing ) );
             Bitmap B = new Bitmap( Img.GetLength( 0 ), Img.GetLength( 1 ) );
             m_Done = 0;
 
