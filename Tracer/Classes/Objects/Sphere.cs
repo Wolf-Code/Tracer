@@ -1,5 +1,6 @@
 ﻿using System;
 using Tracer.Classes.Util;
+using Tracer.CUDA;
 
 namespace Tracer.Classes.Objects
 {
@@ -98,6 +99,15 @@ namespace Tracer.Classes.Objects
             }
 
             return Result;
+        }
+
+        public CUDASphereObject ToCUDASphere( )
+        {
+            return new CUDASphereObject
+            {
+                Position = this.Center.ToFloat3( ),
+                Radius = this.Radius
+            };
         }
     }
 }

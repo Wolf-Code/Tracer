@@ -57,6 +57,7 @@
     <Compile Include="Classes\Objects\Light.cs" />
     <Compile Include="Classes\Objects\Ray.cs" />
     <Compile Include="Classes\Objects\Plane.cs" />
+    <Compile Include="Classes\Objects\Scene.cs" />
     <Compile Include="Classes\Objects\Sphere.cs" />
     <Compile Include="Classes\RayCaster.cs" />
     <Compile Include="Classes\RNG.cs" />
@@ -64,7 +65,13 @@
     <Compile Include="Classes\Util\Color.cs" />
     <Compile Include="Classes\Util\Vector2.cs" />
     <Compile Include="Classes\Util\Vector3.cs" />
-    <Compile Include="CUDA.cs" />
+    <Compile Include="CUDATest.cs" />
+    <Compile Include="CUDA\CUDACamData.cs" />
+    <Compile Include="CUDA\CUDAMaterial.cs" />
+    <Compile Include="CUDA\CUDAObject.cs" />
+    <Compile Include="CUDA\CUDAPlane.cs" />
+    <Compile Include="CUDA\CUDASphereObject.cs" />
+    <Compile Include="CUDA\CUDATypeClass.cs" />
     <Compile Include="Menu.cs">
       <SubType>Form</SubType>
     </Compile>

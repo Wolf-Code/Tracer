@@ -43,6 +43,8 @@ Temporary Items
 .apdisk
 Tracer/obj/*
 Tracer/bin/*
+CUDA Runtime/Debug/*
+CUDA Runtime/bin/*
 *.suo
 *.vspx
 *.psess

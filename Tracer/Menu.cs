@@ -11,6 +11,7 @@ namespace Tracer
     public partial class Menu : Form
     {
         private int LastDone;
+        private float AverageProgressPerSecond;
 
         public Menu( )
         {
@@ -20,10 +21,13 @@ namespace Tracer
         protected override void OnLoad( EventArgs e )
         {
             base.OnLoad( e );
+
             Renderer.Initialize( this );
 
-            Renderer.Cam.Position = new Vector3( 0, 45, 90 );
+            Renderer.Cam.Position = new Vector3( 0, 45, 80 );
             Renderer.Cam.Angle = new Angle { Pitch = 0, Yaw = 0, Roll = 0f };
+
+            CUDATest.Run( );
             
             RayCaster.Objects.Add( new Sphere( new Vector3( -20, 50, -30 ), 20 )
             {
@@ -43,7 +47,7 @@ namespace Tracer
                     Radiance = new Color( 1f, 1f, 1f )
                 }
             } );
-
+            
             // Floor
             RayCaster.Objects.Add( new Plane( new Vector3( 0, 1, 0 ), 0 )
             {
@@ -179,17 +183,27 @@ namespace Tracer
             if ( Renderer.Rendering )
             {
                 Status_Progress.Value = Renderer.Done;
-                float Progress = Status_Progress.Value - LastDone;
+                float TicksInSeconds = ( Progress_Timer.Interval / 1000f );
+                if ( AverageProgressPerSecond < 0 )
+                    AverageProgressPerSecond = ( Status_Progress.Value - LastDone ) * TicksInSeconds;
+                else
+                {
+                    AverageProgressPerSecond += ( Status_Progress.Value - LastDone ) * TicksInSeconds;
+                    AverageProgressPerSecond =  AverageProgressPerSecond * ( 1f - TicksInSeconds );
+                }
                 LastDone = Status_Progress.Value;
                 float Req = ( Renderer.Max - Status_Progress.Value );
 
-                float TicksLeft = Req / Progress;
-                float SecondsLeft = TicksLeft * ( Progress_Timer.Interval / 1000f );
+                float TicksLeft = Req / AverageProgressPerSecond;
+                float SecondsLeft = TicksLeft * TicksInSeconds;
                 if ( !float.IsInfinity( SecondsLeft ) )
-                    Status_Label.Text = Resources.Status_Rendering + ": " + TimeSpan.FromSeconds( SecondsLeft );
+                    Status_Label.Text = Resources.Status_Rendering + ": " + TimeSpan.FromSeconds( ( int ) SecondsLeft );
             }
             else
+            {
                 Status_Label.Text = Resources.Status_Done;
+                AverageProgressPerSecond = -1;
+            }
         }
     }
 }

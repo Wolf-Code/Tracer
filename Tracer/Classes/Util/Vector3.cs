@@ -1,4 +1,5 @@
 ﻿using System;
+using ManagedCuda.VectorTypes;
 
 namespace Tracer.Classes.Util
 {
@@ -27,7 +28,7 @@ namespace Tracer.Classes.Util
         /// </summary>
         public float LengthSquared
         {
-            get { return X * X + Y * Y + Z * Z; }
+            get { return this.Dot( this ); }
         }
 
         /// <summary>
@@ -43,6 +44,11 @@ namespace Tracer.Classes.Util
             this.X = X;
             this.Y = Y;
             this.Z = Z;
+        }
+
+        public float3 ToFloat3( )
+        {
+            return new float3( this.X, this.Y, this.Z );
         }
 
         /// <summary>

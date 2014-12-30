@@ -1,4 +1,5 @@
 ﻿using Tracer.Classes.Util;
+using Tracer.CUDA;
 
 namespace Tracer.Classes.Objects
 {
@@ -43,6 +44,15 @@ namespace Tracer.Classes.Objects
             Result.Normal = this.Normal;
             Result.Position = R.Start + R.Direction * Distance;
             return Result;
+        }
+
+        public CUDAPlane ToCUDAPlane( )
+        {
+            return new CUDAPlane
+            {
+                Normal = this.Normal.ToFloat3( ),
+                Offset = this.Offset
+            };
         }
     }
 }

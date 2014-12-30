@@ -23,11 +23,11 @@ namespace Tracer.Classes
             return
                 // Get all collision results
                 Objects.Select( O => O.CheckCollision( R ) )
-                    // Only take the ones which hit
+                // Only take the ones which hit
                     .Where( O => O.Hit )
-                    // Order them by their distance
+                // Order them by their distance
                     .OrderBy( O => O.Distance )
-                    // And grab the first ( or default if there is none )
+                // And grab the first ( or default if there is none )
                     .FirstOrDefault( );
         }
 
@@ -39,7 +39,7 @@ namespace Tracer.Classes
         public static Color Cast( Ray R )
         {
             return Effects.Radiance( R );
-                //Effects.Calculate( R, Trace( R ) ); //!Res.Hit ? BackgroundColor : Effects.Calculate( R, Res );
+            //Effects.Calculate( R, Trace( R ) ); //!Res.Hit ? BackgroundColor : Effects.Calculate( R, Res );
         }
 
         public static Color Cast( int X, int Y )

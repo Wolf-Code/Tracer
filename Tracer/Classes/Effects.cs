@@ -150,7 +150,7 @@ namespace Tracer.Classes
             float cos_theta = Math.Max( 0, R.Direction.Dot( Res.Normal ) );
             float BDRF = 2 * cos_theta;
 
-            return Rad + Res.Object.Material.Color * ( Radiance2( R ) * BDRF );;
+            return Rad + Res.Object.Material.Color * ( Radiance2( R ) * BDRF );
         }
     }
 }

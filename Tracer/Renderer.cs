@@ -71,10 +71,10 @@ namespace Tracer
             Img = new Color[ W, H ];
             Rendering = true;
 
-            Worker = new BackgroundWorker( ) { WorkerSupportsCancellation = true };
-            Worker.DoWork += ( Sender, Args ) => Parallel.For( 0, Max, (Var, LoopState) =>
+            Worker = new BackgroundWorker { WorkerSupportsCancellation = true };
+            Worker.DoWork += ( Sender, Args ) => Parallel.For( 0, Max, ( Var, LoopState ) =>
             {
-                if ( Args.Cancel )
+                if ( Worker.CancellationPending )
                     LoopState.Stop( );
 
                 int X = Var % W;
@@ -87,6 +87,7 @@ namespace Tracer
                 {
                     foreach ( Bitmap B in DrawRenderedImage( ) )
                         Menu.Invoke( ( MethodInvoker ) ( ( ) => Menu.RenderImage.Image = B ) );
+
                     Rendering = false;
                 } ).Start( );
 
@@ -99,7 +100,7 @@ namespace Tracer
             Bitmap B = new Bitmap( Img.GetLength( 0 ), Img.GetLength( 1 ) );
             m_Done = 0;
 
-            int Percentage = ( int )( Max * 0.01f );
+            int Percentage = Math.Max( 1, ( int ) ( Max * 0.01f ) );
 
             for ( int X = 0; X < Cam.Resolution.X; X++ )
             {

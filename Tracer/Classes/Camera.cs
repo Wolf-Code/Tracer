@@ -1,6 +1,7 @@
 ﻿using System;
 using Tracer.Classes.Objects;
 using Tracer.Classes.Util;
+using Tracer.CUDA;
 
 namespace Tracer.Classes
 {
@@ -68,6 +69,22 @@ namespace Tracer.Classes
             R.Direction = Dir.Normalized(  );
 
             return R;
+        }
+
+        public CUDACamData ToCamData( )
+        {
+            CUDACamData Data = new CUDACamData( )
+            {
+                A = this.A,
+                Forward = this.Angle.Forward.ToFloat3( ),
+                Height = this.Resolution.Y,
+                Position = this.Position.ToFloat3( ),
+                Right = this.Angle.Right.ToFloat3( ),
+                Up = this.Angle.Up.ToFloat3( ),
+                Width = this.Resolution.X
+            };
+
+            return Data;
         }
     }
 }

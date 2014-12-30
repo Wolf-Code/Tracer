@@ -14,5 +14,10 @@ namespace Tracer.Classes
             // R = D * ( Pi / 180 )
             return Degrees * ( float ) ( Math.PI / 180f );
         }
+
+        public static int Clamp( int Value, int Min, int Max )
+        {
+            return Math.Min( Max, Math.Max( Min, Value ) );
+        }
     }
 }

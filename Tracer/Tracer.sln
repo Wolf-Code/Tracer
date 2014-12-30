@@ -5,26 +5,49 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracer", "Tracer.csproj", "{89A775E9-9A75-4D5E-9649-E020D8F17E5F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{13F41F9D-8933-4734-BB3D-7B5BA0768F99}"
-	ProjectSection(SolutionItems) = preProject
-		Performance1.psess = Performance1.psess
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CUDA Runtime", "..\CUDA Runtime\CUDA Runtime.vcxproj", "{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{89A775E9-9A75-4D5E-9649-E020D8F17E5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{89A775E9-9A75-4D5E-9649-E020D8F17E5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89A775E9-9A75-4D5E-9649-E020D8F17E5F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{89A775E9-9A75-4D5E-9649-E020D8F17E5F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{89A775E9-9A75-4D5E-9649-E020D8F17E5F}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{89A775E9-9A75-4D5E-9649-E020D8F17E5F}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{89A775E9-9A75-4D5E-9649-E020D8F17E5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{89A775E9-9A75-4D5E-9649-E020D8F17E5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89A775E9-9A75-4D5E-9649-E020D8F17E5F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{89A775E9-9A75-4D5E-9649-E020D8F17E5F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{89A775E9-9A75-4D5E-9649-E020D8F17E5F}.Release|Win32.ActiveCfg = Release|Any CPU
+		{89A775E9-9A75-4D5E-9649-E020D8F17E5F}.Release|x64.ActiveCfg = Release|Any CPU
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Debug|Mixed Platforms.Deploy.0 = Debug|Win32
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Debug|Win32.Build.0 = Debug|Win32
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Debug|x64.ActiveCfg = Debug|x64
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Debug|x64.Build.0 = Debug|x64
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Release|Any CPU.ActiveCfg = Release|Win32
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Release|Win32.ActiveCfg = Release|Win32
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Release|Win32.Build.0 = Release|Win32
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Release|x64.ActiveCfg = Release|x64
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
