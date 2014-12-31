@@ -35,13 +35,13 @@ namespace Tracer.Classes.Objects
                 if ( G is Sphere )
                 {
                     O.Sphere = ( G as Sphere ).ToCUDASphere( );
-                    O.Type = CUDATypeClass.Sphere;
+                    O.Type = CUDAObjectType.Sphere;
                 }
 
                 if ( G is Plane )
                 {
                     O.Plane = ( G as Plane ).ToCUDAPlane( );
-                    O.Type = CUDATypeClass.Plane;
+                    O.Type = CUDAObjectType.Plane;
                 }
 
                 Obj.Add( O );

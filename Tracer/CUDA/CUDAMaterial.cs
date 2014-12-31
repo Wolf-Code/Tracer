@@ -8,5 +8,7 @@ namespace Tracer.CUDA
     {
         public float3 Color;
         public float3 Radiance;
+        public CUDAMaterialType Type;
+        public float Glossyness;
     }
 }

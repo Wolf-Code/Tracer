@@ -11,7 +11,7 @@ namespace Tracer.Classes
         public static List<GraphicsObject> Objects = new List<GraphicsObject>( );
         public static List<Light> Lights = new List<Light>( );
         public static uint MaxDepth = 2;
-        public static uint Samples = 5;
+        public static uint Samples = 250;
 
         /// <summary>
         /// Casts the given ray and returns the color belonging to this ray.

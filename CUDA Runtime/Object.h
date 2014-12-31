@@ -1,6 +1,6 @@
 struct Object
 {
-    TypeClass Type;
+    ObjectType Type;
     SphereObject Sphere;
     PlaneObject Plane;
     Material Material;

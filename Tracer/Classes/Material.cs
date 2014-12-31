@@ -8,11 +8,15 @@ namespace Tracer.Classes
     {
         public Color Color;
         public Color Radiance;
+        public CUDAMaterialType Type;
+        public float Glossyness;
 
         public Material( )
         {
             Radiance = Color.Black;
             Color = Color.White;
+            Type = CUDAMaterialType.Diffuse;
+            Glossyness = 0;
         }
 
         public CUDAMaterial ToCUDAMaterial( )
@@ -20,7 +24,9 @@ namespace Tracer.Classes
             return new CUDAMaterial
             {
                 Color = new float3( Color.R, Color.G, Color.B ),
-                Radiance = new float3( Radiance.R, Radiance.G, Radiance.B )
+                Radiance = new float3( Radiance.R, Radiance.G, Radiance.B ),
+                Type = this.Type,
+                Glossyness = this.Glossyness
             };
         }
     }

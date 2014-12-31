@@ -3,11 +3,21 @@
 class VectorMath
 {
 public:
-    __device__ static float Dot( float3 Vector, float3 Vector2 );
-    __device__ static float Length( float3 Vector );
-    __device__ static void Normalize( float3* Vector );
-    __device__ static float3 Normalized( float3 Vector );
+    __device__ static float Dot( float3, float3 );
+    __device__ static float Length( float3 );
+    __device__ static void Normalize( float3* );
+    __device__ static float3 Normalized( float3 );
+    __device__ static float3 MakeVector( float, float, float );
+    __device__ static float3 Reflect( float3, float3 );
 };
+
+__device__ float3 operator/( float3, float );
+__device__ float3 operator*( float3, float );
+__device__ float3 operator*( float, float3 );
+__device__ float3 operator*( float3, float3 );
+__device__ float3 operator+( float3, float3 );
+__device__ float3 operator+=( float3, float3 );
+__device__ float3 operator-( float3, float3 );
 
 __device__ float VectorMath::Dot( float3 Vector, float3 Vector2 )
 {
@@ -30,70 +40,80 @@ __device__ void VectorMath::Normalize( float3* Vector )
 __device__ float3 VectorMath::Normalized( float3 Vector )
 {
     float L = VectorMath::Length( Vector );
+
+    return Vector / L;
+}
+
+__device__ float3 VectorMath::MakeVector( float X, float Y, float Z )
+{
     float3 New;
-    New.x = Vector.x /= L;
-    New.y = Vector.y /= L;
-    New.z = Vector.z /= L;
+    New.x = X;
+    New.y = Y;
+    New.z = Z;
 
     return New;
 }
 
+__device__ float3 VectorMath::Reflect( float3 Vector, float3 Normal )
+{
+    return Vector - 2 * VectorMath::Dot( Vector, Normal ) * Normal;
+}
+
+
+
+
+
 __device__ float3 operator*( float3 Vector, float Multiplier )
 {
-    float3 New;
-    New.x = Vector.x * Multiplier;
-    New.y = Vector.y * Multiplier;
-    New.z = Vector.z * Multiplier;
+    return VectorMath::MakeVector(
+        Vector.x * Multiplier,
+        Vector.y * Multiplier,
+        Vector.z * Multiplier
+        );
+}
 
-    return New;
+__device__ float3 operator*( float Multiplier, float3 Vector )
+{
+    return Vector * Multiplier;
 }
 
 __device__ float3 operator*( float3 Vector, float3 Vector2 )
 {
-    float3 New;
-    New.x = Vector.x * Vector2.x;
-    New.y = Vector.y * Vector2.y;
-    New.z = Vector.z * Vector2.z;
-
-    return New;
+    return VectorMath::MakeVector(
+        Vector.x * Vector2.x,
+        Vector.y * Vector2.y,
+        Vector.z * Vector2.z
+        );
 }
 
 __device__ float3 operator/( float3 Vector, float Divider )
 {
-    float3 New;
-    New.x = Vector.x / Divider;
-    New.y = Vector.y / Divider;
-    New.z = Vector.z / Divider;
-
-    return New;
+    return VectorMath::MakeVector(
+        Vector.x / Divider,
+        Vector.y / Divider,
+        Vector.z / Divider
+        );
 }
 
 __device__ float3 operator+( float3 Vector, float3 Vector2 )
 {
-    float3 New;
-    New.x = Vector.x + Vector2.x;
-    New.y = Vector.y + Vector2.y;
-    New.z = Vector.z + Vector2.z;
-
-    return New;
+    return VectorMath::MakeVector(
+        Vector.x + Vector2.x,
+        Vector.y + Vector2.y,
+        Vector.z + Vector2.z
+        );
 }
 
 __device__ float3 operator+=( float3 Vector, float3 Vector2 )
 {
-    float3 New;
-    New.x = Vector.x + Vector2.x;
-    New.y = Vector.y + Vector2.y;
-    New.z = Vector.z + Vector2.z;
-
-    return New;
+    return Vector + Vector2;
 }
 
 __device__ float3 operator-( float3 Vector, float3 Vector2 )
 {
-    float3 New;
-    New.x = Vector.x - Vector2.x;
-    New.y = Vector.y - Vector2.y;
-    New.z = Vector.z - Vector2.z;
-
-    return New;
+    return VectorMath::MakeVector(
+        Vector.x - Vector2.x,
+        Vector.y - Vector2.y,
+        Vector.z - Vector2.z
+        );
 }

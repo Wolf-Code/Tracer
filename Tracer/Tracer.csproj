@@ -71,7 +71,8 @@
     <Compile Include="CUDA\CUDAObject.cs" />
     <Compile Include="CUDA\CUDAPlane.cs" />
     <Compile Include="CUDA\CUDASphereObject.cs" />
-    <Compile Include="CUDA\CUDATypeClass.cs" />
+    <Compile Include="CUDA\CUDAMaterialType.cs" />
+    <Compile Include="CUDA\CUDAObjectType.cs" />
     <Compile Include="Menu.cs">
       <SubType>Form</SubType>
     </Compile>

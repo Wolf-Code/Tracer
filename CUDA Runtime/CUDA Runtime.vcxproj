@@ -164,12 +164,13 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="CollisionResult.h" />
     <ClInclude Include="CUDAIncluder.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="MaterialType.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="PlaneObject.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Raytracer.h" />
     <ClInclude Include="SphereObject.h" />
-    <ClInclude Include="TypeClass.h" />
+    <ClInclude Include="ObjectType.h" />
     <ClInclude Include="VectorMath.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
