@@ -1,4 +1,5 @@
-﻿using Tracer.Classes.Util;
+﻿using System.ComponentModel;
+using Tracer.Classes.Util;
 using Tracer.CUDA;
 
 namespace Tracer.Classes.Objects
@@ -6,22 +7,24 @@ namespace Tracer.Classes.Objects
     /// <summary>
     /// A plane object.
     /// </summary>
-    class Plane : GraphicsObject
+    public class Plane : GraphicsObject
     {
         /// <summary>
         /// The plane's normal.
         /// </summary>
-        public Vector3 Normal;
+        public Vector3 Normal { set; get; }
 
         /// <summary>
         /// The plane's distance from the center, along its normal.
         /// </summary>
-        public float Offset;
+        [Description( "The offset from the center, in its normal's direction." )]
+        public float Offset { set; get; }
 
         public Plane( Vector3 Normal, float Offset )
         {
             this.Normal = Normal;
             this.Offset = Offset;
+            this.Name = "Plane";
         }
 
         public override CollisionResult CheckCollision( Ray R )

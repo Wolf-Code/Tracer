@@ -1,13 +1,17 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Tracer.Classes.Util;
 using Tracer.CUDA;
 
 namespace Tracer.Classes.Objects
 {
-    class Scene
+    public class Scene
     {
-        private List<GraphicsObject> Objects = new List<GraphicsObject>( ); 
+        public List<GraphicsObject> Objects { set; get; }
+
+        public Scene( )
+        {
+            this.Objects = new List<GraphicsObject>( );
+        }
 
         public Sphere AddSphere( Vector3 Position, float Radius )
         {

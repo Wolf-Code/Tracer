@@ -40,37 +40,46 @@ namespace Tracer
             get { return Environment.CurrentDirectory + "\\kernel.ptx"; }
         }
 
-        private static Scene DefaultScene
+        public static Scene DefaultScene
         {
             get
             {
                 Scene Scn = new Scene( );
 
                 Sphere Light = Scn.AddSphere( new Vector3( 0, 2000 + 90 - .15f, 0 ), 2000 );
+                Light.Name = "Light";
                 Light.Material.Radiance = new Classes.Util.Color( 1f, 1f, 1f );
 
                 Plane Floor = Scn.AddPlane( new Vector3( 0, 1, 0 ), 0 );
+                Floor.Name = "Floor";
                 Floor.Material.Color = new Classes.Util.Color( 1f, 1f, 1f );
 
                 Plane Front = Scn.AddPlane( new Vector3( 0, 0, 1 ), 90 );
+                Front.Name = "Front";
                 Front.Material.Color = new Classes.Util.Color( 1f, 1f, 1f );
 
                 Plane Back = Scn.AddPlane( new Vector3( 0, 0, -1 ), 90 );
+                Back.Name = "Back";
                 Back.Material.Color = new Classes.Util.Color( 1f, 1f, 1f );
 
                 Plane Ceiling = Scn.AddPlane( new Vector3( 0, -1, 0 ), 90 );
+                Ceiling.Name = "Ceiling";
                 Ceiling.Material.Color = new Classes.Util.Color( 1f, 1f, 1f );
 
                 Plane Left = Scn.AddPlane( new Vector3( 1, 0, 0 ), 90 );
+                Left.Name = "Left";
                 Left.Material.Color = new Classes.Util.Color( 1f, 0f, 0f );
 
                 Plane Right = Scn.AddPlane( new Vector3( -1, 0, 0 ), 90 );
+                Right.Name = "Right";
                 Right.Material.Color = new Classes.Util.Color( 0, 0f, 1f );
 
                 Sphere GreenSphere = Scn.AddSphere( new Vector3( -20, 50, -30 ), 20 );
+                GreenSphere.Name = "Green sphere";
                 GreenSphere.Material.Color = new Classes.Util.Color( 0, 1f, 0f );
 
                 Sphere MirrorSphere = Scn.AddSphere( new Vector3( 20, 40, -20 ), 20 );
+                MirrorSphere.Name = "Mirror sphere";
                 MirrorSphere.Material.Type = CUDAMaterialType.Reflective;
                 MirrorSphere.Material.Glossyness = 0f;
 
@@ -224,7 +233,7 @@ namespace Tracer
             RenderThread = new Thread( ( ) =>
             {
                 InitKernels( );
-                RenderImage( DefaultScene, Settings.Default.Render_Samples, Settings.Default.Render_MaxDepth );
+                RenderImage( Renderer.Scene, Settings.Default.Render_Samples, Settings.Default.Render_MaxDepth );
             } );
 
             RenderThread.Start( );

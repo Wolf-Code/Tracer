@@ -7,22 +7,23 @@ namespace Tracer.Classes.Objects
     /// <summary>
     /// A sphere object.
     /// </summary>
-    class Sphere : GraphicsObject
+    public class Sphere : GraphicsObject
     {
         /// <summary>
         /// The sphere's position.
         /// </summary>
-        public Vector3 Center;
+        public Vector3 Center { set; get; }
 
         /// <summary>
         /// The sphere's radius.
         /// </summary>
-        public float Radius;
+        public float Radius { set; get; }
 
         public Sphere( Vector3 Position, float Radius )
         {
             this.Center = Position;
             this.Radius = Radius;
+            this.Name = "Sphere";
         }
 
         public override CollisionResult CheckCollision( Ray R )

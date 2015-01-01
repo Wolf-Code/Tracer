@@ -3,7 +3,7 @@
 namespace Tracer.CUDA
 {
     [StructLayout( LayoutKind.Sequential )]
-    struct CUDAObject
+    public struct CUDAObject
     {
         public CUDAObjectType Type;
         public CUDASphereObject Sphere;

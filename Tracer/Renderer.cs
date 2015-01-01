@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Tracer.Classes;
+using Tracer.Classes.Objects;
 using Tracer.Properties;
 
 namespace Tracer
@@ -9,6 +10,7 @@ namespace Tracer
     {
         public static Camera Cam;
         private static Menu Menu;
+        public static Scene Scene;
 
         public static bool Rendering { private set; get; }
 
@@ -33,10 +35,12 @@ namespace Tracer
             Menu.Settings_Samples.Value = Settings.Default.Render_Samples;
             Menu.Settings_Depth.Value = Settings.Default.Render_MaxDepth;
 
-
+            Scene = CUDATest.DefaultScene;
 
             CUDATest.OnProgress += CudaTestOnOnProgress;
             CUDATest.OnFinished += CUDATest_OnFinished;
+
+            Menu.SceneProperties.SelectedObject = Scene;
         }
 
         private static void CUDATest_OnFinished( object sender, CUDAFinishedEventArgs e )

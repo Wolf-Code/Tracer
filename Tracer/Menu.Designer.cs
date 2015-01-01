@@ -29,7 +29,6 @@
         private void InitializeComponent( )
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Objects");
             this.Status = new System.Windows.Forms.StatusStrip();
             this.Status_Progress = new System.Windows.Forms.ToolStripProgressBar();
             this.Status_Label = new System.Windows.Forms.ToolStripStatusLabel();
@@ -50,8 +49,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.Button_Render = new System.Windows.Forms.Button();
             this.Tab_Scene = new System.Windows.Forms.TabPage();
-            this.SceneSplitter = new System.Windows.Forms.SplitContainer();
-            this.SceneTree = new System.Windows.Forms.TreeView();
             this.SceneProperties = new System.Windows.Forms.PropertyGrid();
             this.Tab_Settings = new System.Windows.Forms.TabPage();
             this.Settings_BrowseImageFolder = new System.Windows.Forms.LinkLabel();
@@ -72,10 +69,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_FOV)).BeginInit();
             this.Tab_Scene.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.SceneSplitter)).BeginInit();
-            this.SceneSplitter.Panel1.SuspendLayout();
-            this.SceneSplitter.Panel2.SuspendLayout();
-            this.SceneSplitter.SuspendLayout();
             this.Tab_Settings.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,10 +79,10 @@
             this.Status_Progress,
             this.Status_Label,
             this.toolStripDropDownButton1});
-            this.Status.Location = new System.Drawing.Point(0, 430);
+            this.Status.Location = new System.Drawing.Point(0, 454);
             this.Status.Name = "Status";
             this.Status.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.Status.Size = new System.Drawing.Size(740, 26);
+            this.Status.Size = new System.Drawing.Size(1079, 26);
             this.Status.TabIndex = 0;
             this.Status.Text = "statusStrip1";
             // 
@@ -137,8 +130,8 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Panel2MinSize = 150;
-            this.splitContainer1.Size = new System.Drawing.Size(740, 430);
-            this.splitContainer1.SplitterDistance = 576;
+            this.splitContainer1.Size = new System.Drawing.Size(1079, 454);
+            this.splitContainer1.SplitterDistance = 839;
             this.splitContainer1.TabIndex = 1;
             // 
             // RenderImage
@@ -147,7 +140,7 @@
             this.RenderImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RenderImage.Location = new System.Drawing.Point(0, 0);
             this.RenderImage.Name = "RenderImage";
-            this.RenderImage.Size = new System.Drawing.Size(576, 430);
+            this.RenderImage.Size = new System.Drawing.Size(839, 454);
             this.RenderImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.RenderImage.TabIndex = 0;
             this.RenderImage.TabStop = false;
@@ -161,7 +154,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(160, 430);
+            this.tabControl1.Size = new System.Drawing.Size(236, 454);
             this.tabControl1.TabIndex = 0;
             // 
             // Tab_Render
@@ -177,7 +170,7 @@
             this.Tab_Render.Location = new System.Drawing.Point(4, 25);
             this.Tab_Render.Name = "Tab_Render";
             this.Tab_Render.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_Render.Size = new System.Drawing.Size(152, 401);
+            this.Tab_Render.Size = new System.Drawing.Size(228, 425);
             this.Tab_Render.TabIndex = 1;
             this.Tab_Render.Text = "Rendering";
             this.Tab_Render.UseVisualStyleBackColor = true;
@@ -190,13 +183,15 @@
             this.groupBox1.Controls.Add(this.Settings_Resolution_Height);
             this.groupBox1.Location = new System.Drawing.Point(7, 36);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(137, 53);
+            this.groupBox1.Size = new System.Drawing.Size(213, 78);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Resolution";
             // 
             // Settings_Resolution_Width
             // 
+            this.Settings_Resolution_Width.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.Settings_Resolution_Width.Location = new System.Drawing.Point(6, 21);
             this.Settings_Resolution_Width.Maximum = new decimal(new int[] {
             10000,
@@ -209,7 +204,7 @@
             0,
             0});
             this.Settings_Resolution_Width.Name = "Settings_Resolution_Width";
-            this.Settings_Resolution_Width.Size = new System.Drawing.Size(59, 22);
+            this.Settings_Resolution_Width.Size = new System.Drawing.Size(201, 22);
             this.Settings_Resolution_Width.TabIndex = 1;
             this.Settings_Resolution_Width.Value = new decimal(new int[] {
             1,
@@ -220,8 +215,9 @@
             // 
             // Settings_Resolution_Height
             // 
-            this.Settings_Resolution_Height.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_Resolution_Height.Location = new System.Drawing.Point(71, 21);
+            this.Settings_Resolution_Height.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Settings_Resolution_Height.Location = new System.Drawing.Point(6, 49);
             this.Settings_Resolution_Height.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -233,7 +229,7 @@
             0,
             0});
             this.Settings_Resolution_Height.Name = "Settings_Resolution_Height";
-            this.Settings_Resolution_Height.Size = new System.Drawing.Size(60, 22);
+            this.Settings_Resolution_Height.Size = new System.Drawing.Size(201, 22);
             this.Settings_Resolution_Height.TabIndex = 2;
             this.Settings_Resolution_Height.Value = new decimal(new int[] {
             1,
@@ -244,7 +240,9 @@
             // 
             // Settings_Samples
             // 
-            this.Settings_Samples.Location = new System.Drawing.Point(7, 207);
+            this.Settings_Samples.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Settings_Samples.Location = new System.Drawing.Point(7, 226);
             this.Settings_Samples.Maximum = new decimal(new int[] {
             50000,
             0,
@@ -256,7 +254,7 @@
             0,
             0});
             this.Settings_Samples.Name = "Settings_Samples";
-            this.Settings_Samples.Size = new System.Drawing.Size(137, 22);
+            this.Settings_Samples.Size = new System.Drawing.Size(213, 22);
             this.Settings_Samples.TabIndex = 6;
             this.Settings_Samples.Value = new decimal(new int[] {
             1,
@@ -267,7 +265,9 @@
             // 
             // Settings_Depth
             // 
-            this.Settings_Depth.Location = new System.Drawing.Point(7, 162);
+            this.Settings_Depth.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Settings_Depth.Location = new System.Drawing.Point(7, 181);
             this.Settings_Depth.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -279,7 +279,7 @@
             0,
             0});
             this.Settings_Depth.Name = "Settings_Depth";
-            this.Settings_Depth.Size = new System.Drawing.Size(137, 22);
+            this.Settings_Depth.Size = new System.Drawing.Size(213, 22);
             this.Settings_Depth.TabIndex = 6;
             this.Settings_Depth.Value = new decimal(new int[] {
             1,
@@ -291,7 +291,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(10, 187);
+            this.label5.Location = new System.Drawing.Point(10, 206);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(62, 17);
             this.label5.TabIndex = 4;
@@ -301,7 +301,7 @@
             // 
             this.Settings_FOV.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_FOV.Location = new System.Drawing.Point(7, 117);
+            this.Settings_FOV.Location = new System.Drawing.Point(7, 136);
             this.Settings_FOV.Maximum = new decimal(new int[] {
             179,
             0,
@@ -313,7 +313,7 @@
             0,
             0});
             this.Settings_FOV.Name = "Settings_FOV";
-            this.Settings_FOV.Size = new System.Drawing.Size(137, 22);
+            this.Settings_FOV.Size = new System.Drawing.Size(213, 22);
             this.Settings_FOV.TabIndex = 5;
             this.Settings_FOV.Value = new decimal(new int[] {
             1,
@@ -325,7 +325,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 142);
+            this.label4.Location = new System.Drawing.Point(10, 161);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(46, 17);
             this.label4.TabIndex = 4;
@@ -334,7 +334,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(10, 96);
+            this.label2.Location = new System.Drawing.Point(10, 115);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(85, 17);
             this.label2.TabIndex = 4;
@@ -346,7 +346,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Button_Render.Location = new System.Drawing.Point(7, 7);
             this.Button_Render.Name = "Button_Render";
-            this.Button_Render.Size = new System.Drawing.Size(137, 23);
+            this.Button_Render.Size = new System.Drawing.Size(213, 23);
             this.Button_Render.TabIndex = 0;
             this.Button_Render.Text = "Render";
             this.Button_Render.UseVisualStyleBackColor = true;
@@ -354,52 +354,20 @@
             // 
             // Tab_Scene
             // 
-            this.Tab_Scene.Controls.Add(this.SceneSplitter);
+            this.Tab_Scene.Controls.Add(this.SceneProperties);
             this.Tab_Scene.Location = new System.Drawing.Point(4, 25);
             this.Tab_Scene.Name = "Tab_Scene";
-            this.Tab_Scene.Size = new System.Drawing.Size(152, 401);
+            this.Tab_Scene.Size = new System.Drawing.Size(228, 425);
             this.Tab_Scene.TabIndex = 3;
             this.Tab_Scene.Text = "Scene";
             this.Tab_Scene.UseVisualStyleBackColor = true;
-            // 
-            // SceneSplitter
-            // 
-            this.SceneSplitter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SceneSplitter.Location = new System.Drawing.Point(0, 0);
-            this.SceneSplitter.Name = "SceneSplitter";
-            this.SceneSplitter.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // SceneSplitter.Panel1
-            // 
-            this.SceneSplitter.Panel1.Controls.Add(this.SceneTree);
-            this.SceneSplitter.Panel1MinSize = 100;
-            // 
-            // SceneSplitter.Panel2
-            // 
-            this.SceneSplitter.Panel2.Controls.Add(this.SceneProperties);
-            this.SceneSplitter.Panel2MinSize = 100;
-            this.SceneSplitter.Size = new System.Drawing.Size(152, 401);
-            this.SceneSplitter.SplitterDistance = 177;
-            this.SceneSplitter.TabIndex = 0;
-            // 
-            // SceneTree
-            // 
-            this.SceneTree.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SceneTree.Location = new System.Drawing.Point(0, 0);
-            this.SceneTree.Name = "SceneTree";
-            treeNode1.Name = "Objects";
-            treeNode1.Text = "Objects";
-            this.SceneTree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
-            this.SceneTree.Size = new System.Drawing.Size(152, 177);
-            this.SceneTree.TabIndex = 0;
             // 
             // SceneProperties
             // 
             this.SceneProperties.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SceneProperties.Location = new System.Drawing.Point(0, 0);
             this.SceneProperties.Name = "SceneProperties";
-            this.SceneProperties.Size = new System.Drawing.Size(152, 220);
+            this.SceneProperties.Size = new System.Drawing.Size(228, 425);
             this.SceneProperties.TabIndex = 0;
             // 
             // Tab_Settings
@@ -409,7 +377,7 @@
             this.Tab_Settings.Controls.Add(this.label3);
             this.Tab_Settings.Location = new System.Drawing.Point(4, 25);
             this.Tab_Settings.Name = "Tab_Settings";
-            this.Tab_Settings.Size = new System.Drawing.Size(152, 401);
+            this.Tab_Settings.Size = new System.Drawing.Size(228, 425);
             this.Tab_Settings.TabIndex = 2;
             this.Tab_Settings.Text = "Settings";
             this.Tab_Settings.UseVisualStyleBackColor = true;
@@ -419,7 +387,7 @@
             this.Settings_BrowseImageFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.Settings_BrowseImageFolder.AutoSize = true;
             this.Settings_BrowseImageFolder.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.Settings_BrowseImageFolder.Location = new System.Drawing.Point(89, 25);
+            this.Settings_BrowseImageFolder.Location = new System.Drawing.Point(165, 25);
             this.Settings_BrowseImageFolder.Name = "Settings_BrowseImageFolder";
             this.Settings_BrowseImageFolder.Size = new System.Drawing.Size(54, 17);
             this.Settings_BrowseImageFolder.TabIndex = 3;
@@ -435,7 +403,7 @@
             this.Settings_ImageFolder.Location = new System.Drawing.Point(7, 25);
             this.Settings_ImageFolder.Name = "Settings_ImageFolder";
             this.Settings_ImageFolder.ReadOnly = true;
-            this.Settings_ImageFolder.Size = new System.Drawing.Size(76, 22);
+            this.Settings_ImageFolder.Size = new System.Drawing.Size(152, 22);
             this.Settings_ImageFolder.TabIndex = 1;
             // 
             // label3
@@ -451,7 +419,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(740, 456);
+            this.ClientSize = new System.Drawing.Size(1079, 480);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.Status);
             this.Name = "Menu";
@@ -473,10 +441,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_FOV)).EndInit();
             this.Tab_Scene.ResumeLayout(false);
-            this.SceneSplitter.Panel1.ResumeLayout(false);
-            this.SceneSplitter.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.SceneSplitter)).EndInit();
-            this.SceneSplitter.ResumeLayout(false);
             this.Tab_Settings.ResumeLayout(false);
             this.Tab_Settings.PerformLayout();
             this.ResumeLayout(false);
@@ -503,9 +467,6 @@
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem ToolStrip_Button_Save;
         private System.Windows.Forms.TabPage Tab_Scene;
-        private System.Windows.Forms.SplitContainer SceneSplitter;
-        private System.Windows.Forms.TreeView SceneTree;
-        private System.Windows.Forms.PropertyGrid SceneProperties;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.NumericUpDown Settings_Samples;
@@ -513,6 +474,7 @@
         public System.Windows.Forms.Button Button_Render;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.LinkLabel Settings_BrowseImageFolder;
+        public System.Windows.Forms.PropertyGrid SceneProperties;
 
     }
 }

@@ -1,15 +1,26 @@
-﻿using ManagedCuda.VectorTypes;
+﻿using System.ComponentModel;
+using ManagedCuda.VectorTypes;
 using Tracer.Classes.Util;
 using Tracer.CUDA;
 
 namespace Tracer.Classes
 {
+    [TypeConverter( typeof ( ExpandableObjectConverter ) )]
+    [Description( "The object's material properties" )]
     public class Material
     {
-        public Color Color;
-        public Color Radiance;
-        public CUDAMaterialType Type;
-        public float Glossyness;
+        [Description( "The material's color." )]
+        public Color Color { set; get; }
+
+        [Description( "The material's radiance color and intensity." )]
+        public Color Radiance { set; get; }
+
+        [DisplayName( "Material type" )]
+        [Description( "The material's surface type." )]
+        public CUDAMaterialType Type { set; get; }
+
+        [Description( "If the material is specular, this changes the glossyness of the reflection." )]
+        public float Glossyness { set; get; }
 
         public Material( )
         {

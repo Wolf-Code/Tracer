@@ -1,9 +1,11 @@
 ﻿
 using System;
+using System.ComponentModel;
 
 namespace Tracer.Classes.Util
 {
-    public struct Color
+    [TypeConverter( typeof( ExpandableObjectConverter ) )]
+    public class Color
     {
         public static Color White
         {
@@ -15,25 +17,37 @@ namespace Tracer.Classes.Util
             get { return new Color( 0f, 0f, 0f ); }
         }
 
-        public float R;
-        public float G;
-        public float B;
+        [DisplayName("Red")]
+        [Description( "The red component of the color." )]
+        public float R { set; get; }
 
+        [DisplayName( "Green" )]
+        [Description( "The green component of the color." )]
+        public float G { set; get; }
+
+        [DisplayName( "Blue" )]
+        [Description( "The blue component of the color." )]
+        public float B { set; get; }
+
+        [Browsable(false)]
         public byte bR
         {
             get { return ( byte ) ( R * 255f ); }
         }
 
+        [Browsable( false )]
         public byte bG
         {
             get { return ( byte ) ( G * 255f ); }
         }
 
+        [Browsable( false )]
         public byte bB
         {
             get { return ( byte ) ( B * 255f ); }
         }
 
+        [Browsable( false )]
         public System.Drawing.Color DrawingColor
         {
             get
@@ -43,21 +57,16 @@ namespace Tracer.Classes.Util
             }
         }
 
+        [Browsable( false )]
         public Color Clamped
         {
             get { return new Color( Math.Min( 1f, this.R ), Math.Min( 1f, this.G ), Math.Min( 1f, this.B ) ); }
         }
 
+        [Browsable( false )]
         public Color Normalized
         {
             get { return Utilities.VectorToColor( Utilities.ColorToVector( this ).Normalized( ) ); }
-        }
-
-        public Color( byte R, byte G, byte B )
-        {
-            this.R = R / 255f;
-            this.G = G / 255f;
-            this.B = B / 255f;
         }
 
         public Color( float R, float G, float B )

@@ -11,6 +11,11 @@ namespace Tracer.Classes.Objects
         /// </summary>
         public Material Material { set; get; }
 
+        /// <summary>
+        /// The name to identify the object with.
+        /// </summary>
+        public string Name { set; get; }
+
         protected GraphicsObject( )
         {
             this.Material = new Material( );
@@ -22,5 +27,10 @@ namespace Tracer.Classes.Objects
         /// <param name="R">The ray to check for.</param>
         /// <returns>A <see cref="CollisionResult"/> containing all collision information.</returns>
         public abstract CollisionResult CheckCollision( Ray R );
+
+        public override string ToString( )
+        {
+            return this.Name;
+        }
     }
 }
