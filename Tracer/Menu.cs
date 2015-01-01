@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
 using Tracer.Classes;
 using Tracer.Classes.Objects;
@@ -129,26 +131,13 @@ namespace Tracer
             Settings.Default.Save( );
         }
 
-        private void Settings_ImageFolder_Browse_Click( object sender, EventArgs e )
-        {
-            FolderBrowserDialog Dialog = new FolderBrowserDialog
-            {
-                SelectedPath = Settings.Default.Image_Folder,
-                Description = Resources.Settings_ImageFolder_Description,
-                ShowNewFolderButton = true
-            };
-            if ( Dialog.ShowDialog( ) != DialogResult.OK ) return;
-
-            Settings.Default[ "Image_Folder" ] = Dialog.SelectedPath;
-            Settings.Default.Save( );
-
-            Settings_ImageFolder.Text = Settings.Default.Image_Folder;
-        }
-
         private void ToolStrip_Button_Save_Click( object sender, EventArgs e )
         {
             if ( Renderer.Rendering ) return;
             if ( this.RenderImage.Image == null ) return;
+
+            if ( !Directory.Exists( Settings.Default.Image_Folder ) )
+                Directory.CreateDirectory( Settings.Default.Image_Folder );
 
             SaveFileDialog Dialog = new SaveFileDialog
             {
@@ -171,6 +160,27 @@ namespace Tracer
         {
             Settings.Default[ "Render_Samples" ] = ( uint )Settings_Samples.Value;
             Settings.Default.Save( );
+        }
+
+        private void Settings_OpenFolder_Click( object sender, EventArgs e )
+        {
+            Process.Start( Settings.Default[ "Image_Folder" ].ToString( ) );
+        }
+
+        private void Settings_BrowseImageFolder_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
+        {
+            FolderBrowserDialog Dialog = new FolderBrowserDialog
+            {
+                SelectedPath = Settings.Default.Image_Folder,
+                Description = Resources.Settings_ImageFolder_Description,
+                ShowNewFolderButton = true
+            };
+            if ( Dialog.ShowDialog( ) != DialogResult.OK ) return;
+
+            Settings.Default[ "Image_Folder" ] = Dialog.SelectedPath;
+            Settings.Default.Save( );
+
+            Settings_ImageFolder.Text = Settings.Default.Image_Folder;
         }
     }
 }

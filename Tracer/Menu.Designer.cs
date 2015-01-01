@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Objects");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Lights");
             this.Status = new System.Windows.Forms.StatusStrip();
             this.Status_Progress = new System.Windows.Forms.ToolStripProgressBar();
             this.Status_Label = new System.Windows.Forms.ToolStripStatusLabel();
@@ -40,22 +39,22 @@
             this.RenderImage = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Tab_Render = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.Settings_Resolution_Width = new System.Windows.Forms.NumericUpDown();
+            this.Settings_Resolution_Height = new System.Windows.Forms.NumericUpDown();
             this.Settings_Samples = new System.Windows.Forms.NumericUpDown();
             this.Settings_Depth = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.Settings_FOV = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.Settings_Resolution_Height = new System.Windows.Forms.NumericUpDown();
-            this.Settings_Resolution_Width = new System.Windows.Forms.NumericUpDown();
             this.Button_Render = new System.Windows.Forms.Button();
             this.Tab_Scene = new System.Windows.Forms.TabPage();
             this.SceneSplitter = new System.Windows.Forms.SplitContainer();
             this.SceneTree = new System.Windows.Forms.TreeView();
             this.SceneProperties = new System.Windows.Forms.PropertyGrid();
             this.Tab_Settings = new System.Windows.Forms.TabPage();
-            this.Settings_ImageFolder_Browse = new System.Windows.Forms.Button();
+            this.Settings_BrowseImageFolder = new System.Windows.Forms.LinkLabel();
             this.Settings_ImageFolder = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.Status.SuspendLayout();
@@ -66,11 +65,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.RenderImage)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.Tab_Render.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Width)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Height)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Samples)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_FOV)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Height)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Width)).BeginInit();
             this.Tab_Scene.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SceneSplitter)).BeginInit();
             this.SceneSplitter.Panel1.SuspendLayout();
@@ -166,15 +166,13 @@
             // 
             // Tab_Render
             // 
+            this.Tab_Render.Controls.Add(this.groupBox1);
             this.Tab_Render.Controls.Add(this.Settings_Samples);
             this.Tab_Render.Controls.Add(this.Settings_Depth);
             this.Tab_Render.Controls.Add(this.label5);
             this.Tab_Render.Controls.Add(this.Settings_FOV);
             this.Tab_Render.Controls.Add(this.label4);
             this.Tab_Render.Controls.Add(this.label2);
-            this.Tab_Render.Controls.Add(this.label1);
-            this.Tab_Render.Controls.Add(this.Settings_Resolution_Height);
-            this.Tab_Render.Controls.Add(this.Settings_Resolution_Width);
             this.Tab_Render.Controls.Add(this.Button_Render);
             this.Tab_Render.Location = new System.Drawing.Point(4, 25);
             this.Tab_Render.Name = "Tab_Render";
@@ -184,9 +182,69 @@
             this.Tab_Render.Text = "Rendering";
             this.Tab_Render.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.Settings_Resolution_Width);
+            this.groupBox1.Controls.Add(this.Settings_Resolution_Height);
+            this.groupBox1.Location = new System.Drawing.Point(7, 36);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(137, 53);
+            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Resolution";
+            // 
+            // Settings_Resolution_Width
+            // 
+            this.Settings_Resolution_Width.Location = new System.Drawing.Point(6, 21);
+            this.Settings_Resolution_Width.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.Settings_Resolution_Width.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Settings_Resolution_Width.Name = "Settings_Resolution_Width";
+            this.Settings_Resolution_Width.Size = new System.Drawing.Size(59, 22);
+            this.Settings_Resolution_Width.TabIndex = 1;
+            this.Settings_Resolution_Width.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Settings_Resolution_Width.ValueChanged += new System.EventHandler(this.Settings_Resolution_Width_ValueChanged);
+            // 
+            // Settings_Resolution_Height
+            // 
+            this.Settings_Resolution_Height.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Settings_Resolution_Height.Location = new System.Drawing.Point(71, 21);
+            this.Settings_Resolution_Height.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.Settings_Resolution_Height.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Settings_Resolution_Height.Name = "Settings_Resolution_Height";
+            this.Settings_Resolution_Height.Size = new System.Drawing.Size(60, 22);
+            this.Settings_Resolution_Height.TabIndex = 2;
+            this.Settings_Resolution_Height.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Settings_Resolution_Height.ValueChanged += new System.EventHandler(this.Settings_Resolution_Height_ValueChanged);
+            // 
             // Settings_Samples
             // 
-            this.Settings_Samples.Location = new System.Drawing.Point(6, 193);
+            this.Settings_Samples.Location = new System.Drawing.Point(7, 207);
             this.Settings_Samples.Maximum = new decimal(new int[] {
             50000,
             0,
@@ -209,7 +267,7 @@
             // 
             // Settings_Depth
             // 
-            this.Settings_Depth.Location = new System.Drawing.Point(6, 148);
+            this.Settings_Depth.Location = new System.Drawing.Point(7, 162);
             this.Settings_Depth.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -233,7 +291,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 173);
+            this.label5.Location = new System.Drawing.Point(10, 187);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(62, 17);
             this.label5.TabIndex = 4;
@@ -243,7 +301,7 @@
             // 
             this.Settings_FOV.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_FOV.Location = new System.Drawing.Point(6, 103);
+            this.Settings_FOV.Location = new System.Drawing.Point(7, 117);
             this.Settings_FOV.Maximum = new decimal(new int[] {
             179,
             0,
@@ -267,7 +325,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 128);
+            this.label4.Location = new System.Drawing.Point(10, 142);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(46, 17);
             this.label4.TabIndex = 4;
@@ -276,67 +334,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 82);
+            this.label2.Location = new System.Drawing.Point(10, 96);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(85, 17);
             this.label2.TabIndex = 4;
             this.label2.Text = "Field of view";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 33);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(75, 17);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Resolution";
-            // 
-            // Settings_Resolution_Height
-            // 
-            this.Settings_Resolution_Height.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_Resolution_Height.Location = new System.Drawing.Point(83, 53);
-            this.Settings_Resolution_Height.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.Settings_Resolution_Height.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_Resolution_Height.Name = "Settings_Resolution_Height";
-            this.Settings_Resolution_Height.Size = new System.Drawing.Size(60, 22);
-            this.Settings_Resolution_Height.TabIndex = 2;
-            this.Settings_Resolution_Height.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_Resolution_Height.ValueChanged += new System.EventHandler(this.Settings_Resolution_Height_ValueChanged);
-            // 
-            // Settings_Resolution_Width
-            // 
-            this.Settings_Resolution_Width.Location = new System.Drawing.Point(6, 53);
-            this.Settings_Resolution_Width.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.Settings_Resolution_Width.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_Resolution_Width.Name = "Settings_Resolution_Width";
-            this.Settings_Resolution_Width.Size = new System.Drawing.Size(70, 22);
-            this.Settings_Resolution_Width.TabIndex = 1;
-            this.Settings_Resolution_Width.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_Resolution_Width.ValueChanged += new System.EventHandler(this.Settings_Resolution_Width_ValueChanged);
             // 
             // Button_Render
             // 
@@ -387,11 +389,8 @@
             this.SceneTree.Name = "SceneTree";
             treeNode1.Name = "Objects";
             treeNode1.Text = "Objects";
-            treeNode2.Name = "Lights";
-            treeNode2.Text = "Lights";
             this.SceneTree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode1});
             this.SceneTree.Size = new System.Drawing.Size(152, 177);
             this.SceneTree.TabIndex = 0;
             // 
@@ -405,7 +404,7 @@
             // 
             // Tab_Settings
             // 
-            this.Tab_Settings.Controls.Add(this.Settings_ImageFolder_Browse);
+            this.Tab_Settings.Controls.Add(this.Settings_BrowseImageFolder);
             this.Tab_Settings.Controls.Add(this.Settings_ImageFolder);
             this.Tab_Settings.Controls.Add(this.label3);
             this.Tab_Settings.Location = new System.Drawing.Point(4, 25);
@@ -415,21 +414,28 @@
             this.Tab_Settings.Text = "Settings";
             this.Tab_Settings.UseVisualStyleBackColor = true;
             // 
-            // Settings_ImageFolder_Browse
+            // Settings_BrowseImageFolder
             // 
-            this.Settings_ImageFolder_Browse.Location = new System.Drawing.Point(121, 25);
-            this.Settings_ImageFolder_Browse.Name = "Settings_ImageFolder_Browse";
-            this.Settings_ImageFolder_Browse.Size = new System.Drawing.Size(23, 23);
-            this.Settings_ImageFolder_Browse.TabIndex = 2;
-            this.Settings_ImageFolder_Browse.UseVisualStyleBackColor = true;
-            this.Settings_ImageFolder_Browse.Click += new System.EventHandler(this.Settings_ImageFolder_Browse_Click);
+            this.Settings_BrowseImageFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.Settings_BrowseImageFolder.AutoSize = true;
+            this.Settings_BrowseImageFolder.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.Settings_BrowseImageFolder.Location = new System.Drawing.Point(89, 25);
+            this.Settings_BrowseImageFolder.Name = "Settings_BrowseImageFolder";
+            this.Settings_BrowseImageFolder.Size = new System.Drawing.Size(54, 17);
+            this.Settings_BrowseImageFolder.TabIndex = 3;
+            this.Settings_BrowseImageFolder.TabStop = true;
+            this.Settings_BrowseImageFolder.Text = "Browse";
+            this.Settings_BrowseImageFolder.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Settings_BrowseImageFolder_LinkClicked);
             // 
             // Settings_ImageFolder
             // 
-            this.Settings_ImageFolder.Location = new System.Drawing.Point(4, 25);
+            this.Settings_ImageFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Settings_ImageFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Settings_ImageFolder.Location = new System.Drawing.Point(7, 25);
             this.Settings_ImageFolder.Name = "Settings_ImageFolder";
             this.Settings_ImageFolder.ReadOnly = true;
-            this.Settings_ImageFolder.Size = new System.Drawing.Size(111, 22);
+            this.Settings_ImageFolder.Size = new System.Drawing.Size(76, 22);
             this.Settings_ImageFolder.TabIndex = 1;
             // 
             // label3
@@ -460,11 +466,12 @@
             this.tabControl1.ResumeLayout(false);
             this.Tab_Render.ResumeLayout(false);
             this.Tab_Render.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Width)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Height)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Samples)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_FOV)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Height)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Width)).EndInit();
             this.Tab_Scene.ResumeLayout(false);
             this.SceneSplitter.Panel1.ResumeLayout(false);
             this.SceneSplitter.Panel2.ResumeLayout(false);
@@ -489,11 +496,9 @@
         public System.Windows.Forms.NumericUpDown Settings_Resolution_Width;
         public System.Windows.Forms.PictureBox RenderImage;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
         public System.Windows.Forms.NumericUpDown Settings_FOV;
         private System.Windows.Forms.TabPage Tab_Settings;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button Settings_ImageFolder_Browse;
         public System.Windows.Forms.TextBox Settings_ImageFolder;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem ToolStrip_Button_Save;
@@ -506,6 +511,8 @@
         public System.Windows.Forms.NumericUpDown Settings_Samples;
         public System.Windows.Forms.NumericUpDown Settings_Depth;
         public System.Windows.Forms.Button Button_Render;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.LinkLabel Settings_BrowseImageFolder;
 
     }
 }

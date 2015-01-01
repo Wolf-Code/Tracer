@@ -9,10 +9,10 @@ struct CamData
     float Height;
 
 public:
-    __device__ Ray GetRay( int X, int Y );
+    __device__ Ray GetRay( float, float );
 };
 
-__device__ Ray CamData::GetRay( int X, int Y )
+__device__ Ray CamData::GetRay( float X, float Y )
 {
     float WH = this->Width / this->Height;
 

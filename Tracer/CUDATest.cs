@@ -72,7 +72,7 @@ namespace Tracer
 
                 Sphere MirrorSphere = Scn.AddSphere( new Vector3( 20, 40, -20 ), 20 );
                 MirrorSphere.Material.Type = CUDAMaterialType.Reflective;
-                MirrorSphere.Material.Glossyness = .1f;
+                MirrorSphere.Material.Glossyness = 0f;
 
                 return Scn;
             }
@@ -80,6 +80,7 @@ namespace Tracer
 
         private static CudaKernel RenderKernel;
         private const int ThreadsPerBlock = 32;
+        private static bool CancelThread = false;
 
         private static void InitKernels( )
         {
@@ -91,17 +92,11 @@ namespace Tracer
             };
         }
 
-        private static void RenderImage( Scene Scn )
+        private static void RenderImage( Scene Scn, uint Samples, uint Depth )
         {
             int W = ( int ) Renderer.Cam.Resolution.X;
             int H = ( int ) Renderer.Cam.Resolution.Y;
             int WH = W * H;
-            // init parameters
-            CudaDeviceVariable<float3> vector_hostOut = new CudaDeviceVariable<float3>( WH );
-            // run cuda method
-            CudaDeviceVariable<float3> vector_Input = new CudaDeviceVariable<float3>( WH );
-            float3[ ] In = new float3[ WH ];
-            vector_Input.CopyToDevice( In );
 
             CUDAObject [ ] Objs = Scn.ToCUDA( );
 
@@ -123,46 +118,64 @@ namespace Tracer
             int Areas = 0;
             int TotalAreas = XDivide * YDivide;
             long Seed = DateTime.Now.Second;
-
-            Stopwatch Watch = new Stopwatch( );
-            Watch.Start( );
-            
-            for ( int X = 0; X < XDivide; X++ )
-            {
-                for ( int Y = 0; Y < YDivide; Y++ )
-                {
-                    RenderRegion( ref Seed, vector_Input, vector_hostOut, X * DivW, Y * DivH, DivW, DivH );
-                    Areas++;
-
-                    TimeSpan S = Watch.Elapsed - PrevTimeSpan;
-                    PrevTimeSpan = Watch.Elapsed;
-                    Average += S;
-                    Seed += DivW * DivH;
-
-                    if ( OnProgress != null )
-                        OnProgress.Invoke( null, new CUDAProgressEventArgs
-                        {
-                            Progress = ( 1f / TotalAreas ),
-                            ProgressTime = S,
-                            TotalProgress = ( Areas / ( float )TotalAreas ),
-                            AverageProgressTime = new TimeSpan( Average.Ticks / Areas )
-                        } );
-                }
-            }
-
-            Watch.Stop( );
-            Average = new TimeSpan( Average.Ticks / TotalAreas );
-
-            // copy return to host
             float3[ ] output = new float3[ WH ];
-            vector_hostOut.CopyToHost( output );
+            Stopwatch Watch = new Stopwatch( );
+
+            // init parameters
+            using ( CudaDeviceVariable<float3> vector_hostOut = new CudaDeviceVariable<float3>( WH ) )
+            {
+                // run cuda method
+                using ( CudaDeviceVariable<float3> vector_Input = new CudaDeviceVariable<float3>( WH ) )
+                {
+                    float3 [ ] In = new float3[ WH ];
+                    vector_Input.CopyToDevice( In );
+
+                    Watch.Start( );
+
+                    for ( int X = 0; X < XDivide; X++ )
+                    {
+                        if ( CancelThread )
+                            break;
+
+                        for ( int Y = 0; Y < YDivide; Y++ )
+                        {
+                            if ( CancelThread )
+                                break;
+
+                            RenderRegion( Samples, ref Seed, vector_Input, vector_hostOut, X * DivW, Y * DivH, DivW,
+                                DivH );
+                            Areas++;
+
+                            TimeSpan S = Watch.Elapsed - PrevTimeSpan;
+                            PrevTimeSpan = Watch.Elapsed;
+                            Average += S;
+                            Seed += DivW * DivH;
+
+                            if ( OnProgress != null )
+                                OnProgress.Invoke( null, new CUDAProgressEventArgs
+                                {
+                                    Progress = ( 1f / TotalAreas ),
+                                    ProgressTime = S,
+                                    TotalProgress = ( Areas / ( float ) TotalAreas ),
+                                    AverageProgressTime = new TimeSpan( Average.Ticks / Areas )
+                                } );
+                        }
+                    }
+
+                    Watch.Stop( );
+                }
+                Average = new TimeSpan( Average.Ticks / TotalAreas );
+
+                // copy return to host
+                vector_hostOut.CopyToHost( output );
+            }
 
             Bitmap Bmp = new Bitmap( W, H );
             for ( int Q = 0; Q < output.Length; Q++ )
             {
                 int X = Q % W;
                 int Y = ( Q - X ) / W;
-                float3 F = output[ Q ] / Settings.Default.Render_Samples;
+                float3 F = output[ Q ] / Samples;
 
                 Color C = Color.FromArgb( 255,
                     MathHelper.Clamp( ( int )( F.x * 255 ), 0, 255 ),
@@ -179,14 +192,16 @@ namespace Tracer
                     Time = Watch.Elapsed,
                     Image = Bmp
                 } );
+
+            if ( CancelThread )
+                CancelThread = false;
         }
 
-        private static void RenderRegion( ref long Seed, CudaDeviceVariable<float3> Input, CudaDeviceVariable<float3> Output, int StartX, int StartY, int W, int H )
+        private static void RenderRegion( uint Samples, ref long Seed, CudaDeviceVariable<float3> Input, CudaDeviceVariable<float3> Output, int StartX, int StartY, int W, int H )
         {
             RenderKernel.GridDimensions = new dim3( W / ThreadsPerBlock + 1, H / ThreadsPerBlock + 1 );
 
             CUdeviceptr InPTR = Input.DevicePointer;
-            uint Samples = Settings.Default.Render_Samples;
             for ( int Q = 0; Q < Samples; Q++ )
             {
                 RenderKernel.SetConstantVariable( "Seed", Seed );
@@ -200,7 +215,8 @@ namespace Tracer
 
         public static void Cancel( )
         {
-            RenderThread.Abort( );
+            //RenderThread.Abort( );
+            CancelThread = true;
         }
 
         public static void Run( )
@@ -208,7 +224,7 @@ namespace Tracer
             RenderThread = new Thread( ( ) =>
             {
                 InitKernels( );
-                RenderImage( DefaultScene );
+                RenderImage( DefaultScene, Settings.Default.Render_Samples, Settings.Default.Render_MaxDepth );
             } );
 
             RenderThread.Start( );

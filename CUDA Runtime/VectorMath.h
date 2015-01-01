@@ -56,7 +56,7 @@ __device__ float3 VectorMath::MakeVector( float X, float Y, float Z )
 
 __device__ float3 VectorMath::Reflect( float3 Vector, float3 Normal )
 {
-    return Vector - 2 * VectorMath::Dot( Vector, Normal ) * Normal;
+    return Vector - 2.0f * VectorMath::Dot( Vector, Normal ) * Normal;
 }
 
 

@@ -44,6 +44,7 @@ namespace Tracer
             Menu.Invoke( ( MethodInvoker ) ( ( ) =>
             {
                 Menu.RenderImage.Image = e.Image;
+                Menu.Status_Progress.Value = Menu.Status_Progress.Maximum;
                 OnRenderingEnded( );
 
                 MessageBox.Show(

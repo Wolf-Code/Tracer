@@ -26,9 +26,9 @@ public:
 
 __device__ float3 Raytracer::RandomCosineDirectionInSameDirection( float3 Direction, curandState* RandState )
 {
-    float3 Rand = VectorMath::MakeVector( curand_uniform( RandState ) * 2.0 - 1.0,
-                                          curand_uniform( RandState ) * 2.0 - 1.0,
-                                          curand_uniform( RandState ) * 2.0 - 1.0 );
+    float3 Rand = VectorMath::MakeVector( curand_uniform( RandState ) * 2.0f - 1.0f,
+                                          curand_uniform( RandState ) * 2.0f - 1.0f,
+                                          curand_uniform( RandState ) * 2.0f - 1.0f );
 
     Rand = VectorMath::Normalized( Rand );
 
@@ -141,13 +141,13 @@ __device__ float3 Radiance( Ray* R, Object* Objects, int ObjectCount, curandStat
     }
 
     float cos_theta = VectorMath::Dot( R->Direction, Res.Normal );
-    float BDRF = 2 * cos_theta;
+    float BDRF = 2.0f * cos_theta;
 
     return Rad + Res.HitObject->Material.Color * ( Radiance<depth + 1>( R, Objects, ObjectCount, RandState ) * BDRF );
 }
 
 template<>
-__device__ float3 Radiance<4>( Ray* R, Object* Objects, int ObjectCount, curandState* RandState )
+__device__ float3 Radiance<5>( Ray* R, Object* Objects, int ObjectCount, curandState* RandState )
 {
     return float3( );
 }
