@@ -3,6 +3,7 @@ using System;
 using System.Drawing.Drawing2D;
 using Tracer.Classes.Objects;
 using Tracer.Classes.Util;
+using Tracer.Properties;
 
 namespace Tracer.Classes
 {
@@ -50,7 +51,7 @@ namespace Tracer.Classes
 
         public static Color SamplePixel( Ray R, CollisionResult Res )
         {
-            if ( R.Depth > RayCaster.MaxDepth )
+            if ( R.Depth > Settings.Default.Render_MaxDepth )
                 return Color.Black;
 
             if ( !Res.Hit )
@@ -94,7 +95,7 @@ namespace Tracer.Classes
 
         public static Color Radiance( Ray R )
         {
-            if ( R.Depth > RayCaster.MaxDepth )
+            if ( R.Depth > Settings.Default.Render_MaxDepth )
                 return Color.Black;
 
             CollisionResult Res = RayCaster.Trace( R );
@@ -106,7 +107,7 @@ namespace Tracer.Classes
                 return Rad;
 
             Color C = new Color( 0, 0, 0 );
-            for ( int Q = 0; Q < RayCaster.Samples; Q++ )
+            for ( int Q = 0; Q < Settings.Default.Render_Samples; Q++ )
             {
                 Ray New = new Ray
                 {
@@ -126,7 +127,7 @@ namespace Tracer.Classes
 
         public static Color Radiance2( Ray R )
         {
-            if ( R.Depth > RayCaster.MaxDepth )
+            if ( R.Depth > Settings.Default.Render_MaxDepth )
                 return Color.Black;
 
             Color C = Color.Black;

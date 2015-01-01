@@ -28,10 +28,9 @@
         /// </summary>
         private void InitializeComponent( )
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Objects");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Lights");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Objects");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Lights");
             this.Status = new System.Windows.Forms.StatusStrip();
             this.Status_Progress = new System.Windows.Forms.ToolStripProgressBar();
             this.Status_Label = new System.Windows.Forms.ToolStripStatusLabel();
@@ -59,7 +58,6 @@
             this.Settings_ImageFolder_Browse = new System.Windows.Forms.Button();
             this.Settings_ImageFolder = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.Progress_Timer = new System.Windows.Forms.Timer(this.components);
             this.Status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -387,13 +385,13 @@
             this.SceneTree.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SceneTree.Location = new System.Drawing.Point(0, 0);
             this.SceneTree.Name = "SceneTree";
-            treeNode7.Name = "Objects";
-            treeNode7.Text = "Objects";
-            treeNode8.Name = "Lights";
-            treeNode8.Text = "Lights";
+            treeNode1.Name = "Objects";
+            treeNode1.Text = "Objects";
+            treeNode2.Name = "Lights";
+            treeNode2.Text = "Lights";
             this.SceneTree.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode7,
-            treeNode8});
+            treeNode1,
+            treeNode2});
             this.SceneTree.Size = new System.Drawing.Size(152, 177);
             this.SceneTree.TabIndex = 0;
             // 
@@ -443,12 +441,6 @@
             this.label3.TabIndex = 0;
             this.label3.Text = "Image folder";
             // 
-            // Progress_Timer
-            // 
-            this.Progress_Timer.Enabled = true;
-            this.Progress_Timer.Interval = 50;
-            this.Progress_Timer.Tick += new System.EventHandler(this.Progress_Timer_Tick);
-            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -490,7 +482,6 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage Tab_Render;
-        private System.Windows.Forms.Button Button_Render;
         public System.Windows.Forms.StatusStrip Status;
         public System.Windows.Forms.ToolStripProgressBar Status_Progress;
         public System.Windows.Forms.ToolStripStatusLabel Status_Label;
@@ -514,7 +505,7 @@
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.NumericUpDown Settings_Samples;
         public System.Windows.Forms.NumericUpDown Settings_Depth;
-        private System.Windows.Forms.Timer Progress_Timer;
+        public System.Windows.Forms.Button Button_Render;
 
     }
 }

@@ -61,6 +61,24 @@ namespace Tracer.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        internal static string Line_Cancel {
+            get {
+                return ResourceManager.GetString("Line_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Render.
+        /// </summary>
+        internal static string Line_Render {
+            get {
+                return ResourceManager.GetString("Line_Render", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The directory where all rendered images will be stored..
         /// </summary>
         internal static string Settings_ImageFolder_Description {

@@ -9,18 +9,38 @@ using Tracer.Classes;
 using Tracer.Classes.Objects;
 using Tracer.Classes.Util;
 using Tracer.CUDA;
+using Tracer.Properties;
 using Color = System.Drawing.Color;
 
 namespace Tracer
 {
+    public class CUDAProgressEventArgs
+    {
+        public float Progress;
+        public float TotalProgress;
+        public TimeSpan ProgressTime;
+        public TimeSpan AverageProgressTime;
+    }
+
+    public class CUDAFinishedEventArgs
+    {
+        public TimeSpan Time;
+        public TimeSpan AverageProgressTime;
+        public Bitmap Image;
+    }
+
     public static class CUDATest
     {
+        public static event EventHandler<CUDAProgressEventArgs> OnProgress;
+        public static event EventHandler<CUDAFinishedEventArgs> OnFinished;
+        private static Thread RenderThread;
+
         public static string Path
         {
             get { return Environment.CurrentDirectory + "\\kernel.ptx"; }
         }
 
-        private static CUDAObject [ ] Objects
+        private static Scene DefaultScene
         {
             get
             {
@@ -52,9 +72,9 @@ namespace Tracer
 
                 Sphere MirrorSphere = Scn.AddSphere( new Vector3( 20, 40, -20 ), 20 );
                 MirrorSphere.Material.Type = CUDAMaterialType.Reflective;
-                MirrorSphere.Material.Glossyness = .5f;
+                MirrorSphere.Material.Glossyness = .1f;
 
-                return Scn.ToCUDA( );
+                return Scn;
             }
         }
 
@@ -65,11 +85,13 @@ namespace Tracer
         {
             CudaContext cntxt = new CudaContext( );
             CUmodule cumodule = cntxt.LoadModule( Path );
-            RenderKernel = new CudaKernel( "TraceKernelRegion", cumodule, cntxt );
-            RenderKernel.BlockDimensions = new dim3( ThreadsPerBlock, ThreadsPerBlock );
+            RenderKernel = new CudaKernel( "TraceKernelRegion", cumodule, cntxt )
+            {
+                BlockDimensions = new dim3( ThreadsPerBlock, ThreadsPerBlock )
+            };
         }
 
-        private static float3 [ ] RenderImage( )
+        private static void RenderImage( Scene Scn )
         {
             int W = ( int ) Renderer.Cam.Resolution.X;
             int H = ( int ) Renderer.Cam.Resolution.Y;
@@ -81,7 +103,7 @@ namespace Tracer
             float3[ ] In = new float3[ WH ];
             vector_Input.CopyToDevice( In );
 
-            CUDAObject[ ] Objs = Objects;
+            CUDAObject [ ] Objs = Scn.ToCUDA( );
 
             CudaDeviceVariable<CUDAObject> Obj = new CudaDeviceVariable<CUDAObject>( Objs.Length );
             Obj.CopyToDevice( Objs );
@@ -116,21 +138,47 @@ namespace Tracer
                     PrevTimeSpan = Watch.Elapsed;
                     Average += S;
                     Seed += DivW * DivH;
-                    Console.WriteLine(
-                        "Area {0}/{1} took {2}. Expected time until completion: {3}",
-                        Areas, TotalAreas, S, new TimeSpan( ( TotalAreas - Areas ) * ( Average.Ticks / Areas ) ) );
+
+                    if ( OnProgress != null )
+                        OnProgress.Invoke( null, new CUDAProgressEventArgs
+                        {
+                            Progress = ( 1f / TotalAreas ),
+                            ProgressTime = S,
+                            TotalProgress = ( Areas / ( float )TotalAreas ),
+                            AverageProgressTime = new TimeSpan( Average.Ticks / Areas )
+                        } );
                 }
             }
 
             Watch.Stop( );
             Average = new TimeSpan( Average.Ticks / TotalAreas );
-            Console.WriteLine( "Render time: {0}. Average area time: {1}", Watch.Elapsed, Average );
 
             // copy return to host
             float3[ ] output = new float3[ WH ];
             vector_hostOut.CopyToHost( output );
 
-            return output;
+            Bitmap Bmp = new Bitmap( W, H );
+            for ( int Q = 0; Q < output.Length; Q++ )
+            {
+                int X = Q % W;
+                int Y = ( Q - X ) / W;
+                float3 F = output[ Q ] / Settings.Default.Render_Samples;
+
+                Color C = Color.FromArgb( 255,
+                    MathHelper.Clamp( ( int )( F.x * 255 ), 0, 255 ),
+                    MathHelper.Clamp( ( int )( F.y * 255 ), 0, 255 ),
+                    MathHelper.Clamp( ( int )( F.z * 255 ), 0, 255 ) );
+
+                Bmp.SetPixel( X, Y, C );
+            }
+
+            if ( OnFinished != null )
+                OnFinished.Invoke( null, new CUDAFinishedEventArgs
+                {
+                    AverageProgressTime = Average,
+                    Time = Watch.Elapsed,
+                    Image = Bmp
+                } );
         }
 
         private static void RenderRegion( ref long Seed, CudaDeviceVariable<float3> Input, CudaDeviceVariable<float3> Output, int StartX, int StartY, int W, int H )
@@ -138,7 +186,7 @@ namespace Tracer
             RenderKernel.GridDimensions = new dim3( W / ThreadsPerBlock + 1, H / ThreadsPerBlock + 1 );
 
             CUdeviceptr InPTR = Input.DevicePointer;
-            uint Samples = RayCaster.Samples;
+            uint Samples = Settings.Default.Render_Samples;
             for ( int Q = 0; Q < Samples; Q++ )
             {
                 RenderKernel.SetConstantVariable( "Seed", Seed );
@@ -150,93 +198,20 @@ namespace Tracer
             }
         }
 
-        private static Func<float3 [ ]> Render = ( ) =>
+        public static void Cancel( )
         {
-            // [ Gridx * Blockx, Gridy * Blocky ]
-            int W = ( int ) Renderer.Cam.Resolution.X;
-            int H = ( int ) Renderer.Cam.Resolution.Y;
-
-            RenderKernel.GridDimensions = new dim3( W / ThreadsPerBlock + 1, H / ThreadsPerBlock + 1 );
-            RenderKernel.BlockDimensions = new dim3( ThreadsPerBlock, ThreadsPerBlock );
-
-            CudaDeviceVariable<CUDAObject> Obj = new CudaDeviceVariable<CUDAObject>( Objects.Length );
-            Obj.CopyToDevice( Objects );
-
-            RenderKernel.SetConstantVariable( "ObjectArray", Obj.DevicePointer );
-            RenderKernel.SetConstantVariable( "Objects", Objects.Length );
-            RenderKernel.SetConstantVariable( "Camera", Renderer.Cam.ToCamData( ) );
-
-            // init parameters
-            CudaDeviceVariable<float3> vector_hostOut = new CudaDeviceVariable<float3>( W * H );
-            // run cuda method
-            CudaDeviceVariable<float3> vector_Input = new CudaDeviceVariable<float3>( W * H );
-            float3 [ ] In = new float3[ W * H ];
-            vector_Input.CopyToDevice( In );
-
-            Stopwatch Watch = new Stopwatch( );
-            Watch.Start( );
-            int Samples = ( int ) RayCaster.Samples;
-            TimeSpan PrevTimeSpan = new TimeSpan( );
-            TimeSpan Average = new TimeSpan( );
-            CUdeviceptr InPTR = vector_Input.DevicePointer;
-
-            long Seed = DateTime.Now.Second;
-
-            for ( int Q = 0; Q < Samples; Q++ )
-            {
-                RenderKernel.SetConstantVariable( "Seed", Seed );
-                RenderKernel.Run( InPTR, vector_hostOut.DevicePointer );
-
-                InPTR = vector_hostOut.DevicePointer;
-                TimeSpan S = Watch.Elapsed - PrevTimeSpan;
-                PrevTimeSpan = Watch.Elapsed;
-                Average += S;
-                Seed += W * H;
-                Console.WriteLine(
-                    "Sample {0}/{1} took {2}. Expected time until completion: {3}",
-                    Q, Samples, S, new TimeSpan( ( Samples - Q ) * S.Ticks ) );
-            }
-            Watch.Stop( );
-            Average = new TimeSpan( Average.Ticks / Samples );
-            Console.WriteLine( "Render time: {0}. Average sample time: {1}", Watch.Elapsed, Average );
-
-            // copy return to host
-            float3 [ ] output = new float3[ W * H ];
-            vector_hostOut.CopyToHost( output );
-
-            return output;
-        };
+            RenderThread.Abort( );
+        }
 
         public static void Run( )
         {
-            new Thread( ( ) =>
+            RenderThread = new Thread( ( ) =>
             {
-            InitKernels( );
+                InitKernels( );
+                RenderImage( DefaultScene );
+            } );
 
-
-            int W = ( int ) Renderer.Cam.Resolution.X;
-            int H = ( int )Renderer.Cam.Resolution.Y;
-
-                float3 [ ] result = RenderImage( );
-            
-                Bitmap Bmp = new Bitmap( W, H );
-                for ( int Q = 0; Q < result.Length; Q++ )
-                {
-                    int X = Q % W;
-                    int Y = ( Q - X ) / W;
-                    float3 F = result[ Q ] / RayCaster.Samples;
-
-                    Color C = Color.FromArgb( 255,
-                        MathHelper.Clamp( ( int ) ( F.x * 255 ), 0, 255 ),
-                        MathHelper.Clamp( ( int ) ( F.y * 255 ), 0, 255 ),
-                        MathHelper.Clamp( ( int ) ( F.z * 255 ), 0, 255 ) );
-                    Bmp.SetPixel( X, Y, C );
-                    //Console.WriteLine( "{0}, {1}: {2}", X, Y, F );
-                }
-
-                Bmp.Save( @"D:\Temp\testimage.png" );
-                Process.Start( @"D:\Temp\testimage.png" );
-            } ).Start( );
+            RenderThread.Start( );
         }
     }
 }

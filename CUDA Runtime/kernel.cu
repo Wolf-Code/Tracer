@@ -7,7 +7,7 @@ extern "C"
     __constant__ unsigned int Objects;
     __constant__ CamData Camera;
     __constant__ long Seed;
-
+    /*
     __global__ void TraceKernel( float3* Input, float3* Output )
     {
         //      Which block # of T in B      ID of Thread
@@ -26,6 +26,7 @@ extern "C"
             Output[ ID ] = Input[ ID ] + Radiance<0>( &R, ObjectArray, Objects, &RandState );
         }
     }
+    */
 
     __global__ void TraceKernelRegion( float3* Input, int StartX, int StartY, int EndX, int EndY, float3* Output )
     {

@@ -126,4 +126,10 @@
     <data name="Status_Done" xml:space="preserve">
     <value>Done</value>
   </data>
+    <data name="Line_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+    <data name="Line_Render" xml:space="preserve">
+    <value>Render</value>
+  </data>
 </root>

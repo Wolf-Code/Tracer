@@ -2,6 +2,7 @@
 using System.Linq;
 using Tracer.Classes.Objects;
 using Tracer.Classes.Util;
+using Tracer.Properties;
 
 namespace Tracer.Classes
 {
@@ -10,8 +11,6 @@ namespace Tracer.Classes
         public static Color BackgroundColor = new Color( 0, 0, 0.2f );
         public static List<GraphicsObject> Objects = new List<GraphicsObject>( );
         public static List<Light> Lights = new List<Light>( );
-        public static uint MaxDepth = 2;
-        public static uint Samples = 250;
 
         /// <summary>
         /// Casts the given ray and returns the color belonging to this ray.
@@ -46,10 +45,10 @@ namespace Tracer.Classes
         {
             Ray R = Renderer.Cam.GetRay( X, Y );
             Color C = Color.Black;
-            for ( int Q = 0; Q < Samples; Q++ )
+            for ( int Q = 0; Q < Settings.Default.Render_Samples; Q++ )
                 C += Effects.Radiance2( R );
 
-            return C / Samples;
+            return C / Settings.Default.Render_Samples;
         }
     }
 }

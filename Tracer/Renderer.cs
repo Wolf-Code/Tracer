@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Tracer.Classes;
 using Tracer.Properties;
-using Color = Tracer.Classes.Util.Color;
 
 namespace Tracer
 {
@@ -16,17 +10,7 @@ namespace Tracer
         public static Camera Cam;
         private static Menu Menu;
 
-        private static Color[ , ] Img;
-
-        public static int Done
-        {
-            get { return m_Done; }
-        }
-
-        private static int m_Done;
-        public static int Max { private set; get; }
         public static bool Rendering { private set; get; }
-        private static BackgroundWorker Worker;
 
         public static void Initialize( Menu M )
         {
@@ -48,12 +32,58 @@ namespace Tracer
             Menu.Settings_ImageFolder.Text = Settings.Default.Image_Folder;
             Menu.Settings_Samples.Value = Settings.Default.Render_Samples;
             Menu.Settings_Depth.Value = Settings.Default.Render_MaxDepth;
+
+
+
+            CUDATest.OnProgress += CudaTestOnOnProgress;
+            CUDATest.OnFinished += CUDATest_OnFinished;
+        }
+
+        private static void CUDATest_OnFinished( object sender, CUDAFinishedEventArgs e )
+        {
+            Menu.Invoke( ( MethodInvoker ) ( ( ) =>
+            {
+                Menu.RenderImage.Image = e.Image;
+                OnRenderingEnded( );
+
+                MessageBox.Show(
+                    string.Format( "Render time: {0}. Average area time: {1}", e.Time, e.AverageProgressTime ),
+                    Resources.Status_Done );
+            } ) );
+        }
+
+        private static void CudaTestOnOnProgress( object Sender, CUDAProgressEventArgs E )
+        {
+            Menu.Invoke( ( MethodInvoker )( ( ) =>
+            {
+                Menu.Status_Progress.Value = ( int )( E.TotalProgress * Menu.Status_Progress.Maximum );
+                if ( E.TotalProgress < 1 )
+                {
+                    Menu.Status_Label.Text =
+                        new TimeSpan(
+                            ( long ) ( ( ( 1.0 - E.TotalProgress ) / E.Progress ) * E.AverageProgressTime.Ticks ) )
+                            .ToString( );
+                }
+                else
+                {
+                    Menu.Status_Label.Text = Resources.Statuses_Drawing;
+                }
+            } ) );
+        }
+
+        private static void OnRenderingEnded( )
+        {
+            Menu.Button_Render.Text = Resources.Line_Render;
+            Rendering = false;
         }
 
         public static void CancelRendering( )
         {
-            if ( Worker.IsBusy )
-                Worker.CancelAsync( );
+            if ( !Rendering )
+                return;
+
+            CUDATest.Cancel( );
+            OnRenderingEnded( );
         }
 
         public static void RenderImage( )
@@ -61,64 +91,9 @@ namespace Tracer
             if ( Rendering )
                 return;
 
-            int W = ( int )Cam.Resolution.X;
-            int H = ( int )Cam.Resolution.Y;
-
-            Max = W * H;
-            m_Done = 0;
-            Menu.Status_Progress.Maximum = Max;
-            Menu.Status_Label.Text = Resources.Status_Rendering;
-            Img = new Color[ W, H ];
             Rendering = true;
-
-            Worker = new BackgroundWorker { WorkerSupportsCancellation = true };
-            Worker.DoWork += ( Sender, Args ) => Parallel.For( 0, Max, ( Var, LoopState ) =>
-            {
-                if ( Worker.CancellationPending )
-                    LoopState.Stop( );
-
-                int X = Var % W;
-                int Y = Var / W;
-                Img[ X, Y ] = RayCaster.Cast( X, Y );
-                Interlocked.Increment( ref m_Done );
-            } );
-
-            Worker.RunWorkerCompleted += ( Sender, Args ) => new Thread( ( ) =>
-                {
-                    foreach ( Bitmap B in DrawRenderedImage( ) )
-                        Menu.Invoke( ( MethodInvoker ) ( ( ) => Menu.RenderImage.Image = B ) );
-
-                    Rendering = false;
-                } ).Start( );
-
-            Worker.RunWorkerAsync( );
-        }
-
-        private static IEnumerable<Bitmap> DrawRenderedImage( )
-        {
-            Menu.Invoke( ( MethodInvoker ) ( ( ) => Menu.Status_Label.Text = Resources.Statuses_Drawing ) );
-            Bitmap B = new Bitmap( Img.GetLength( 0 ), Img.GetLength( 1 ) );
-            m_Done = 0;
-
-            int Percentage = Math.Max( 1, ( int ) ( Max * 0.01f ) );
-
-            for ( int X = 0; X < Cam.Resolution.X; X++ )
-            {
-                for ( int Y = 0; Y < Cam.Resolution.Y; Y++ )
-                {
-                    B.SetPixel( X, Y, Img[ X, Y ].DrawingColor );
-                    if ( m_Done++ % Percentage != 0 ) continue;
-
-                    Menu.Invoke( ( MethodInvoker )( ( ) =>
-                    {
-                        Menu.Status_Progress.Value = Done;
-                    } ) );
-
-                    yield return B.Clone( new Rectangle( 0, 0, B.Width, B.Height ), B.PixelFormat );
-                }
-            }
-
-            yield return B;
+            CUDATest.Run( );
+            Menu.Button_Render.Text = Resources.Line_Cancel;
         }
     }
 }

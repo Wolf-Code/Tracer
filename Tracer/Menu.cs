@@ -10,9 +10,6 @@ namespace Tracer
 {
     public partial class Menu : Form
     {
-        private int LastDone;
-        private float AverageProgressPerSecond;
-
         public Menu( )
         {
             InitializeComponent( );
@@ -27,7 +24,7 @@ namespace Tracer
             Renderer.Cam.Position = new Vector3( 0, 45, 80 );
             Renderer.Cam.Angle = new Angle { Pitch = 0, Yaw = 0, Roll = 0f };
 
-            CUDATest.Run( );
+            //CUDATest.Run( );
             
             RayCaster.Objects.Add( new Sphere( new Vector3( -20, 50, -30 ), 20 )
             {
@@ -166,44 +163,14 @@ namespace Tracer
 
         private void Settings_Depth_ValueChanged( object sender, EventArgs e )
         {
-            RayCaster.MaxDepth = ( uint ) Settings_Depth.Value;
-            Settings.Default[ "Render_MaxDepth" ] = RayCaster.MaxDepth;
+            Settings.Default[ "Render_MaxDepth" ] = ( uint ) Settings_Depth.Value;
             Settings.Default.Save( );
         }
 
         private void Settings_Samples_ValueChanged( object sender, EventArgs e )
         {
-            RayCaster.Samples = ( uint )Settings_Samples.Value;
-            Settings.Default[ "Render_Samples" ] = RayCaster.Samples;
+            Settings.Default[ "Render_Samples" ] = ( uint )Settings_Samples.Value;
             Settings.Default.Save( );
-        }
-
-        private void Progress_Timer_Tick( object sender, EventArgs e )
-        {
-            if ( Renderer.Rendering )
-            {
-                Status_Progress.Value = Renderer.Done;
-                float TicksInSeconds = ( Progress_Timer.Interval / 1000f );
-                if ( AverageProgressPerSecond < 0 )
-                    AverageProgressPerSecond = ( Status_Progress.Value - LastDone ) * TicksInSeconds;
-                else
-                {
-                    AverageProgressPerSecond += ( Status_Progress.Value - LastDone ) * TicksInSeconds;
-                    AverageProgressPerSecond =  AverageProgressPerSecond * ( 1f - TicksInSeconds );
-                }
-                LastDone = Status_Progress.Value;
-                float Req = ( Renderer.Max - Status_Progress.Value );
-
-                float TicksLeft = Req / AverageProgressPerSecond;
-                float SecondsLeft = TicksLeft * TicksInSeconds;
-                if ( !float.IsInfinity( SecondsLeft ) )
-                    Status_Label.Text = Resources.Status_Rendering + ": " + TimeSpan.FromSeconds( ( int ) SecondsLeft );
-            }
-            else
-            {
-                Status_Label.Text = Resources.Status_Done;
-                AverageProgressPerSecond = -1;
-            }
         }
     }
 }
