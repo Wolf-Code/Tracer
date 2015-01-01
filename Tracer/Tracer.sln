@@ -42,6 +42,7 @@ Global
 		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Release|Any CPU.ActiveCfg = Release|Win32
 		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Release|Mixed Platforms.Deploy.0 = Release|Win32
 		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Release|Win32.ActiveCfg = Release|Win32
 		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Release|Win32.Build.0 = Release|Win32
 		{B4B3879E-C386-4E61-8D0A-0A4884FC45AE}.Release|x64.ActiveCfg = Release|x64
