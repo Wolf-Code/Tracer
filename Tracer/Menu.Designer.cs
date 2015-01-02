@@ -42,19 +42,19 @@
             this.RenderImage = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Tab_Render = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.Settings_Samples = new System.Windows.Forms.NumericUpDown();
+            this.Settings_FOV = new System.Windows.Forms.NumericUpDown();
+            this.Settings_Depth = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.Settings_Resolution_Width = new System.Windows.Forms.NumericUpDown();
             this.Settings_Resolution_Height = new System.Windows.Forms.NumericUpDown();
-            this.Settings_Samples = new System.Windows.Forms.NumericUpDown();
-            this.Settings_Depth = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.Settings_FOV = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.Button_Render = new System.Windows.Forms.Button();
             this.Tab_Scene = new System.Windows.Forms.TabPage();
             this.SceneProperties = new System.Windows.Forms.PropertyGrid();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.Status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -63,14 +63,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.RenderImage)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.Tab_Render.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_Samples)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_FOV)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Width)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Height)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_Samples)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_FOV)).BeginInit();
             this.Tab_Scene.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // Status
@@ -206,6 +206,125 @@
             this.Tab_Render.Text = "Rendering";
             this.Tab_Render.UseVisualStyleBackColor = true;
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.label2);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.Settings_Samples);
+            this.groupBox2.Controls.Add(this.Settings_FOV);
+            this.groupBox2.Controls.Add(this.Settings_Depth);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Location = new System.Drawing.Point(7, 120);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(213, 158);
+            this.groupBox2.TabIndex = 8;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Settings";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 18);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(85, 17);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Field of view";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 64);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(46, 17);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Depth";
+            // 
+            // Settings_Samples
+            // 
+            this.Settings_Samples.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Settings_Samples.Location = new System.Drawing.Point(6, 129);
+            this.Settings_Samples.Maximum = new decimal(new int[] {
+            50000,
+            0,
+            0,
+            0});
+            this.Settings_Samples.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Settings_Samples.Name = "Settings_Samples";
+            this.Settings_Samples.Size = new System.Drawing.Size(201, 22);
+            this.Settings_Samples.TabIndex = 6;
+            this.Settings_Samples.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Settings_Samples.ValueChanged += new System.EventHandler(this.Settings_Samples_ValueChanged);
+            // 
+            // Settings_FOV
+            // 
+            this.Settings_FOV.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Settings_FOV.Location = new System.Drawing.Point(6, 39);
+            this.Settings_FOV.Maximum = new decimal(new int[] {
+            179,
+            0,
+            0,
+            0});
+            this.Settings_FOV.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Settings_FOV.Name = "Settings_FOV";
+            this.Settings_FOV.Size = new System.Drawing.Size(201, 22);
+            this.Settings_FOV.TabIndex = 5;
+            this.Settings_FOV.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Settings_FOV.ValueChanged += new System.EventHandler(this.Settings_FOV_ValueChanged);
+            // 
+            // Settings_Depth
+            // 
+            this.Settings_Depth.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Settings_Depth.Location = new System.Drawing.Point(6, 84);
+            this.Settings_Depth.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.Settings_Depth.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Settings_Depth.Name = "Settings_Depth";
+            this.Settings_Depth.Size = new System.Drawing.Size(201, 22);
+            this.Settings_Depth.TabIndex = 6;
+            this.Settings_Depth.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Settings_Depth.ValueChanged += new System.EventHandler(this.Settings_Depth_ValueChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 109);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(62, 17);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "Samples";
+            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -269,108 +388,6 @@
             0});
             this.Settings_Resolution_Height.ValueChanged += new System.EventHandler(this.Settings_Resolution_Height_ValueChanged);
             // 
-            // Settings_Samples
-            // 
-            this.Settings_Samples.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_Samples.Location = new System.Drawing.Point(6, 129);
-            this.Settings_Samples.Maximum = new decimal(new int[] {
-            50000,
-            0,
-            0,
-            0});
-            this.Settings_Samples.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_Samples.Name = "Settings_Samples";
-            this.Settings_Samples.Size = new System.Drawing.Size(201, 22);
-            this.Settings_Samples.TabIndex = 6;
-            this.Settings_Samples.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_Samples.ValueChanged += new System.EventHandler(this.Settings_Samples_ValueChanged);
-            // 
-            // Settings_Depth
-            // 
-            this.Settings_Depth.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_Depth.Location = new System.Drawing.Point(6, 84);
-            this.Settings_Depth.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.Settings_Depth.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_Depth.Name = "Settings_Depth";
-            this.Settings_Depth.Size = new System.Drawing.Size(201, 22);
-            this.Settings_Depth.TabIndex = 6;
-            this.Settings_Depth.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_Depth.ValueChanged += new System.EventHandler(this.Settings_Depth_ValueChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 109);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(62, 17);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "Samples";
-            // 
-            // Settings_FOV
-            // 
-            this.Settings_FOV.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_FOV.Location = new System.Drawing.Point(6, 39);
-            this.Settings_FOV.Maximum = new decimal(new int[] {
-            179,
-            0,
-            0,
-            0});
-            this.Settings_FOV.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_FOV.Name = "Settings_FOV";
-            this.Settings_FOV.Size = new System.Drawing.Size(201, 22);
-            this.Settings_FOV.TabIndex = 5;
-            this.Settings_FOV.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_FOV.ValueChanged += new System.EventHandler(this.Settings_FOV_ValueChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 64);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(46, 17);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Depth";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 18);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(85, 17);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Field of view";
-            // 
             // Button_Render
             // 
             this.Button_Render.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -401,21 +418,6 @@
             this.SceneProperties.Size = new System.Drawing.Size(228, 425);
             this.SceneProperties.TabIndex = 0;
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.Settings_Samples);
-            this.groupBox2.Controls.Add(this.Settings_FOV);
-            this.groupBox2.Controls.Add(this.Settings_Depth);
-            this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Location = new System.Drawing.Point(7, 120);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(213, 158);
-            this.groupBox2.TabIndex = 8;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Settings";
-            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -434,15 +436,15 @@
             ((System.ComponentModel.ISupportInitialize)(this.RenderImage)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.Tab_Render.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_Samples)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_FOV)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).EndInit();
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Width)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Height)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_Samples)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_FOV)).EndInit();
             this.Tab_Scene.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

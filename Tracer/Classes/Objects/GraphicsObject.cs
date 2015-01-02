@@ -21,8 +21,12 @@ namespace Tracer.Classes.Objects
         [Category( "Identification" )]
         public string Name { set; get; }
 
+        [Description( "Whether the item should be used during rendering." )]
+        public bool Enabled { set; get; }
+
         protected GraphicsObject( )
         {
+            this.Enabled = true;
             this.Material = new Material( );
         }
 

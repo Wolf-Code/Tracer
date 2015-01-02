@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Tracer.Classes.Util;
 using Tracer.CUDA;
 
@@ -37,7 +38,7 @@ namespace Tracer.Classes.Objects
         public CUDAObject [ ] ToCUDA( )
         {
             List<CUDAObject> Obj = new List<CUDAObject>( );
-            foreach ( GraphicsObject G in Objects )
+            foreach ( GraphicsObject G in Objects.Where( O => O.Enabled ) )
             {
                 CUDAObject O = new CUDAObject { Material = G.Material.ToCUDAMaterial( ) };
 
