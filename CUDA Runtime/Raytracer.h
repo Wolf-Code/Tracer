@@ -12,6 +12,8 @@
 #include "Collider.h"
 #include "CamData.h"
 
+#define PI 3.1415926535
+
 class Raytracer
 {
 public:
@@ -52,10 +54,15 @@ __device__ float3 Raytracer::Radiance( Ray* R, Object* Objects, int ObjectCount,
 
 	float3 RandomDirection = VectorMath::RandomCosineDirectionInSameDirection( Res.Normal, RandState );
 
+	float BDRF = 1.0f;
+
 	switch ( Res.HitObject->Material.Type )
 	{
 		case MaterialType::Diffuse:
 			R->Direction = RandomDirection;
+
+			float cos_theta = VectorMath::Dot( R->Direction, Res.Normal );
+			BDRF = BDRF = ( 2.0f * cos_theta ) / PI;
 			break;
 
 		case MaterialType::Reflective:
@@ -69,9 +76,6 @@ __device__ float3 Raytracer::Radiance( Ray* R, Object* Objects, int ObjectCount,
 			R->Direction = Ref;
 			break;
 	}
-
-    float cos_theta = VectorMath::Dot( R->Direction, Res.Normal );
-    float BDRF = 2.0f * cos_theta;
 
     return Rad + Res.HitObject->Material.Color * ( Radiance<depth + 1>( R, Objects, ObjectCount, RandState ) * BDRF );
 }
