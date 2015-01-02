@@ -55,3 +55,4 @@ CUDA Runtime/bin/*
 Tracer/Tracer.opensdf
 Tracer/Tracer.sdf
 Tracer/Tracer.sdf
+*.sdf

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
+using System.Threading.Tasks;
 using ManagedCuda;
 using ManagedCuda.BasicTypes;
 using ManagedCuda.VectorTypes;
@@ -56,7 +57,7 @@ namespace Tracer
 
                 Sphere Light = Scn.AddSphere( new Vector3( 0, 2000 + 90 - .15f, 0 ), 2000 );
                 Light.Name = "Light";
-                Light.Material.Radiance = new Classes.Util.Color( 1f, 1f, 1f );
+                Light.Material.Radiance = new Classes.Util.Color( 12f, 12f, 12f );
 
                 Plane Floor = Scn.AddPlane( new Vector3( 0, 1, 0 ), 0 );
                 Floor.Name = "Floor";
@@ -187,27 +188,12 @@ namespace Tracer
                 CUDAVar_Output.CopyToHost( output );
             }
 
-            Bitmap Bmp = new Bitmap( W, H );
-            for ( int Q = 0; Q < output.Length; Q++ )
-            {
-                int X = Q % W;
-                int Y = ( Q - X ) / W;
-                float3 F = output[ Q ] / Samples;
-
-                Color C = Color.FromArgb( 255,
-                    MathHelper.Clamp( ( int )( F.x * 255 ), 0, 255 ),
-                    MathHelper.Clamp( ( int )( F.y * 255 ), 0, 255 ),
-                    MathHelper.Clamp( ( int )( F.z * 255 ), 0, 255 ) );
-
-                Bmp.SetPixel( X, Y, C );
-            }
-
             if ( OnFinished != null )
                 OnFinished.Invoke( null, new CUDAFinishedEventArgs
                 {
                     AverageProgressTime = Average,
                     Time = Watch.Elapsed,
-                    Image = Bmp
+                    Image = Utilities.ConvertFloat3Array( Samples, W, H, output )
                 } );
 
             if ( CancelThread )
