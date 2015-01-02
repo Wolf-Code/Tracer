@@ -53,6 +53,3 @@ CUDA Runtime/bin/*
 *.vspx
 *.psess
 Tracer/Tracer.opensdf
-Tracer/Tracer.sdf
-Tracer/Tracer.sdf
-*.sdf

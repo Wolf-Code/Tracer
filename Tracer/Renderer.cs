@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Tracer.Classes;
 using Tracer.Classes.Objects;
 using Tracer.Properties;
+using Tracer.Renderers;
 
 namespace Tracer
 {
@@ -10,6 +11,7 @@ namespace Tracer
     {
         private static Menu Menu;
         public static Scene Scene;
+        private static IRenderer RenderInstance;
 
         public static bool Rendering { private set; get; }
 
@@ -20,10 +22,7 @@ namespace Tracer
             Menu.Settings_Samples.Value = Settings.Default.Render_Samples;
             Menu.Settings_Depth.Value = Settings.Default.Render_MaxDepth;
 
-            Scene = CUDAInterface.DefaultScene;
-
-            CUDAInterface.OnProgress += CudaTestOnOnProgress;
-            CUDAInterface.OnFinished += CUDATest_OnFinished;
+            Scene = Scene.Default;
 
             try
             {
@@ -31,13 +30,18 @@ namespace Tracer
             }
             catch
             {
-                Scene = CUDAInterface.DefaultScene;
+                Scene = Scene.Default;
             }
 
             Menu.SceneProperties.SelectedObject = Scene;
+
+            RenderInstance = new CUDARenderer( );
+
+            RenderInstance.OnProgress += RendererOnProgress;
+            RenderInstance.OnFinished += RendererOnFinished;
         }
 
-        private static void CUDATest_OnFinished( object sender, CUDAFinishedEventArgs e )
+        private static void RendererOnFinished(object sender, RendererFinishedEventArgs e)
         {
             Menu.Invoke( ( MethodInvoker ) ( ( ) =>
             {
@@ -51,7 +55,7 @@ namespace Tracer
             } ) );
         }
 
-        private static void CudaTestOnOnProgress( object Sender, CUDAProgressEventArgs E )
+        private static void RendererOnProgress(object Sender, RendererProgressEventArgs E)
         {
             Menu.Invoke( ( MethodInvoker )( ( ) =>
             {
@@ -81,7 +85,7 @@ namespace Tracer
             if ( !Rendering )
                 return;
 
-            CUDAInterface.Cancel( );
+            RenderInstance.Cancel( );
             OnRenderingEnded( );
         }
 
@@ -91,7 +95,7 @@ namespace Tracer
                 return;
 
             Rendering = true;
-            CUDAInterface.Run( );
+            RenderInstance.Run( );
             Menu.Button_Render.Text = Resources.Line_Cancel;
         }
     }

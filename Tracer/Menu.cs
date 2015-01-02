@@ -96,7 +96,7 @@ namespace Tracer
 
         private void Scene_LoadDefault_Click( object sender, EventArgs e )
         {
-            Renderer.Scene = CUDAInterface.DefaultScene;
+            Renderer.Scene = Scene.Default;
             SceneProperties.SelectedObject = Renderer.Scene;
         }
     }

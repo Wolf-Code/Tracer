@@ -15,21 +15,20 @@ namespace Tracer
     {
         public static Bitmap ConvertByteArray( int Width, int Height, byte [ ] Data )
         {
-            //Here create the Bitmap to the know height, width and format
-            Bitmap bmp = new Bitmap( Width, Height, PixelFormat.Format32bppArgb );
-            //Bitmap bmp = new Bitmap(width, height);
+            Bitmap Img = new Bitmap( Width, Height, PixelFormat.Format32bppArgb );
 
-            //Create a BitmapData and Lock all pixels to be written 
-            BitmapData bmpData = bmp.LockBits(
-                new Rectangle( 0, 0, bmp.Width, bmp.Height ),
-                ImageLockMode.WriteOnly, bmp.PixelFormat );
+            // Lock bitmap data
+            BitmapData bmpData = Img.LockBits(
+                new Rectangle( 0, 0, Img.Width, Img.Height ),
+                ImageLockMode.WriteOnly, Img.PixelFormat );
 
-            //Copy the data from the byte array into BitmapData.Scan0
+            // Copy my data into the bitmap
             Marshal.Copy( Data, 0, bmpData.Scan0, Data.Length );
-            //Unlock the pixels
-            bmp.UnlockBits( bmpData );
 
-            return bmp;
+            // Unlock bitmap data
+            Img.UnlockBits( bmpData );
+
+            return Img;
         }
 
         public static Bitmap ConvertFloat3Array( uint Samples, int Width, int Height, float3 [ ] Array )
@@ -37,6 +36,7 @@ namespace Tracer
             int WH = Width * Height;
             byte [ ] ByteArray = new byte[ WH * 4 ];
 
+            // Fill the byte array in parallel, to speed it up.
             Parallel.For( 0, WH, Var =>
             {
                 float3 Val = Array[ Var ] / Samples;
