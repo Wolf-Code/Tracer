@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Linq;
 using Tracer.Classes.Util;
 using Tracer.CUDA;
@@ -10,13 +11,18 @@ namespace Tracer.Classes.Objects
     [Serializable]
     public class Scene
     {
-        [Editor( typeof( ControlCollectionEditor ),
-            typeof( System.Drawing.Design.UITypeEditor ) )]
+        [Category( "Rendering" )]
+        public Camera Camera { set; get; }
+
+        [Editor( typeof ( ControlCollectionEditor ), typeof ( System.Drawing.Design.UITypeEditor ) )]
+        [Category( "Geometry" )]
+        [Description( "The objects in the scene." )]
         public List<GraphicsObject> Objects { set; get; }
 
         public Scene( )
         {
             this.Objects = new List<GraphicsObject>( );
+            this.Camera = new Camera( );
         }
 
         public Sphere AddSphere( Vector3 Position, float Radius )

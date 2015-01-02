@@ -44,7 +44,15 @@ namespace Tracer
         {
             get
             {
-                Scene Scn = new Scene( );
+                Scene Scn = new Scene
+                {
+                    Camera =
+                    {
+                        Position = new Vector3( 0, 45, 80 ),
+                        Angle = new Angle { Pitch = 0, Yaw = 0, Roll = 0f }
+                    }
+                };
+
 
                 Sphere Light = Scn.AddSphere( new Vector3( 0, 2000 + 90 - .15f, 0 ), 2000 );
                 Light.Name = "Light";
@@ -103,8 +111,8 @@ namespace Tracer
 
         private static void RenderImage( Scene Scn, uint Samples, uint Depth )
         {
-            int W = ( int ) Renderer.Cam.Resolution.X;
-            int H = ( int ) Renderer.Cam.Resolution.Y;
+            int W = ( int ) Scn.Camera.Resolution.X;
+            int H = ( int ) Scn.Camera.Resolution.Y;
             int WH = W * H;
 
             CUDAObject [ ] Objs = Scn.ToCUDA( );
@@ -114,7 +122,7 @@ namespace Tracer
 
             RenderKernel.SetConstantVariable( "ObjectArray", Obj.DevicePointer );
             RenderKernel.SetConstantVariable( "Objects", Objs.Length );
-            RenderKernel.SetConstantVariable( "Camera", Renderer.Cam.ToCamData( ) );
+            RenderKernel.SetConstantVariable( "Camera", Scn.Camera.ToCamData( ) );
 
             int XDivide = 8;
             int YDivide = 8;

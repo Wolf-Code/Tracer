@@ -79,7 +79,7 @@ namespace Tracer.Classes.Util
 
         public override string ToString( )
         {
-            return string.Format( "R: {0}, G: {1}, B: {2}", this.R, this.G, this.B );
+            return string.Format( "( {0}, {1}, {2} )", this.R, this.G, this.B );
         }
 
         #region Operators

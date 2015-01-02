@@ -8,7 +8,6 @@ namespace Tracer
 {
     public static class Renderer
     {
-        public static Camera Cam;
         private static Menu Menu;
         public static Scene Scene;
 
@@ -16,14 +15,7 @@ namespace Tracer
 
         public static void Initialize( Menu M )
         {
-            Cam = new Camera( Settings.Default.Render_Resolution_Width, 
-                Settings.Default.Render_Resolution_Height,
-                Settings.Default.Render_FOV );
             Menu = M;
-
-            Menu.Settings_Resolution_Width.Value = Settings.Default.Render_Resolution_Width;
-            Menu.Settings_Resolution_Height.Value = Settings.Default.Render_Resolution_Height;
-            Menu.Settings_FOV.Value = ( decimal ) Settings.Default.Render_FOV;
 
             Menu.Settings_Samples.Value = Settings.Default.Render_Samples;
             Menu.Settings_Depth.Value = Settings.Default.Render_MaxDepth;

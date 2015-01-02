@@ -43,15 +43,10 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Tab_Render = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.Settings_Samples = new System.Windows.Forms.NumericUpDown();
-            this.Settings_FOV = new System.Windows.Forms.NumericUpDown();
             this.Settings_Depth = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.Settings_Resolution_Width = new System.Windows.Forms.NumericUpDown();
-            this.Settings_Resolution_Height = new System.Windows.Forms.NumericUpDown();
             this.Button_Render = new System.Windows.Forms.Button();
             this.Tab_Scene = new System.Windows.Forms.TabPage();
             this.SceneProperties = new System.Windows.Forms.PropertyGrid();
@@ -65,11 +60,7 @@
             this.Tab_Render.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Samples)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_FOV)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Width)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Height)).BeginInit();
             this.Tab_Scene.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -196,7 +187,6 @@
             // Tab_Render
             // 
             this.Tab_Render.Controls.Add(this.groupBox2);
-            this.Tab_Render.Controls.Add(this.groupBox1);
             this.Tab_Render.Controls.Add(this.Button_Render);
             this.Tab_Render.Location = new System.Drawing.Point(4, 25);
             this.Tab_Render.Name = "Tab_Render";
@@ -210,32 +200,21 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.Settings_Samples);
-            this.groupBox2.Controls.Add(this.Settings_FOV);
             this.groupBox2.Controls.Add(this.Settings_Depth);
             this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Location = new System.Drawing.Point(7, 120);
+            this.groupBox2.Location = new System.Drawing.Point(7, 36);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(213, 158);
+            this.groupBox2.Size = new System.Drawing.Size(213, 113);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Settings";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 18);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(85, 17);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Field of view";
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 64);
+            this.label4.Location = new System.Drawing.Point(6, 18);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(46, 17);
             this.label4.TabIndex = 4;
@@ -245,7 +224,7 @@
             // 
             this.Settings_Samples.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_Samples.Location = new System.Drawing.Point(6, 129);
+            this.Settings_Samples.Location = new System.Drawing.Point(6, 83);
             this.Settings_Samples.Maximum = new decimal(new int[] {
             50000,
             0,
@@ -266,36 +245,12 @@
             0});
             this.Settings_Samples.ValueChanged += new System.EventHandler(this.Settings_Samples_ValueChanged);
             // 
-            // Settings_FOV
-            // 
-            this.Settings_FOV.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_FOV.Location = new System.Drawing.Point(6, 39);
-            this.Settings_FOV.Maximum = new decimal(new int[] {
-            179,
-            0,
-            0,
-            0});
-            this.Settings_FOV.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_FOV.Name = "Settings_FOV";
-            this.Settings_FOV.Size = new System.Drawing.Size(201, 22);
-            this.Settings_FOV.TabIndex = 5;
-            this.Settings_FOV.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_FOV.ValueChanged += new System.EventHandler(this.Settings_FOV_ValueChanged);
-            // 
             // Settings_Depth
             // 
             this.Settings_Depth.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_Depth.Location = new System.Drawing.Point(6, 84);
+            this.Settings_Depth.Enabled = false;
+            this.Settings_Depth.Location = new System.Drawing.Point(6, 38);
             this.Settings_Depth.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -319,74 +274,11 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 109);
+            this.label5.Location = new System.Drawing.Point(6, 63);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(62, 17);
             this.label5.TabIndex = 4;
             this.label5.Text = "Samples";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.Settings_Resolution_Width);
-            this.groupBox1.Controls.Add(this.Settings_Resolution_Height);
-            this.groupBox1.Location = new System.Drawing.Point(7, 36);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(213, 78);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Resolution";
-            // 
-            // Settings_Resolution_Width
-            // 
-            this.Settings_Resolution_Width.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_Resolution_Width.Location = new System.Drawing.Point(6, 21);
-            this.Settings_Resolution_Width.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.Settings_Resolution_Width.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_Resolution_Width.Name = "Settings_Resolution_Width";
-            this.Settings_Resolution_Width.Size = new System.Drawing.Size(201, 22);
-            this.Settings_Resolution_Width.TabIndex = 1;
-            this.Settings_Resolution_Width.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_Resolution_Width.ValueChanged += new System.EventHandler(this.Settings_Resolution_Width_ValueChanged);
-            // 
-            // Settings_Resolution_Height
-            // 
-            this.Settings_Resolution_Height.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_Resolution_Height.Location = new System.Drawing.Point(6, 49);
-            this.Settings_Resolution_Height.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.Settings_Resolution_Height.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_Resolution_Height.Name = "Settings_Resolution_Height";
-            this.Settings_Resolution_Height.Size = new System.Drawing.Size(201, 22);
-            this.Settings_Resolution_Height.TabIndex = 2;
-            this.Settings_Resolution_Height.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_Resolution_Height.ValueChanged += new System.EventHandler(this.Settings_Resolution_Height_ValueChanged);
             // 
             // Button_Render
             // 
@@ -439,11 +331,7 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Samples)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_FOV)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Width)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_Resolution_Height)).EndInit();
             this.Tab_Scene.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -458,11 +346,7 @@
         public System.Windows.Forms.StatusStrip Status;
         public System.Windows.Forms.ToolStripProgressBar Status_Progress;
         public System.Windows.Forms.ToolStripStatusLabel Status_Label;
-        public System.Windows.Forms.NumericUpDown Settings_Resolution_Height;
-        public System.Windows.Forms.NumericUpDown Settings_Resolution_Width;
         public System.Windows.Forms.PictureBox RenderImage;
-        private System.Windows.Forms.Label label2;
-        public System.Windows.Forms.NumericUpDown Settings_FOV;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem ToolStrip_Button_Save;
         private System.Windows.Forms.TabPage Tab_Scene;
@@ -471,7 +355,6 @@
         public System.Windows.Forms.NumericUpDown Settings_Samples;
         public System.Windows.Forms.NumericUpDown Settings_Depth;
         public System.Windows.Forms.Button Button_Render;
-        private System.Windows.Forms.GroupBox groupBox1;
         public System.Windows.Forms.PropertyGrid SceneProperties;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
         private System.Windows.Forms.ToolStripMenuItem Scene_SaveButton;

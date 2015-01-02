@@ -1,10 +1,14 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Tracer.Classes.Util
 {
+    [TypeConverter( typeof ( ExpandableObjectConverter ) )]
+    [Serializable]
     public class Angle
     {
         private bool RefreshForward = true, RefreshUp = true, RefreshRight = true;
+
         /// <summary>
         /// The pitch of this angle.
         /// </summary>
@@ -51,8 +55,13 @@ namespace Tracer.Classes.Util
         private float Yaw1;
         private float Roll1;
 
+        [Browsable( false )]
         public float PitchRadians { private set; get; }
+
+        [Browsable( false )]
         public float YawRadians { private set; get; }
+
+        [Browsable( false )]
         public float RollRadians { private set; get; }
 
         private Vector3 m_Forward, m_Up, m_Right;
@@ -60,6 +69,7 @@ namespace Tracer.Classes.Util
         /// <summary>
         /// The forward vector of this angle.
         /// </summary>
+        [Browsable( false )]
         public Vector3 Forward
         {
             get
@@ -81,6 +91,7 @@ namespace Tracer.Classes.Util
         /// <summary>
         /// The up vector of this angle.
         /// </summary>
+        [Browsable( false )]
         public Vector3 Up
         {
             get
@@ -102,6 +113,7 @@ namespace Tracer.Classes.Util
         /// <summary>
         /// The right vector of this angle.
         /// </summary>
+        [Browsable( false )]
         public Vector3 Right
         {
             get
@@ -114,6 +126,11 @@ namespace Tracer.Classes.Util
 
                 return m_Right;
             }
+        }
+
+        public override string ToString( )
+        {
+            return string.Format( "( {0}, {1}, {2} )", this.Pitch, this.Yaw, this.Roll );
         }
     }
 }

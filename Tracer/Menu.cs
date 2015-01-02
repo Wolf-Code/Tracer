@@ -18,9 +18,6 @@ namespace Tracer
             base.OnLoad( e );
 
             Renderer.Initialize( this );
-
-            Renderer.Cam.Position = new Vector3( 0, 45, 80 );
-            Renderer.Cam.Angle = new Angle { Pitch = 0, Yaw = 0, Roll = 0f };
         }
 
         private void Button_Render_Click( object sender, EventArgs e )
@@ -29,27 +26,6 @@ namespace Tracer
                 Renderer.RenderImage( );
             else
                 Renderer.CancelRendering( );
-        }
-
-        private void Settings_Resolution_Width_ValueChanged( object sender, EventArgs e )
-        {
-            Renderer.Cam.Resolution.X = ( float ) Settings_Resolution_Width.Value;
-            Settings.Default[ "Render_Resolution_Width" ] = ( int ) Settings_Resolution_Width.Value;
-            Settings.Default.Save( );
-        }
-
-        private void Settings_Resolution_Height_ValueChanged( object sender, EventArgs e )
-        {
-            Renderer.Cam.Resolution.Y = ( float )Settings_Resolution_Height.Value;
-            Settings.Default[ "Render_Resolution_Height" ] = ( int )Settings_Resolution_Height.Value;
-            Settings.Default.Save( );
-        }
-
-        private void Settings_FOV_ValueChanged( object sender, EventArgs e )
-        {
-            Renderer.Cam.FOV = ( float )Settings_FOV.Value;
-            Settings.Default[ "Render_FOV" ] = Renderer.Cam.FOV;
-            Settings.Default.Save( );
         }
 
         private void ToolStrip_Button_Save_Click( object sender, EventArgs e )

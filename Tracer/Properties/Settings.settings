@@ -2,15 +2,6 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Tracer.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="Render_Resolution_Width" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1000</Value>
-    </Setting>
-    <Setting Name="Render_Resolution_Height" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1000</Value>
-    </Setting>
-    <Setting Name="Render_FOV" Type="System.Single" Scope="User">
-      <Value Profile="(Default)">90</Value>
-    </Setting>
     <Setting Name="Render_Samples" Type="System.UInt32" Scope="User">
       <Value Profile="(Default)">5</Value>
     </Setting>

@@ -48,6 +48,7 @@ Tracer/Release/*
 CUDA Runtime/Debug/*
 CUDA Runtime/Release/*
 CUDA Runtime/bin/*
+*.sdf
 *.suo
 *.vspx
 *.psess

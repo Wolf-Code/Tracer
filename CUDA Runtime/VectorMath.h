@@ -9,6 +9,7 @@ public:
     __device__ static float3 Normalized( float3 );
     __device__ static float3 MakeVector( float, float, float );
     __device__ static float3 Reflect( float3, float3 );
+	__device__ static float3 RandomCosineDirectionInSameDirection( float3, curandState* );
 };
 
 __device__ float3 operator/( float3, float );
@@ -56,9 +57,24 @@ __device__ float3 VectorMath::MakeVector( float X, float Y, float Z )
 
 __device__ float3 VectorMath::Reflect( float3 Vector, float3 Normal )
 {
-    return Vector - 2.0f * VectorMath::Dot( Vector, Normal ) * Normal;
+	return Vector - 2.0f * VectorMath::Dot( Vector, Normal ) * Normal;
 }
 
+__device__ float3 VectorMath::RandomCosineDirectionInSameDirection( float3 Direction, curandState* RandState )
+{
+	float3 Rand = VectorMath::MakeVector( curand_uniform( RandState ) * 2.0f - 1.0f,
+										  curand_uniform( RandState ) * 2.0f - 1.0f,
+										  curand_uniform( RandState ) * 2.0f - 1.0f );
+
+	Rand = VectorMath::Normalized( Rand );
+
+	if ( VectorMath::Dot( Direction, Rand ) < 0 )
+		Rand = Rand * -1;
+
+	Rand = VectorMath::Normalized( Rand + Direction );
+
+	return Rand;
+}
 
 
 
@@ -97,23 +113,23 @@ __device__ float3 operator/( float3 Vector, float Divider )
 
 __device__ float3 operator+( float3 Vector, float3 Vector2 )
 {
-    return VectorMath::MakeVector(
-        Vector.x + Vector2.x,
-        Vector.y + Vector2.y,
-        Vector.z + Vector2.z
-        );
+	return VectorMath::MakeVector(
+		Vector.x + Vector2.x,
+		Vector.y + Vector2.y,
+		Vector.z + Vector2.z
+		);
 }
 
 __device__ float3 operator+=( float3 Vector, float3 Vector2 )
 {
-    return Vector + Vector2;
+	return Vector + Vector2;
 }
 
 __device__ float3 operator-( float3 Vector, float3 Vector2 )
 {
-    return VectorMath::MakeVector(
-        Vector.x - Vector2.x,
-        Vector.y - Vector2.y,
-        Vector.z - Vector2.z
-        );
+	return VectorMath::MakeVector(
+		Vector.x - Vector2.x,
+		Vector.y - Vector2.y,
+		Vector.z - Vector2.z
+		);
 }

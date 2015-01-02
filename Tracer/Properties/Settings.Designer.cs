@@ -25,42 +25,6 @@ namespace Tracer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
-        public int Render_Resolution_Width {
-            get {
-                return ((int)(this["Render_Resolution_Width"]));
-            }
-            set {
-                this["Render_Resolution_Width"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
-        public int Render_Resolution_Height {
-            get {
-                return ((int)(this["Render_Resolution_Height"]));
-            }
-            set {
-                this["Render_Resolution_Height"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("90")]
-        public float Render_FOV {
-            get {
-                return ((float)(this["Render_FOV"]));
-            }
-            set {
-                this["Render_FOV"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public uint Render_Samples {
             get {
