@@ -97,7 +97,7 @@ namespace Tracer
 
         private static CudaKernel RenderKernel;
         private const int ThreadsPerBlock = 32;
-        private static bool CancelThread = false;
+        private static bool CancelThread;
 
         private static void InitKernels( )
         {
@@ -139,13 +139,13 @@ namespace Tracer
             Stopwatch Watch = new Stopwatch( );
 
             // init parameters
-            using ( CudaDeviceVariable<float3> vector_hostOut = new CudaDeviceVariable<float3>( WH ) )
+            using ( CudaDeviceVariable<float3> CUDAVar_Output = new CudaDeviceVariable<float3>( WH ) )
             {
                 // run cuda method
-                using ( CudaDeviceVariable<float3> vector_Input = new CudaDeviceVariable<float3>( WH ) )
+                using ( CudaDeviceVariable<float3> CUDAVar_Input = new CudaDeviceVariable<float3>( WH ) )
                 {
                     float3 [ ] In = new float3[ WH ];
-                    vector_Input.CopyToDevice( In );
+                    CUDAVar_Input.CopyToDevice( In );
 
                     Watch.Start( );
 
@@ -159,7 +159,7 @@ namespace Tracer
                             if ( CancelThread )
                                 break;
 
-                            RenderRegion( Samples, ref Seed, vector_Input, vector_hostOut, X * DivW, Y * DivH, DivW,
+                            RenderRegion( Samples, ref Seed, CUDAVar_Input, CUDAVar_Output, X * DivW, Y * DivH, DivW,
                                 DivH );
                             Areas++;
 
@@ -184,7 +184,7 @@ namespace Tracer
                 Average = new TimeSpan( Average.Ticks / TotalAreas );
 
                 // copy return to host
-                vector_hostOut.CopyToHost( output );
+                CUDAVar_Output.CopyToHost( output );
             }
 
             Bitmap Bmp = new Bitmap( W, H );
