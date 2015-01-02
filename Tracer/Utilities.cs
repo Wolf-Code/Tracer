@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using System.IO;
-using Tracer.Classes;
 using Tracer.Classes.Util;
 
 namespace Tracer

@@ -1,4 +1,3 @@
-#include "CUDAIncluder.h"
 #include "Raytracer.h"
 
 extern "C"
@@ -9,26 +8,6 @@ extern "C"
     __constant__ unsigned int Objects;
     __constant__ CamData Camera;
     __constant__ long Seed;
-    /*
-    __global__ void TraceKernel( float3* Input, float3* Output )
-    {
-        //      Which block # of T in B      ID of Thread
-        int x = ( blockIdx.x * blockDim.x ) + threadIdx.x;
-        int y = ( blockIdx.y * blockDim.y ) + threadIdx.y;
-
-        if ( x < Camera.Width && y < Camera.Height )
-        {
-            int ID = y * ( int )Camera.Width + x;
-
-            curandState RandState;
-            curand_init( Seed + ID, 0, 0, &RandState );
-
-            Ray R = Camera.GetRay( x, y );
-
-            Output[ ID ] = Input[ ID ] + Radiance<0>( &R, ObjectArray, Objects, &RandState );
-        }
-    }
-    */
 
     __device__ float clamp( float X, float Min, float Max )
     {
@@ -53,7 +32,7 @@ extern "C"
 
             Ray R = Camera.GetRay( JitteredX, JitteredY );
 
-            Output[ ID ] = Input[ ID ] + Radiance<0>( &R, ObjectArray, Objects, &RandState );
+            Output[ ID ] = Input[ ID ] + Raytracer::Radiance<0>( &R, ObjectArray, Objects, &RandState );
         }
     }
 }

@@ -1,6 +1,4 @@
 #include "CUDAIncluder.h"
-#include "curand.h"
-#include "curand_kernel.h"
 #include "VectorMath.h"
 #include "MaterialType.h"
 #include "Material.h"
@@ -17,11 +15,11 @@
 class Raytracer
 {
 public:
-    __device__ static float3 TraceColor( Ray*, Object*, int );
-    //__device__ static float3 Radiance( Ray R, Object* Objects, int ObjectCount, curandState* RandState );
-    __device__ static float3 RadianceIterative( Ray*, Object*, int, curandState* );
     __device__ static CollisionResult Trace( Ray*, Object*, int );
     __device__ static float3 RandomCosineDirectionInSameDirection( float3, curandState* );
+
+    template <int>
+    __device__ static float3 Radiance( Ray*, Object*, int, curandState* );
 };
 
 __device__ float3 Raytracer::RandomCosineDirectionInSameDirection( float3 Direction, curandState* RandState )
@@ -54,62 +52,9 @@ __device__ CollisionResult Raytracer::Trace( Ray* R, Object* Objects, int Object
 
     return Res;
 }
-/*
-__device__ float3 Raytracer::RadianceIterative( Ray* R, Object* Objects, int ObjectCount, curandState* RandState )
-{
-    const int MaxDepth = 3;
-    float3 PreviousRads[ MaxDepth ];
-    PreviousRads[ 0 ] = float3( );
-    float3 PreviousMatColors[ MaxDepth ];
-    PreviousMatColors[ 0 ] = float3( );
-    float  PreviousBDRFs[ MaxDepth ];
-    PreviousBDRFs[ 0 ] = 0;
-
-    while ( R->Depth < MaxDepth )
-    {
-        CollisionResult Res = Raytracer::Trace( R, Objects, ObjectCount );
-        if ( !Res.Hit )
-            break;
-
-        float3 Rad = Res.HitObject.Material.Radiance;
-        PreviousRads[ R->Depth ] = Rad;
-        if ( Rad.x >= 1 || Rad.y >= 1 || Rad.z >= 1 )
-        {
-            PreviousMatColors[ R->Depth ] = float3( );
-            PreviousBDRFs[ R->Depth ] = 0;
-            R->Depth = R->Depth + 1;
-            break;
-        }
-
-        Ray R2 = Ray( );
-        R2.Depth = R->Depth + 1;
-        R2.Direction = Raytracer::RandomCosineDirectionInSameDirection( Res.Normal, RandState );
-        R2.Start = Res.Position + Res.Normal;
-
-        float cos_theta = VectorMath::Dot( R2.Direction, Res.Normal );
-        float BDRF = 2 * cos_theta;
-
-        PreviousMatColors[ R->Depth ] = Res.HitObject.Material.Color;
-        PreviousBDRFs[ R->Depth ] = BDRF;
-
-        if ( R2.Depth >= MaxDepth )
-            break;
-
-        R = &R2;
-    }
-
-    float3 Last = PreviousRads[ R->Depth - 1 ];
-    for ( int Q = R->Depth - 2; Q >= 0; Q-- )
-    {
-        Last = PreviousRads[ Q ] + PreviousMatColors[ Q ] * ( Last * PreviousBDRFs[ Q ] );
-    }
-
-    return Last;
-}
-*/
 
 template <int depth>
-__device__ float3 Radiance( Ray* R, Object* Objects, int ObjectCount, curandState* RandState )
+__device__ float3 Raytracer::Radiance( Ray* R, Object* Objects, int ObjectCount, curandState* RandState )
 {
     CollisionResult Res = Raytracer::Trace( R, Objects, ObjectCount );
     if ( !Res.Hit )
@@ -147,7 +92,7 @@ __device__ float3 Radiance( Ray* R, Object* Objects, int ObjectCount, curandStat
 }
 
 template<>
-__device__ float3 Radiance<5>( Ray* R, Object* Objects, int ObjectCount, curandState* RandState )
+__device__ float3 Raytracer::Radiance<5>( Ray* R, Object* Objects, int ObjectCount, curandState* RandState )
 {
     return float3( );
 }

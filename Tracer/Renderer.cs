@@ -28,10 +28,10 @@ namespace Tracer
             Menu.Settings_Samples.Value = Settings.Default.Render_Samples;
             Menu.Settings_Depth.Value = Settings.Default.Render_MaxDepth;
 
-            Scene = CUDATest.DefaultScene;
+            Scene = CUDAInterface.DefaultScene;
 
-            CUDATest.OnProgress += CudaTestOnOnProgress;
-            CUDATest.OnFinished += CUDATest_OnFinished;
+            CUDAInterface.OnProgress += CudaTestOnOnProgress;
+            CUDAInterface.OnFinished += CUDATest_OnFinished;
 
             try
             {
@@ -39,7 +39,7 @@ namespace Tracer
             }
             catch
             {
-                Scene = CUDATest.DefaultScene;
+                Scene = CUDAInterface.DefaultScene;
             }
 
             Menu.SceneProperties.SelectedObject = Scene;
@@ -89,7 +89,7 @@ namespace Tracer
             if ( !Rendering )
                 return;
 
-            CUDATest.Cancel( );
+            CUDAInterface.Cancel( );
             OnRenderingEnded( );
         }
 
@@ -99,7 +99,7 @@ namespace Tracer
                 return;
 
             Rendering = true;
-            CUDATest.Run( );
+            CUDAInterface.Run( );
             Menu.Button_Render.Text = Resources.Line_Cancel;
         }
     }

@@ -29,7 +29,7 @@ namespace Tracer
         public Bitmap Image;
     }
 
-    public static class CUDATest
+    public static class CUDAInterface
     {
         public static event EventHandler<CUDAProgressEventArgs> OnProgress;
         public static event EventHandler<CUDAFinishedEventArgs> OnFinished;

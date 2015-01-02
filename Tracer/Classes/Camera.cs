@@ -1,5 +1,4 @@
 ﻿using System;
-using Tracer.Classes.Objects;
 using Tracer.Classes.Util;
 using Tracer.CUDA;
 

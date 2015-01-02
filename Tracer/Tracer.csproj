@@ -71,7 +71,7 @@
     <Compile Include="Classes\Util\Vector3.cs" />
     <Compile Include="Content.cs" />
     <Compile Include="ControlCollectionEditor.cs" />
-    <Compile Include="CUDATest.cs" />
+    <Compile Include="CUDAInterface.cs" />
     <Compile Include="CUDA\CUDACamData.cs" />
     <Compile Include="CUDA\CUDAMaterial.cs" />
     <Compile Include="CUDA\CUDAObject.cs" />

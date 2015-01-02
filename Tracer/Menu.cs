@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.IO;
 using System.Windows.Forms;
 using Tracer.Classes.Objects;
 using Tracer.Classes.Util;
@@ -122,7 +120,7 @@ namespace Tracer
 
         private void Scene_LoadDefault_Click( object sender, EventArgs e )
         {
-            Renderer.Scene = CUDATest.DefaultScene;
+            Renderer.Scene = CUDAInterface.DefaultScene;
             SceneProperties.SelectedObject = Renderer.Scene;
         }
     }
