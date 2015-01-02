@@ -7,6 +7,7 @@ namespace Tracer.Classes.Util
     /// <summary>
     /// A class representing a 3D vector.
     /// </summary>
+    [Serializable]
     [TypeConverter( typeof ( ExpandableObjectConverter ) )]
     public class Vector3
     {

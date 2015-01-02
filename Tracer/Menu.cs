@@ -2,11 +2,9 @@
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
-using Tracer.Classes;
 using Tracer.Classes.Objects;
 using Tracer.Classes.Util;
 using Tracer.Properties;
-using Color = Tracer.Classes.Util.Color;
 
 namespace Tracer
 {
@@ -25,81 +23,6 @@ namespace Tracer
 
             Renderer.Cam.Position = new Vector3( 0, 45, 80 );
             Renderer.Cam.Angle = new Angle { Pitch = 0, Yaw = 0, Roll = 0f };
-
-            //CUDATest.Run( );
-            
-            RayCaster.Objects.Add( new Sphere( new Vector3( -20, 50, -30 ), 20 )
-            {
-                Material = new Material
-                {
-                    Color = new Color( 0f, 1f, 0f )
-                }
-            } );
-
-            // Light
-            float LightSize = 2000;
-            RayCaster.Objects.Add( new Sphere( new Vector3( 0, LightSize + 90 - .1f, 0 ), LightSize )
-            {
-                Material = new Material
-                {
-                    Color = new Color( 1f, 1f, 1f ),
-                    Radiance = new Color( 1f, 1f, 1f )
-                }
-            } );
-            
-            // Floor
-            RayCaster.Objects.Add( new Plane( new Vector3( 0, 1, 0 ), 0 )
-            {
-                Material = new Material
-                {
-                    Color = new Color( 1f, 1f, 1f )
-                }
-            } );
-
-            // Back
-            RayCaster.Objects.Add( new Plane( new Vector3( 0, 0, 1 ), 90 )
-            {
-                Material = new Material
-                {
-                    Color = new Color( 1f, 1f, 1f )
-                }
-            } );
-            
-            // Ceiling
-            RayCaster.Objects.Add( new Plane( new Vector3( 0, -1, 0 ), 90 )
-            {
-                Material = new Material
-                {
-                    Color = new Color( 1f, 1f, 1f )
-                }
-            } );
-
-            // Left
-            RayCaster.Objects.Add( new Plane( new Vector3( 1, 0, 0 ), 90 )
-            {
-                Material = new Material
-                {
-                    Color = new Color( 1f, 0f, 0f )
-                }
-            } );
-
-            // Right
-            RayCaster.Objects.Add( new Plane( new Vector3( -1, 0, 0 ), 90 )
-            {
-                Material = new Material
-                {
-                    Color = new Color( 0f, 0f, 1f )
-                }
-            } );
-
-            RayCaster.Lights.Add( new Light
-            {
-                DiffuseColor = new Color( 255, 255, 255 ),
-                Position = new Vector3( 150, 70, -35 ),
-                FallOffDistance = 300f,
-                AmbientIntensity = .01f,
-                Intensity = 1f
-            } );
         }
 
         private void Button_Render_Click( object sender, EventArgs e )
@@ -136,13 +59,9 @@ namespace Tracer
             if ( Renderer.Rendering ) return;
             if ( this.RenderImage.Image == null ) return;
 
-            if ( !Directory.Exists( Settings.Default.Image_Folder ) )
-                Directory.CreateDirectory( Settings.Default.Image_Folder );
-
             SaveFileDialog Dialog = new SaveFileDialog
             {
                 Filter = "PNG (*.png)|*.png",
-                InitialDirectory = Settings.Default.Image_Folder,
                 FileName = DateTime.Now.ToShortDateString( ) + "_" + DateTime.Now.ToLongTimeString(  ).Replace( ':', '-' ) + ".png"
             };
 
@@ -162,25 +81,49 @@ namespace Tracer
             Settings.Default.Save( );
         }
 
-        private void Settings_OpenFolder_Click( object sender, EventArgs e )
+        private void Scene_SaveButton_Click( object sender, EventArgs e )
         {
-            Process.Start( Settings.Default[ "Image_Folder" ].ToString( ) );
-        }
-
-        private void Settings_BrowseImageFolder_LinkClicked( object sender, LinkLabelLinkClickedEventArgs e )
-        {
-            FolderBrowserDialog Dialog = new FolderBrowserDialog
+            SaveFileDialog Dialog = new SaveFileDialog
             {
-                SelectedPath = Settings.Default.Image_Folder,
-                Description = Resources.Settings_ImageFolder_Description,
-                ShowNewFolderButton = true
+                Filter = "Path Tracer Scene (*.pts)|*.pts"
             };
+
             if ( Dialog.ShowDialog( ) != DialogResult.OK ) return;
 
-            Settings.Default[ "Image_Folder" ] = Dialog.SelectedPath;
-            Settings.Default.Save( );
+            Content.Save( Dialog.FileName, Renderer.Scene );
 
-            Settings_ImageFolder.Text = Settings.Default.Image_Folder;
+            Settings.Default[ "Location_LastScene" ] = Dialog.FileName;
+            Settings.Default.Save( );
+        }
+
+        private void Scene_LoadButton_Click( object sender, EventArgs e )
+        {
+            OpenFileDialog Dialog = new OpenFileDialog
+            {
+                Filter = "Path Tracer Scene (*.pts)|*.pts"
+            };
+
+            if ( Dialog.ShowDialog( ) != DialogResult.OK ) return;
+
+            try
+            {
+                Renderer.Scene = Content.Load<Scene>( Dialog.FileName );
+                SceneProperties.SelectedObject = Renderer.Scene;
+
+                Settings.Default[ "Location_LastScene" ] = Dialog.FileName;
+                Settings.Default.Save( );
+            }
+            catch
+            {
+                MessageBox.Show( "The loaded PTS file was not a valid path tracer scene." );
+            }
+        }
+
+
+        private void Scene_LoadDefault_Click( object sender, EventArgs e )
+        {
+            Renderer.Scene = CUDATest.DefaultScene;
+            SceneProperties.SelectedObject = Renderer.Scene;
         }
     }
 }

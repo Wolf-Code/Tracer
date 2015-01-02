@@ -47,6 +47,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -58,23 +59,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Camera.cs" />
-    <Compile Include="Classes\CollisionResult.cs" />
-    <Compile Include="Classes\Effects.cs" />
     <Compile Include="Classes\Objects\GraphicsObject.cs" />
     <Compile Include="Classes\Material.cs" />
     <Compile Include="Classes\MathHelper.cs" />
-    <Compile Include="Classes\Objects\LightSphere.cs" />
-    <Compile Include="Classes\Objects\Light.cs" />
-    <Compile Include="Classes\Objects\Ray.cs" />
     <Compile Include="Classes\Objects\Plane.cs" />
     <Compile Include="Classes\Objects\Scene.cs" />
     <Compile Include="Classes\Objects\Sphere.cs" />
-    <Compile Include="Classes\RayCaster.cs" />
-    <Compile Include="Classes\RNG.cs" />
     <Compile Include="Classes\Util\Angle.cs" />
     <Compile Include="Classes\Util\Color.cs" />
     <Compile Include="Classes\Util\Vector2.cs" />
     <Compile Include="Classes\Util\Vector3.cs" />
+    <Compile Include="Content.cs" />
+    <Compile Include="ControlCollectionEditor.cs" />
     <Compile Include="CUDATest.cs" />
     <Compile Include="CUDA\CUDACamData.cs" />
     <Compile Include="CUDA\CUDAMaterial.cs" />

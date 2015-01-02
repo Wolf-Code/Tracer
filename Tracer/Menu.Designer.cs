@@ -34,6 +34,9 @@
             this.Status_Label = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.ToolStrip_Button_Save = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.Scene_SaveButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.Scene_LoadButton = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.RenderImage = new System.Windows.Forms.PictureBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -50,10 +53,7 @@
             this.Button_Render = new System.Windows.Forms.Button();
             this.Tab_Scene = new System.Windows.Forms.TabPage();
             this.SceneProperties = new System.Windows.Forms.PropertyGrid();
-            this.Tab_Settings = new System.Windows.Forms.TabPage();
-            this.Settings_BrowseImageFolder = new System.Windows.Forms.LinkLabel();
-            this.Settings_ImageFolder = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.Scene_LoadDefault = new System.Windows.Forms.ToolStripMenuItem();
             this.Status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -69,7 +69,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_FOV)).BeginInit();
             this.Tab_Scene.SuspendLayout();
-            this.Tab_Settings.SuspendLayout();
             this.SuspendLayout();
             // 
             // Status
@@ -78,7 +77,8 @@
             this.Status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Status_Progress,
             this.Status_Label,
-            this.toolStripDropDownButton1});
+            this.toolStripDropDownButton1,
+            this.toolStripDropDownButton2});
             this.Status.Location = new System.Drawing.Point(0, 454);
             this.Status.Name = "Status";
             this.Status.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -110,10 +110,38 @@
             // ToolStrip_Button_Save
             // 
             this.ToolStrip_Button_Save.Name = "ToolStrip_Button_Save";
-            this.ToolStrip_Button_Save.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.ToolStrip_Button_Save.Size = new System.Drawing.Size(159, 24);
-            this.ToolStrip_Button_Save.Text = "Save";
+            this.ToolStrip_Button_Save.Size = new System.Drawing.Size(155, 24);
+            this.ToolStrip_Button_Save.Text = "Save image";
             this.ToolStrip_Button_Save.Click += new System.EventHandler(this.ToolStrip_Button_Save_Click);
+            // 
+            // toolStripDropDownButton2
+            // 
+            this.toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Scene_SaveButton,
+            this.Scene_LoadButton,
+            this.Scene_LoadDefault});
+            this.toolStripDropDownButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton2.Image")));
+            this.toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
+            this.toolStripDropDownButton2.Size = new System.Drawing.Size(62, 24);
+            this.toolStripDropDownButton2.Text = "Scene";
+            // 
+            // Scene_SaveButton
+            // 
+            this.Scene_SaveButton.Name = "Scene_SaveButton";
+            this.Scene_SaveButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.Scene_SaveButton.Size = new System.Drawing.Size(175, 24);
+            this.Scene_SaveButton.Text = "Save";
+            this.Scene_SaveButton.Click += new System.EventHandler(this.Scene_SaveButton_Click);
+            // 
+            // Scene_LoadButton
+            // 
+            this.Scene_LoadButton.Name = "Scene_LoadButton";
+            this.Scene_LoadButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.Scene_LoadButton.Size = new System.Drawing.Size(175, 24);
+            this.Scene_LoadButton.Text = "Load";
+            this.Scene_LoadButton.Click += new System.EventHandler(this.Scene_LoadButton_Click);
             // 
             // splitContainer1
             // 
@@ -149,7 +177,6 @@
             // 
             this.tabControl1.Controls.Add(this.Tab_Render);
             this.tabControl1.Controls.Add(this.Tab_Scene);
-            this.tabControl1.Controls.Add(this.Tab_Settings);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -370,50 +397,12 @@
             this.SceneProperties.Size = new System.Drawing.Size(228, 425);
             this.SceneProperties.TabIndex = 0;
             // 
-            // Tab_Settings
+            // Scene_LoadDefault
             // 
-            this.Tab_Settings.Controls.Add(this.Settings_BrowseImageFolder);
-            this.Tab_Settings.Controls.Add(this.Settings_ImageFolder);
-            this.Tab_Settings.Controls.Add(this.label3);
-            this.Tab_Settings.Location = new System.Drawing.Point(4, 25);
-            this.Tab_Settings.Name = "Tab_Settings";
-            this.Tab_Settings.Size = new System.Drawing.Size(228, 425);
-            this.Tab_Settings.TabIndex = 2;
-            this.Tab_Settings.Text = "Settings";
-            this.Tab_Settings.UseVisualStyleBackColor = true;
-            // 
-            // Settings_BrowseImageFolder
-            // 
-            this.Settings_BrowseImageFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_BrowseImageFolder.AutoSize = true;
-            this.Settings_BrowseImageFolder.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
-            this.Settings_BrowseImageFolder.Location = new System.Drawing.Point(165, 25);
-            this.Settings_BrowseImageFolder.Name = "Settings_BrowseImageFolder";
-            this.Settings_BrowseImageFolder.Size = new System.Drawing.Size(54, 17);
-            this.Settings_BrowseImageFolder.TabIndex = 3;
-            this.Settings_BrowseImageFolder.TabStop = true;
-            this.Settings_BrowseImageFolder.Text = "Browse";
-            this.Settings_BrowseImageFolder.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Settings_BrowseImageFolder_LinkClicked);
-            // 
-            // Settings_ImageFolder
-            // 
-            this.Settings_ImageFolder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_ImageFolder.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Settings_ImageFolder.Location = new System.Drawing.Point(7, 25);
-            this.Settings_ImageFolder.Name = "Settings_ImageFolder";
-            this.Settings_ImageFolder.ReadOnly = true;
-            this.Settings_ImageFolder.Size = new System.Drawing.Size(152, 22);
-            this.Settings_ImageFolder.TabIndex = 1;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(4, 4);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(86, 17);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Image folder";
+            this.Scene_LoadDefault.Name = "Scene_LoadDefault";
+            this.Scene_LoadDefault.Size = new System.Drawing.Size(175, 24);
+            this.Scene_LoadDefault.Text = "Default scene";
+            this.Scene_LoadDefault.Click += new System.EventHandler(this.Scene_LoadDefault_Click);
             // 
             // Menu
             // 
@@ -441,8 +430,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_FOV)).EndInit();
             this.Tab_Scene.ResumeLayout(false);
-            this.Tab_Settings.ResumeLayout(false);
-            this.Tab_Settings.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -461,9 +448,6 @@
         public System.Windows.Forms.PictureBox RenderImage;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.NumericUpDown Settings_FOV;
-        private System.Windows.Forms.TabPage Tab_Settings;
-        private System.Windows.Forms.Label label3;
-        public System.Windows.Forms.TextBox Settings_ImageFolder;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem ToolStrip_Button_Save;
         private System.Windows.Forms.TabPage Tab_Scene;
@@ -473,8 +457,11 @@
         public System.Windows.Forms.NumericUpDown Settings_Depth;
         public System.Windows.Forms.Button Button_Render;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.LinkLabel Settings_BrowseImageFolder;
         public System.Windows.Forms.PropertyGrid SceneProperties;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
+        private System.Windows.Forms.ToolStripMenuItem Scene_SaveButton;
+        private System.Windows.Forms.ToolStripMenuItem Scene_LoadButton;
+        private System.Windows.Forms.ToolStripMenuItem Scene_LoadDefault;
 
     }
 }

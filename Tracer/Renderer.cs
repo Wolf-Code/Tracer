@@ -25,13 +25,6 @@ namespace Tracer
             Menu.Settings_Resolution_Height.Value = Settings.Default.Render_Resolution_Height;
             Menu.Settings_FOV.Value = ( decimal ) Settings.Default.Render_FOV;
 
-            if ( Settings.Default.Image_Folder.Length == 0 )
-            {
-                Settings.Default[ "Image_Folder" ] = Environment.CurrentDirectory + "\\Images";
-                Settings.Default.Save( );
-            }
-
-            Menu.Settings_ImageFolder.Text = Settings.Default.Image_Folder;
             Menu.Settings_Samples.Value = Settings.Default.Render_Samples;
             Menu.Settings_Depth.Value = Settings.Default.Render_MaxDepth;
 
@@ -39,6 +32,15 @@ namespace Tracer
 
             CUDATest.OnProgress += CudaTestOnOnProgress;
             CUDATest.OnFinished += CUDATest_OnFinished;
+
+            try
+            {
+                Scene = Content.Load<Scene>( Settings.Default.Location_LastScene );
+            }
+            catch
+            {
+                Scene = CUDATest.DefaultScene;
+            }
 
             Menu.SceneProperties.SelectedObject = Scene;
         }

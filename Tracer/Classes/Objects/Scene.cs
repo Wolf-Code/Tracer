@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using Tracer.Classes.Util;
 using Tracer.CUDA;
 
 namespace Tracer.Classes.Objects
 {
+    [Serializable]
     public class Scene
     {
+        [Editor( typeof( ControlCollectionEditor ),
+            typeof( System.Drawing.Design.UITypeEditor ) )]
         public List<GraphicsObject> Objects { set; get; }
 
         public Scene( )

@@ -50,27 +50,6 @@ namespace Tracer.Classes
             this.FOV = FOV;
         }
 
-        /// <summary>
-        /// Creates a ray for a given pixel.
-        /// </summary>
-        /// <param name="PixelX">The horizontal pixel.</param>
-        /// <param name="PixelY">The vertical pixel.</param>
-        /// <returns>The ray belonging to this pixel.</returns>
-        public Ray GetRay( int PixelX, int PixelY )
-        {
-            // Calculate aspect ratio
-            float WH = this.Resolution.X / this.Resolution.Y;
-
-            Ray R = new Ray { Start = this.Position };
-            Vector3 Dir = this.Angle.Forward * A +
-                          this.Angle.Right * ( PixelX / Resolution.X - 0.5f ) * WH -
-                          this.Angle.Up * ( PixelY / Resolution.Y - 0.5f );
-
-            R.Direction = Dir.Normalized(  );
-
-            return R;
-        }
-
         public CUDACamData ToCamData( )
         {
             CUDACamData Data = new CUDACamData( )

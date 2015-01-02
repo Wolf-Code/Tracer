@@ -1,10 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using ManagedCuda.VectorTypes;
 using Tracer.Classes.Util;
 using Tracer.CUDA;
 
 namespace Tracer.Classes
 {
+    [Serializable]
     [TypeConverter( typeof ( ExpandableObjectConverter ) )]
     [Description( "The object's material properties" )]
     public class Material

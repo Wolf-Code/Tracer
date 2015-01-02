@@ -4,6 +4,7 @@ using System.ComponentModel;
 
 namespace Tracer.Classes.Util
 {
+    [Serializable]
     [TypeConverter( typeof( ExpandableObjectConverter ) )]
     public class Color
     {

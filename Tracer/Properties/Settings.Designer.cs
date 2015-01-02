@@ -61,18 +61,6 @@ namespace Tracer.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Image_Folder {
-            get {
-                return ((string)(this["Image_Folder"]));
-            }
-            set {
-                this["Image_Folder"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("5")]
         public uint Render_Samples {
             get {
@@ -92,6 +80,18 @@ namespace Tracer.Properties {
             }
             set {
                 this["Render_MaxDepth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Location_LastScene {
+            get {
+                return ((string)(this["Location_LastScene"]));
+            }
+            set {
+                this["Location_LastScene"] = value;
             }
         }
     }
