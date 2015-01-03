@@ -28,18 +28,15 @@
         /// </summary>
         private void InitializeComponent( )
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
             this.Status = new System.Windows.Forms.StatusStrip();
             this.Status_Progress = new System.Windows.Forms.ToolStripProgressBar();
             this.Status_Label = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
-            this.ToolStrip_Button_Save = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
-            this.Scene_SaveButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.Scene_LoadButton = new System.Windows.Forms.ToolStripMenuItem();
-            this.Scene_LoadDefault = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.RenderImage = new System.Windows.Forms.PictureBox();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.Tab_Output = new System.Windows.Forms.TabPage();
+            this.Output_Text = new System.Windows.Forms.RichTextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Tab_Render = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -51,14 +48,27 @@
             this.Tab_Scene = new System.Windows.Forms.TabPage();
             this.SceneProperties = new System.Windows.Forms.PropertyGrid();
             this.Tab_Settings = new System.Windows.Forms.TabPage();
-            this.Settings_Devices = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.Settings_Devices = new System.Windows.Forms.ComboBox();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripDropDownButton3 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.Scene_SaveButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.Scene_LoadButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.Scene_LoadDefault = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.Image_Save = new System.Windows.Forms.ToolStripMenuItem();
             this.Status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.RenderImage)).BeginInit();
+            this.tabControl2.SuspendLayout();
+            this.Tab_Output.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.Tab_Render.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -67,6 +77,7 @@
             this.Tab_Scene.SuspendLayout();
             this.Tab_Settings.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Status
@@ -74,9 +85,7 @@
             this.Status.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.Status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Status_Progress,
-            this.Status_Label,
-            this.toolStripDropDownButton1,
-            this.toolStripDropDownButton2});
+            this.Status_Label});
             this.Status.Location = new System.Drawing.Point(0, 454);
             this.Status.Name = "Status";
             this.Status.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
@@ -94,78 +103,44 @@
             this.Status_Label.Name = "Status_Label";
             this.Status_Label.Size = new System.Drawing.Size(0, 21);
             // 
-            // toolStripDropDownButton1
-            // 
-            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStrip_Button_Save});
-            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
-            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(34, 24);
-            this.toolStripDropDownButton1.Text = "toolStripDropDownButton1";
-            // 
-            // ToolStrip_Button_Save
-            // 
-            this.ToolStrip_Button_Save.Name = "ToolStrip_Button_Save";
-            this.ToolStrip_Button_Save.Size = new System.Drawing.Size(155, 24);
-            this.ToolStrip_Button_Save.Text = "Save image";
-            this.ToolStrip_Button_Save.Click += new System.EventHandler(this.ToolStrip_Button_Save_Click);
-            // 
-            // toolStripDropDownButton2
-            // 
-            this.toolStripDropDownButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.Scene_SaveButton,
-            this.Scene_LoadButton,
-            this.Scene_LoadDefault});
-            this.toolStripDropDownButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton2.Image")));
-            this.toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
-            this.toolStripDropDownButton2.Size = new System.Drawing.Size(62, 24);
-            this.toolStripDropDownButton2.Text = "Scene";
-            // 
-            // Scene_SaveButton
-            // 
-            this.Scene_SaveButton.Name = "Scene_SaveButton";
-            this.Scene_SaveButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.Scene_SaveButton.Size = new System.Drawing.Size(168, 24);
-            this.Scene_SaveButton.Text = "Save";
-            this.Scene_SaveButton.Click += new System.EventHandler(this.Scene_SaveButton_Click);
-            // 
-            // Scene_LoadButton
-            // 
-            this.Scene_LoadButton.Name = "Scene_LoadButton";
-            this.Scene_LoadButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.Scene_LoadButton.Size = new System.Drawing.Size(168, 24);
-            this.Scene_LoadButton.Text = "Load";
-            this.Scene_LoadButton.Click += new System.EventHandler(this.Scene_LoadButton_Click);
-            // 
-            // Scene_LoadDefault
-            // 
-            this.Scene_LoadDefault.Name = "Scene_LoadDefault";
-            this.Scene_LoadDefault.Size = new System.Drawing.Size(168, 24);
-            this.Scene_LoadDefault.Text = "Default scene";
-            this.Scene_LoadDefault.Click += new System.EventHandler(this.Scene_LoadDefault_Click);
-            // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(0, 28);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.RenderImage);
+            this.splitContainer1.Panel1.Controls.Add(this.splitContainer2);
             this.splitContainer1.Panel1MinSize = 300;
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             this.splitContainer1.Panel2MinSize = 150;
-            this.splitContainer1.Size = new System.Drawing.Size(1079, 454);
+            this.splitContainer1.Size = new System.Drawing.Size(1079, 426);
             this.splitContainer1.SplitterDistance = 839;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.RenderImage);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.tabControl2);
+            this.splitContainer2.Size = new System.Drawing.Size(839, 426);
+            this.splitContainer2.SplitterDistance = 280;
+            this.splitContainer2.TabIndex = 1;
             // 
             // RenderImage
             // 
@@ -173,10 +148,41 @@
             this.RenderImage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RenderImage.Location = new System.Drawing.Point(0, 0);
             this.RenderImage.Name = "RenderImage";
-            this.RenderImage.Size = new System.Drawing.Size(839, 454);
+            this.RenderImage.Size = new System.Drawing.Size(839, 280);
             this.RenderImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.RenderImage.TabIndex = 0;
             this.RenderImage.TabStop = false;
+            // 
+            // tabControl2
+            // 
+            this.tabControl2.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+            this.tabControl2.Controls.Add(this.Tab_Output);
+            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl2.Location = new System.Drawing.Point(0, 0);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(839, 142);
+            this.tabControl2.TabIndex = 0;
+            // 
+            // Tab_Output
+            // 
+            this.Tab_Output.Controls.Add(this.Output_Text);
+            this.Tab_Output.Location = new System.Drawing.Point(4, 4);
+            this.Tab_Output.Name = "Tab_Output";
+            this.Tab_Output.Padding = new System.Windows.Forms.Padding(3);
+            this.Tab_Output.Size = new System.Drawing.Size(831, 113);
+            this.Tab_Output.TabIndex = 0;
+            this.Tab_Output.Text = "Output";
+            this.Tab_Output.UseVisualStyleBackColor = true;
+            // 
+            // Output_Text
+            // 
+            this.Output_Text.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Output_Text.Location = new System.Drawing.Point(3, 3);
+            this.Output_Text.Name = "Output_Text";
+            this.Output_Text.Size = new System.Drawing.Size(825, 107);
+            this.Output_Text.TabIndex = 0;
+            this.Output_Text.Text = "";
             // 
             // tabControl1
             // 
@@ -187,7 +193,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(236, 454);
+            this.tabControl1.Size = new System.Drawing.Size(236, 426);
             this.tabControl1.TabIndex = 0;
             // 
             // Tab_Render
@@ -197,7 +203,7 @@
             this.Tab_Render.Location = new System.Drawing.Point(4, 25);
             this.Tab_Render.Name = "Tab_Render";
             this.Tab_Render.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_Render.Size = new System.Drawing.Size(228, 425);
+            this.Tab_Render.Size = new System.Drawing.Size(228, 397);
             this.Tab_Render.TabIndex = 1;
             this.Tab_Render.Text = "Rendering";
             this.Tab_Render.UseVisualStyleBackColor = true;
@@ -303,7 +309,7 @@
             this.Tab_Scene.Controls.Add(this.SceneProperties);
             this.Tab_Scene.Location = new System.Drawing.Point(4, 25);
             this.Tab_Scene.Name = "Tab_Scene";
-            this.Tab_Scene.Size = new System.Drawing.Size(228, 425);
+            this.Tab_Scene.Size = new System.Drawing.Size(228, 397);
             this.Tab_Scene.TabIndex = 3;
             this.Tab_Scene.Text = "Scene";
             this.Tab_Scene.UseVisualStyleBackColor = true;
@@ -313,7 +319,7 @@
             this.SceneProperties.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SceneProperties.Location = new System.Drawing.Point(0, 0);
             this.SceneProperties.Name = "SceneProperties";
-            this.SceneProperties.Size = new System.Drawing.Size(228, 425);
+            this.SceneProperties.Size = new System.Drawing.Size(228, 397);
             this.SceneProperties.TabIndex = 0;
             // 
             // Tab_Settings
@@ -322,19 +328,10 @@
             this.Tab_Settings.Location = new System.Drawing.Point(4, 25);
             this.Tab_Settings.Name = "Tab_Settings";
             this.Tab_Settings.Padding = new System.Windows.Forms.Padding(3);
-            this.Tab_Settings.Size = new System.Drawing.Size(228, 425);
+            this.Tab_Settings.Size = new System.Drawing.Size(228, 397);
             this.Tab_Settings.TabIndex = 4;
             this.Tab_Settings.Text = "Settings";
             this.Tab_Settings.UseVisualStyleBackColor = true;
-            // 
-            // Settings_Devices
-            // 
-            this.Settings_Devices.FormattingEnabled = true;
-            this.Settings_Devices.Location = new System.Drawing.Point(5, 21);
-            this.Settings_Devices.Name = "Settings_Devices";
-            this.Settings_Devices.Size = new System.Drawing.Size(202, 24);
-            this.Settings_Devices.TabIndex = 0;
-            this.Settings_Devices.SelectedIndexChanged += new System.EventHandler(this.Settings_Devices_SelectedIndexChanged);
             // 
             // groupBox1
             // 
@@ -346,11 +343,83 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Device";
             // 
+            // Settings_Devices
+            // 
+            this.Settings_Devices.FormattingEnabled = true;
+            this.Settings_Devices.Location = new System.Drawing.Point(5, 21);
+            this.Settings_Devices.Name = "Settings_Devices";
+            this.Settings_Devices.Size = new System.Drawing.Size(202, 24);
+            this.Settings_Devices.TabIndex = 0;
+            this.Settings_Devices.SelectedIndexChanged += new System.EventHandler(this.Settings_Devices_SelectedIndexChanged);
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripDropDownButton3,
+            this.toolStripDropDownButton2});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(1079, 27);
+            this.toolStrip1.TabIndex = 2;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripDropDownButton3
+            // 
+            this.toolStripDropDownButton3.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Scene_SaveButton,
+            this.Scene_LoadButton,
+            this.Scene_LoadDefault});
+            this.toolStripDropDownButton3.Image = global::Tracer.Properties.Resources.photo;
+            this.toolStripDropDownButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton3.Name = "toolStripDropDownButton3";
+            this.toolStripDropDownButton3.Size = new System.Drawing.Size(82, 24);
+            this.toolStripDropDownButton3.Text = "Scene";
+            // 
+            // Scene_SaveButton
+            // 
+            this.Scene_SaveButton.Name = "Scene_SaveButton";
+            this.Scene_SaveButton.Size = new System.Drawing.Size(162, 24);
+            this.Scene_SaveButton.Text = "Save scene";
+            this.Scene_SaveButton.Click += new System.EventHandler(this.Scene_SaveButton_Click);
+            // 
+            // Scene_LoadButton
+            // 
+            this.Scene_LoadButton.Name = "Scene_LoadButton";
+            this.Scene_LoadButton.Size = new System.Drawing.Size(162, 24);
+            this.Scene_LoadButton.Text = "Load scene";
+            this.Scene_LoadButton.Click += new System.EventHandler(this.Scene_LoadButton_Click);
+            // 
+            // Scene_LoadDefault
+            // 
+            this.Scene_LoadDefault.Name = "Scene_LoadDefault";
+            this.Scene_LoadDefault.Size = new System.Drawing.Size(162, 24);
+            this.Scene_LoadDefault.Text = "Load default";
+            this.Scene_LoadDefault.Click += new System.EventHandler(this.Scene_LoadDefault_Click);
+            // 
+            // toolStripDropDownButton2
+            // 
+            this.toolStripDropDownButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.Image_Save});
+            this.toolStripDropDownButton2.Image = global::Tracer.Properties.Resources.image;
+            this.toolStripDropDownButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton2.Name = "toolStripDropDownButton2";
+            this.toolStripDropDownButton2.Size = new System.Drawing.Size(85, 24);
+            this.toolStripDropDownButton2.Text = "Image";
+            // 
+            // Image_Save
+            // 
+            this.Image_Save.Name = "Image_Save";
+            this.Image_Save.Size = new System.Drawing.Size(175, 24);
+            this.Image_Save.Text = "Save image";
+            this.Image_Save.Click += new System.EventHandler(this.Image_Save_Click);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1079, 480);
+            this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.Status);
             this.Name = "Menu";
@@ -361,7 +430,13 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.RenderImage)).EndInit();
+            this.tabControl2.ResumeLayout(false);
+            this.Tab_Output.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.Tab_Render.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
@@ -371,6 +446,8 @@
             this.Tab_Scene.ResumeLayout(false);
             this.Tab_Settings.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -385,8 +462,6 @@
         public System.Windows.Forms.ToolStripProgressBar Status_Progress;
         public System.Windows.Forms.ToolStripStatusLabel Status_Label;
         public System.Windows.Forms.PictureBox RenderImage;
-        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
-        private System.Windows.Forms.ToolStripMenuItem ToolStrip_Button_Save;
         private System.Windows.Forms.TabPage Tab_Scene;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
@@ -394,14 +469,21 @@
         public System.Windows.Forms.NumericUpDown Settings_Depth;
         public System.Windows.Forms.Button Button_Render;
         public System.Windows.Forms.PropertyGrid SceneProperties;
-        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
-        private System.Windows.Forms.ToolStripMenuItem Scene_SaveButton;
-        private System.Windows.Forms.ToolStripMenuItem Scene_LoadButton;
-        private System.Windows.Forms.ToolStripMenuItem Scene_LoadDefault;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TabPage Tab_Settings;
         private System.Windows.Forms.GroupBox groupBox1;
         public System.Windows.Forms.ComboBox Settings_Devices;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.TabControl tabControl2;
+        private System.Windows.Forms.TabPage Tab_Output;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        public System.Windows.Forms.RichTextBox Output_Text;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton3;
+        private System.Windows.Forms.ToolStripMenuItem Scene_SaveButton;
+        private System.Windows.Forms.ToolStripMenuItem Scene_LoadButton;
+        private System.Windows.Forms.ToolStripMenuItem Scene_LoadDefault;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
+        private System.Windows.Forms.ToolStripMenuItem Image_Save;
 
     }
 }

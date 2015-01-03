@@ -76,6 +76,7 @@
     <Compile Include="Content.cs" />
     <Compile Include="ControlCollectionEditor.cs" />
     <Compile Include="IDevice.cs" />
+    <Compile Include="Output.cs" />
     <Compile Include="Renderers\CUDARenderer.cs" />
     <Compile Include="CUDA\CUDACamData.cs" />
     <Compile Include="CUDA\CUDAMaterial.cs" />
@@ -122,6 +123,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\photo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\OpenCL.Net.2.2.9.0\build\net40\OpenCL.Net.targets" Condition="Exists('packages\OpenCL.Net.2.2.9.0\build\net40\OpenCL.Net.targets')" />

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Windows.Forms;
 using Tracer.Classes.Objects;
-using Tracer.Classes.Util;
 using Tracer.Properties;
-using Tracer.Renderers;
 
 namespace Tracer
 {
     public partial class Menu : Form
     {
+        private static Menu M;
         public Menu( )
         {
             InitializeComponent( );
@@ -18,6 +17,8 @@ namespace Tracer
         {
             base.OnLoad( e );
 
+            M = this;
+            Output.Initialize( this );
             Renderer.Initialize( this );
         }
 
@@ -27,21 +28,6 @@ namespace Tracer
                 Renderer.RenderImage( );
             else
                 Renderer.CancelRendering( );
-        }
-
-        private void ToolStrip_Button_Save_Click( object sender, EventArgs e )
-        {
-            if ( Renderer.Rendering ) return;
-            if ( this.RenderImage.Image == null ) return;
-
-            SaveFileDialog Dialog = new SaveFileDialog
-            {
-                Filter = "PNG (*.png)|*.png",
-                FileName = DateTime.Now.ToShortDateString( ) + "_" + DateTime.Now.ToLongTimeString(  ).Replace( ':', '-' ) + ".png"
-            };
-
-            if ( Dialog.ShowDialog( ) == DialogResult.OK )
-                this.RenderImage.Image.Save( Dialog.FileName );
         }
 
         private void Settings_Depth_ValueChanged( object sender, EventArgs e )
@@ -104,6 +90,29 @@ namespace Tracer
         private void Settings_Devices_SelectedIndexChanged(object sender, EventArgs e)
         {
             IDevice Dev = Settings_Devices.SelectedItem as IDevice;
+        }
+
+        public static void Perform( Action Act )
+        {
+            if ( M.InvokeRequired )
+                M.Invoke( Act );
+            else
+                Act( );
+        }
+
+        private void Image_Save_Click(object sender, EventArgs e)
+        {
+            if (Renderer.Rendering) return;
+            if (this.RenderImage.Image == null) return;
+
+            SaveFileDialog Dialog = new SaveFileDialog
+            {
+                Filter = "PNG (*.png)|*.png",
+                FileName = DateTime.Now.ToShortDateString() + "_" + DateTime.Now.ToLongTimeString().Replace(':', '-') + ".png"
+            };
+
+            if (Dialog.ShowDialog() == DialogResult.OK)
+                this.RenderImage.Image.Save(Dialog.FileName);
         }
     }
 }
