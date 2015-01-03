@@ -50,6 +50,9 @@
             this.Button_Render = new System.Windows.Forms.Button();
             this.Tab_Scene = new System.Windows.Forms.TabPage();
             this.SceneProperties = new System.Windows.Forms.PropertyGrid();
+            this.Tab_Settings = new System.Windows.Forms.TabPage();
+            this.Settings_Devices = new System.Windows.Forms.ComboBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.Status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -62,6 +65,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Samples)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).BeginInit();
             this.Tab_Scene.SuspendLayout();
+            this.Tab_Settings.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Status
@@ -177,6 +182,7 @@
             // 
             this.tabControl1.Controls.Add(this.Tab_Render);
             this.tabControl1.Controls.Add(this.Tab_Scene);
+            this.tabControl1.Controls.Add(this.Tab_Settings);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -310,6 +316,36 @@
             this.SceneProperties.Size = new System.Drawing.Size(228, 425);
             this.SceneProperties.TabIndex = 0;
             // 
+            // Tab_Settings
+            // 
+            this.Tab_Settings.Controls.Add(this.groupBox1);
+            this.Tab_Settings.Location = new System.Drawing.Point(4, 25);
+            this.Tab_Settings.Name = "Tab_Settings";
+            this.Tab_Settings.Padding = new System.Windows.Forms.Padding(3);
+            this.Tab_Settings.Size = new System.Drawing.Size(228, 425);
+            this.Tab_Settings.TabIndex = 4;
+            this.Tab_Settings.Text = "Settings";
+            this.Tab_Settings.UseVisualStyleBackColor = true;
+            // 
+            // Settings_Devices
+            // 
+            this.Settings_Devices.FormattingEnabled = true;
+            this.Settings_Devices.Location = new System.Drawing.Point(5, 21);
+            this.Settings_Devices.Name = "Settings_Devices";
+            this.Settings_Devices.Size = new System.Drawing.Size(202, 24);
+            this.Settings_Devices.TabIndex = 0;
+            this.Settings_Devices.SelectedIndexChanged += new System.EventHandler(this.Settings_Devices_SelectedIndexChanged);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.Settings_Devices);
+            this.groupBox1.Location = new System.Drawing.Point(7, 4);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(213, 50);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Device";
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -333,6 +369,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Samples)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).EndInit();
             this.Tab_Scene.ResumeLayout(false);
+            this.Tab_Settings.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -361,6 +399,9 @@
         private System.Windows.Forms.ToolStripMenuItem Scene_LoadButton;
         private System.Windows.Forms.ToolStripMenuItem Scene_LoadDefault;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TabPage Tab_Settings;
+        private System.Windows.Forms.GroupBox groupBox1;
+        public System.Windows.Forms.ComboBox Settings_Devices;
 
     }
 }

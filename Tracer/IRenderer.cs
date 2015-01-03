@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Tracer.Classes.Objects;
 
@@ -27,5 +28,7 @@ namespace Tracer
         void RenderImage( Scene Scn, uint Samples, uint Depth );
         void Cancel( );
         void Run( );
+
+        List<IDevice> GetDevices( );
     }
 }

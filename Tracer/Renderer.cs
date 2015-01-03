@@ -39,6 +39,11 @@ namespace Tracer
 
             RenderInstance.OnProgress += RendererOnProgress;
             RenderInstance.OnFinished += RendererOnFinished;
+
+            foreach ( IDevice Dev in RenderInstance.GetDevices( ) )
+                Menu.Settings_Devices.Items.Add( Dev );
+
+            Menu.Settings_Devices.SelectedIndex = 0;
         }
 
         private static void RendererOnFinished(object sender, RendererFinishedEventArgs e)

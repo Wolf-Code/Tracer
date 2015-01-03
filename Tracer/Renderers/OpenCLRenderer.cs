@@ -81,5 +81,10 @@ namespace Tracer.Renderers
         public void RenderImage( Scene Scn, uint Samples, uint Depth )
         {
         }
+
+        public List<IDevice> GetDevices( )
+        {
+            return new List<IDevice>( );
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using Tracer.Classes.Objects;
 using Tracer.Classes.Util;
 using Tracer.Properties;
+using Tracer.Renderers;
 
 namespace Tracer
 {
@@ -98,6 +99,11 @@ namespace Tracer
         {
             Renderer.Scene = Scene.Default;
             SceneProperties.SelectedObject = Renderer.Scene;
+        }
+
+        private void Settings_Devices_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            IDevice Dev = Settings_Devices.SelectedItem as IDevice;
         }
     }
 }

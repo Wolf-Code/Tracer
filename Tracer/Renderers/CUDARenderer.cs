@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using ManagedCuda;
@@ -10,6 +11,21 @@ using Tracer.Properties;
 
 namespace Tracer.Renderers
 {
+    public class CUDADevice : IDevice
+    {
+        public CudaDeviceProperties Device;
+
+        public string Name
+        {
+            get { return Device.DeviceName; }
+        }
+
+        public override string ToString( )
+        {
+            return Name;
+        }
+    }
+
     public class CUDARenderer : IRenderer
     {
         public event EventHandler<RendererProgressEventArgs> OnProgress;
@@ -156,6 +172,17 @@ namespace Tracer.Renderers
             } );
 
             RenderThread.Start( );
+        }
+
+        public List<IDevice> GetDevices( )
+        {
+            List<IDevice> Devices = new List<IDevice>( );
+            for ( int X = 0; X < CudaContext.GetDeviceCount( ); X++ )
+            {
+                Devices.Add( new CUDADevice { Device = CudaContext.GetDeviceInfo( X ) } );
+            }
+
+            return Devices;
         }
     }
 }
