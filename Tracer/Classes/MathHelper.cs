@@ -19,5 +19,10 @@ namespace Tracer.Classes
         {
             return Math.Min( Max, Math.Max( Min, Value ) );
         }
+
+        public static float Clamp( float Value, float Min, float Max )
+        {
+            return Math.Min( Max, Math.Max( Min, Value ) );
+        }
     }
 }

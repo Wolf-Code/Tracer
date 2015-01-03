@@ -10,6 +10,8 @@ public:
     __device__ static float3 MakeVector( float, float, float );
     __device__ static float3 Reflect( float3, float3 );
 	__device__ static float3 RandomCosineDirectionInSameDirection( float3, curandState* );
+	__device__ static float3 RandomDirectionInSameDirection( float3, curandState* );
+	__device__ static float3 RandomDirection( curandState* );
 };
 
 __device__ float3 operator/( float3, float );
@@ -17,7 +19,7 @@ __device__ float3 operator*( float3, float );
 __device__ float3 operator*( float, float3 );
 __device__ float3 operator*( float3, float3 );
 __device__ float3 operator+( float3, float3 );
-__device__ float3 operator+=( float3, float3 );
+__device__ void operator+=( float3&, float3 );
 __device__ float3 operator-( float3, float3 );
 
 __device__ float VectorMath::Dot( float3 Vector, float3 Vector2 )
@@ -60,7 +62,7 @@ __device__ float3 VectorMath::Reflect( float3 Vector, float3 Normal )
 	return Vector - 2.0f * VectorMath::Dot( Vector, Normal ) * Normal;
 }
 
-__device__ float3 VectorMath::RandomCosineDirectionInSameDirection( float3 Direction, curandState* RandState )
+__device__ float3 VectorMath::RandomDirection( curandState* RandState )
 {
 	float3 Rand = VectorMath::MakeVector( curand_uniform( RandState ) * 2.0f - 1.0f,
 										  curand_uniform( RandState ) * 2.0f - 1.0f,
@@ -68,8 +70,22 @@ __device__ float3 VectorMath::RandomCosineDirectionInSameDirection( float3 Direc
 
 	Rand = VectorMath::Normalized( Rand );
 
+	return Rand;
+}
+
+__device__ float3 VectorMath::RandomDirectionInSameDirection( float3 Direction, curandState* RandState )
+{
+	float3 Rand = VectorMath::RandomDirection( RandState );
+
 	if ( VectorMath::Dot( Direction, Rand ) < 0 )
 		Rand = Rand * -1;
+
+	return Rand;
+}
+
+__device__ float3 VectorMath::RandomCosineDirectionInSameDirection( float3 Direction, curandState* RandState )
+{
+	float3 Rand = VectorMath::RandomDirectionInSameDirection( Direction, RandState );
 
 	Rand = VectorMath::Normalized( Rand + Direction );
 
@@ -120,9 +136,11 @@ __device__ float3 operator+( float3 Vector, float3 Vector2 )
 		);
 }
 
-__device__ float3 operator+=( float3 Vector, float3 Vector2 )
+__device__ void operator+=( float3& Vector, float3 Vector2 )
 {
-	return Vector + Vector2;
+	Vector.x += Vector2.x;
+	Vector.y += Vector2.y;
+	Vector.z += Vector2.z;
 }
 
 __device__ float3 operator-( float3 Vector, float3 Vector2 )

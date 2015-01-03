@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="Render_Samples" Type="System.UInt32" Scope="User">
-      <Value Profile="(Default)">5</Value>
+      <Value Profile="(Default)">100</Value>
     </Setting>
     <Setting Name="Render_MaxDepth" Type="System.UInt32" Scope="User">
-      <Value Profile="(Default)">2</Value>
+      <Value Profile="(Default)">5</Value>
     </Setting>
     <Setting Name="Location_LastScene" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

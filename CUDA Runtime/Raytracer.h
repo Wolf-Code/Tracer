@@ -20,6 +20,7 @@ class Raytracer
 {
 public:
     __device__ static CollisionResult Trace( Ray*, Object*, int );
+	__device__ static float CalculateBDRF( MaterialType, CollisionResult, Ray* );
 
     template <int>
     __device__ static float3 Radiance( Ray*, Object*, int, curandState* );
@@ -40,36 +41,45 @@ __device__ CollisionResult Raytracer::Trace( Ray* R, Object* Objects, int Object
     return Res;
 }
 
+__device__ float Raytracer::CalculateBDRF( MaterialType Type, CollisionResult Result, Ray* Ray )
+{
+	switch ( Type )
+	{
+		case Diffuse:
+			float cos_theta = VectorMath::Dot( Ray->Direction, Result.Normal );
+			return ( 2.0f * cos_theta ) * OneOverPI;
+		case Reflective:
+			return 1.0f;
+		default:
+			return 1.0f;
+	}
+}
+
 template <int depth>
 __device__ float3 Raytracer::Radiance( Ray* R, Object* Objects, int ObjectCount, curandState* RandState )
 {
-    CollisionResult Res = Raytracer::Trace( R, Objects, ObjectCount );
+    const CollisionResult Res = Raytracer::Trace( R, Objects, ObjectCount );
     if ( !Res.Hit )
         return float3( );
 
 	const Material Mat = Res.HitObject->Material;
 
-    float3 Rad = Mat.Radiance;
+    const float3 Rad = Mat.Radiance;
     if ( Rad.x >= 1 || Rad.y >= 1 || Rad.z >= 1 )
         return Rad;
 
     R->Depth += 1;
     R->Start = Res.Position + Res.Normal * Bias;
 
-	float3 RandomDirection = VectorMath::RandomCosineDirectionInSameDirection( Res.Normal, RandState );
-
-	float BDRF = 1.0f;
+	float3 RandomDirection = VectorMath::RandomDirectionInSameDirection( Res.Normal, RandState );
 
 	switch ( Mat.Type )
 	{
-		case MaterialType::Diffuse:
+		case Diffuse:
 			R->Direction = RandomDirection;
-
-			float cos_theta = VectorMath::Dot( R->Direction, Res.Normal );
-			BDRF = ( 2.0f * cos_theta ) * OneOverPI;
 			break;
 
-		case MaterialType::Reflective:
+		case Reflective:
 			float3 Ref = VectorMath::Reflect( R->Direction, Res.Normal );
 			float Glossyness = Mat.Glossyness;
 			if ( Glossyness > 0 )
@@ -81,7 +91,7 @@ __device__ float3 Raytracer::Radiance( Ray* R, Object* Objects, int ObjectCount,
 			break;
 	}
 
-    return Rad + Mat.Color * ( Radiance<depth + 1>( R, Objects, ObjectCount, RandState ) * BDRF );
+	return Rad + Mat.Color * ( Radiance<depth + 1>( R, Objects, ObjectCount, RandState ) * CalculateBDRF( Mat.Type, Res, R ) );
 }
 
 template<>
