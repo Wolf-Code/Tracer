@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using OpenCL.Net;
 using Tracer.Classes.Objects;
+using Tracer.Interfaces;
 
 namespace Tracer.Renderers
 {
@@ -56,13 +57,6 @@ namespace Tracer.Renderers
             }
 
             _device = devicesList[ 0 ];
-
-            if ( Cl.GetDeviceInfo( _device, DeviceInfo.ImageSupport,
-                out error ).CastTo<Bool>( ) == Bool.False )
-            {
-                Console.WriteLine( "No image support." );
-                return;
-            }
             _context
                 = Cl.CreateContext( null, 1, new [ ] { _device }, ContextNotify,
                     IntPtr.Zero, out error ); //Second parameter is amount of devices

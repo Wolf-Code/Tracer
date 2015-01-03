@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Tracer.Classes.Objects;
+using Tracer.Interfaces;
 using Tracer.Properties;
 using Tracer.Renderers;
 

@@ -52,14 +52,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Design" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\Camera.cs" />
@@ -74,9 +68,12 @@
     <Compile Include="Classes\Util\Vector2.cs" />
     <Compile Include="Classes\Util\Vector3.cs" />
     <Compile Include="Content.cs" />
-    <Compile Include="ControlCollectionEditor.cs" />
-    <Compile Include="IDevice.cs" />
+    <Compile Include="Classes\ControlCollectionEditor.cs" />
+    <Compile Include="Interfaces\IDevice.cs" />
     <Compile Include="Output.cs" />
+    <Compile Include="EventArgs\RendererFinishedEventArgs.cs" />
+    <Compile Include="EventArgs\RendererProgressEventArgs.cs" />
+    <Compile Include="Renderers\CUDADevice.cs" />
     <Compile Include="Renderers\CUDARenderer.cs" />
     <Compile Include="CUDA\CUDACamData.cs" />
     <Compile Include="CUDA\CUDAMaterial.cs" />
@@ -85,7 +82,7 @@
     <Compile Include="CUDA\CUDASphereObject.cs" />
     <Compile Include="CUDA\CUDAMaterialType.cs" />
     <Compile Include="CUDA\CUDAObjectType.cs" />
-    <Compile Include="IRenderer.cs" />
+    <Compile Include="Interfaces\IRenderer.cs" />
     <Compile Include="Menu.cs">
       <SubType>Form</SubType>
     </Compile>

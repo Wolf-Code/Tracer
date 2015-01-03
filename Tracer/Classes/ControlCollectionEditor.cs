@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Tracer.Classes.Objects;
 
-namespace Tracer
+namespace Tracer.Classes
 {
     // Kudos to Keith DeGrace at http://www.pcreview.co.uk/forums/propertygrid-collectioneditor-problem-t1316579.html
     // for posting his solution, upon which mine is based.
