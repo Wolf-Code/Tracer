@@ -30,45 +30,45 @@ namespace Tracer.Classes.Objects
                 {
                     Camera =
                     {
-                        Position = new Vector3(0, 45, 80),
+                        Position = new Vector3( 0, 90, 80 ),
                         Angle = new Angle { Pitch = 0, Yaw = 0, Roll = 0f }
                     }
                 };
 
 
-                Sphere Light = Scn.AddSphere(new Vector3(0, 2000 + 90 - .15f, 0), 2000);
+                Sphere Light = Scn.AddSphere( new Vector3( 0, 2000 + 180 - .15f, 0 ), 2000 );
                 Light.Name = "Light";
-                Light.Material.Radiance = new Util.Color(12f, 12f, 12f);
+                Light.Material.Radiance = new Util.Color( 12f, 12f, 12f );
 
-                Plane Floor = Scn.AddPlane(new Vector3(0, 1, 0), 0);
+                Plane Floor = Scn.AddPlane( new Vector3( 0, 1, 0 ), 0 );
                 Floor.Name = "Floor";
-                Floor.Material.Color = new Util.Color(1f, 1f, 1f);
+                Floor.Material.Color = new Util.Color( 1f, 1f, 1f );
 
-                Plane Front = Scn.AddPlane(new Vector3(0, 0, 1), 90);
+                Plane Front = Scn.AddPlane( new Vector3( 0, 0, 1 ), 90 );
                 Front.Name = "Front";
-                Front.Material.Color = new Util.Color(1f, 1f, 1f);
+                Front.Material.Color = new Util.Color( 1f, 1f, 1f );
 
-                Plane Back = Scn.AddPlane(new Vector3(0, 0, -1), 90);
+                Plane Back = Scn.AddPlane( new Vector3( 0, 0, -1 ), 90 );
                 Back.Name = "Back";
-                Back.Material.Color = new Util.Color(1f, 1f, 1f);
+                Back.Material.Color = new Util.Color( 1f, 1f, 1f );
 
-                Plane Ceiling = Scn.AddPlane(new Vector3(0, -1, 0), 90);
+                Plane Ceiling = Scn.AddPlane( new Vector3( 0, -1, 0 ), 180 );
                 Ceiling.Name = "Ceiling";
-                Ceiling.Material.Color = new Util.Color(1f, 1f, 1f);
+                Ceiling.Material.Color = new Util.Color( 1f, 1f, 1f );
 
-                Plane Left = Scn.AddPlane(new Vector3(1, 0, 0), 90);
+                Plane Left = Scn.AddPlane( new Vector3( 1, 0, 0 ), 90 );
                 Left.Name = "Left";
-                Left.Material.Color = new Util.Color(1f, 0f, 0f);
+                Left.Material.Color = new Util.Color( 1f, .5f, .5f );
 
-                Plane Right = Scn.AddPlane(new Vector3(-1, 0, 0), 90);
+                Plane Right = Scn.AddPlane( new Vector3( -1, 0, 0 ), 90 );
                 Right.Name = "Right";
-                Right.Material.Color = new Util.Color(0, 0f, 1f);
+                Right.Material.Color = new Util.Color( .5f, .5f, 1f );
 
-                Sphere GreenSphere = Scn.AddSphere(new Vector3(-20, 50, -30), 20);
-                GreenSphere.Name = "Green sphere";
-                GreenSphere.Material.Color = new Util.Color(0, 1f, 0f);
+                Sphere WhiteSphere = Scn.AddSphere( new Vector3( -40, 30, -40 ), 30 );
+                WhiteSphere.Name = "White sphere";
+                WhiteSphere.Material.Color = new Util.Color( 1f, 1f, 1f );
 
-                Sphere MirrorSphere = Scn.AddSphere(new Vector3(20, 40, -20), 20);
+                Sphere MirrorSphere = Scn.AddSphere( new Vector3( 40, 20, -20 ), 20 );
                 MirrorSphere.Name = "Mirror sphere";
                 MirrorSphere.Material.Type = CUDAMaterialType.Reflective;
                 MirrorSphere.Material.Glossyness = 0f;

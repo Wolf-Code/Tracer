@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Linq;
 
 namespace Tracer
 {
@@ -21,15 +22,14 @@ namespace Tracer
         {
             Menu.Perform( ( ) =>
             {
-                Menu.Output_Text.AppendText( "[" + DateTime.Now.ToLongTimeString(  ) + "] " + Line + "\n" ); 
-                Menu.Output_Text.ScrollToCaret(  );
+                Menu.Output_Text.AppendText( "[" + DateTime.Now.ToLongTimeString( ) + "] " + Line + "\n" );
 
-                if ( Menu.Output_Text.Lines.Length <= MaxLines ) return;
+                if ( Menu.Output_Text.Lines.Length > MaxLines )
+                    Menu.Output_Text.Lines =
+                        Menu.Output_Text.Lines.Skip( Menu.Output_Text.Lines.Length - MaxLines ).ToArray( );
 
-                string [ ] Temp = new string[ MaxLines ];
-                Array.Copy( Menu.Output_Text.Lines, Menu.Output_Text.Lines.Length - MaxLines, Temp, 0, MaxLines );
-
-                Menu.Output_Text.Lines = Temp;
+                Menu.Output_Text.SelectionStart = Menu.Output_Text.Text.Length;
+                Menu.Output_Text.ScrollToCaret( );
             } );
         }
     }

@@ -13,6 +13,8 @@
 #include "CamData.h"
 
 #define PI 3.1415926535
+#define OneOverPI 0.31830988618
+#define Bias 0.01
 
 class Raytracer
 {
@@ -45,29 +47,31 @@ __device__ float3 Raytracer::Radiance( Ray* R, Object* Objects, int ObjectCount,
     if ( !Res.Hit )
         return float3( );
 
-    float3 Rad = Res.HitObject->Material.Radiance;
+	const Material Mat = Res.HitObject->Material;
+
+    float3 Rad = Mat.Radiance;
     if ( Rad.x >= 1 || Rad.y >= 1 || Rad.z >= 1 )
         return Rad;
 
     R->Depth += 1;
-    R->Start = Res.Position + Res.Normal;
+    R->Start = Res.Position + Res.Normal * Bias;
 
 	float3 RandomDirection = VectorMath::RandomCosineDirectionInSameDirection( Res.Normal, RandState );
 
 	float BDRF = 1.0f;
 
-	switch ( Res.HitObject->Material.Type )
+	switch ( Mat.Type )
 	{
 		case MaterialType::Diffuse:
 			R->Direction = RandomDirection;
 
 			float cos_theta = VectorMath::Dot( R->Direction, Res.Normal );
-			BDRF = BDRF = ( 2.0f * cos_theta ) / PI;
+			BDRF = ( 2.0f * cos_theta ) * OneOverPI;
 			break;
 
 		case MaterialType::Reflective:
 			float3 Ref = VectorMath::Reflect( R->Direction, Res.Normal );
-			float Glossyness = Res.HitObject->Material.Glossyness;
+			float Glossyness = Mat.Glossyness;
 			if ( Glossyness > 0 )
 			{
 				float3 Rand = RandomDirection;
@@ -77,7 +81,7 @@ __device__ float3 Raytracer::Radiance( Ray* R, Object* Objects, int ObjectCount,
 			break;
 	}
 
-    return Rad + Res.HitObject->Material.Color * ( Radiance<depth + 1>( R, Objects, ObjectCount, RandState ) * BDRF );
+    return Rad + Mat.Color * ( Radiance<depth + 1>( R, Objects, ObjectCount, RandState ) * BDRF );
 }
 
 template<>

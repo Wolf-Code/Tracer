@@ -1,13 +1,9 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using ManagedCuda.VectorTypes;
-using Tracer.Classes;
 using Tracer.Classes.Util;
-using Color = System.Drawing.Color;
 
 namespace Tracer
 {
@@ -40,10 +36,13 @@ namespace Tracer
             Parallel.For( 0, WH, Var =>
             {
                 float3 Val = Array[ Var ] / Samples;
+                if ( Val.x > 1 || Val.y > 1 || Val.z > 1 )
+                    Val.Normalize( );
+
                 Var *= 4;
-                ByteArray[ Var ] = ( byte ) MathHelper.Clamp( ( int ) ( Val.z * 255 ), 0, 255 );
-                ByteArray[ Var + 1 ] = ( byte ) MathHelper.Clamp( ( int ) ( Val.y * 255 ), 0, 255 );
-                ByteArray[ Var + 2 ] = ( byte ) MathHelper.Clamp( ( int ) ( Val.x * 255 ), 0, 255 );
+                ByteArray[ Var ] = ( byte ) ( Val.z * 255 );
+                ByteArray[ Var + 1 ] = ( byte ) ( Val.y * 255 );
+                ByteArray[ Var + 2 ] = ( byte ) ( Val.x * 255 );
                 ByteArray[ Var + 3 ] = 255;
             } );
 

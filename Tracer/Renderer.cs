@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Forms;
 using Tracer.Classes.Objects;
 using Tracer.Properties;
 using Tracer.Renderers;
@@ -10,12 +11,16 @@ namespace Tracer
         private static Menu Menu;
         public static Scene Scene;
         private static IRenderer RenderInstance;
+        private static bool IsWindowActive;
 
         public static bool Rendering { private set; get; }
 
         public static void Initialize( Menu M )
         {
             Menu = M;
+            Menu.Activated += ( obj, snd ) => IsWindowActive = true;
+            Menu.Deactivate += ( obj, snd ) => IsWindowActive = false;
+
 
             Menu.Settings_Samples.Value = Settings.Default.Render_Samples;
             Menu.Settings_Depth.Value = Settings.Default.Render_MaxDepth;
@@ -44,7 +49,7 @@ namespace Tracer
             Menu.Settings_Devices.SelectedIndex = 0;
         }
 
-        private static void RendererOnFinished(object sender, RendererFinishedEventArgs e)
+        private static void RendererOnFinished( object sender, RendererFinishedEventArgs e )
         {
             Menu.Perform( ( ) =>
             {
@@ -54,9 +59,13 @@ namespace Tracer
             } );
 
             Output.WriteLine( string.Format( "Render time: {0}. Average area time: {1}", e.Time, e.AverageProgressTime ) );
+
+            if ( !IsWindowActive )
+                Menu.Notifier.ShowBalloonTip( 500, "Rendering finished", "Rendering took " + e.Time,
+                    ToolTipIcon.Info );
         }
 
-        private static void RendererOnProgress(object Sender, RendererProgressEventArgs E)
+        private static void RendererOnProgress( object Sender, RendererProgressEventArgs E )
         {
             Menu.Perform( ( ) =>
             {
@@ -67,7 +76,8 @@ namespace Tracer
                         new TimeSpan(
                             ( long ) ( ( ( 1.0 - E.TotalProgress ) / E.Progress ) * E.AverageProgressTime.Ticks ) )
                             .ToString( );
-                    Output.WriteLine( "Rendered image area {0} of {1} in {2}", ( int )( E.TotalProgress / E.Progress ), ( int )( 1f / E.Progress ), E.ProgressTime );
+                    Output.WriteLine( "Rendered image area {0} of {1} in {2}", ( int ) ( E.TotalProgress / E.Progress ),
+                        ( int ) ( 1f / E.Progress ), E.ProgressTime );
                 }
                 else
                 {

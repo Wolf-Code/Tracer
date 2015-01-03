@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent( )
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
             this.Status = new System.Windows.Forms.StatusStrip();
             this.Status_Progress = new System.Windows.Forms.ToolStripProgressBar();
             this.Status_Label = new System.Windows.Forms.ToolStripStatusLabel();
@@ -57,6 +59,7 @@
             this.Scene_LoadDefault = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
             this.Image_Save = new System.Windows.Forms.ToolStripMenuItem();
+            this.Notifier = new System.Windows.Forms.NotifyIcon(this.components);
             this.Status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -410,9 +413,15 @@
             // Image_Save
             // 
             this.Image_Save.Name = "Image_Save";
-            this.Image_Save.Size = new System.Drawing.Size(175, 24);
+            this.Image_Save.Size = new System.Drawing.Size(155, 24);
             this.Image_Save.Text = "Save image";
             this.Image_Save.Click += new System.EventHandler(this.Image_Save_Click);
+            // 
+            // Notifier
+            // 
+            this.Notifier.Icon = ((System.Drawing.Icon)(resources.GetObject("Notifier.Icon")));
+            this.Notifier.Text = "Tracer";
+            this.Notifier.Visible = true;
             // 
             // Menu
             // 
@@ -484,6 +493,7 @@
         private System.Windows.Forms.ToolStripMenuItem Scene_LoadDefault;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
         private System.Windows.Forms.ToolStripMenuItem Image_Save;
+        public System.Windows.Forms.NotifyIcon Notifier;
 
     }
 }
