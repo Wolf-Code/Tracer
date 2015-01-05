@@ -1,16 +1,13 @@
 class Collider
 {
 public:
-    __device__ static CollisionResult Collide( Ray* R, Object* Obj );
-    __device__ static CollisionResult SphereCollision( Ray* R, Object* Obj );
-    __device__ static CollisionResult PlaneCollision( Ray* R, Object* Obj );
+    __device__ static CollisionResult Collide( Ray*, Object* );
+    __device__ static CollisionResult SphereCollision( Ray*, Object* );
+    __device__ static CollisionResult PlaneCollision( Ray*, Object* );
 };
 
 __device__ CollisionResult Collider::Collide( Ray* R, Object* Obj )
 {
-    CollisionResult Res = CollisionResult( );
-    Res.Hit = false;
-
     switch ( Obj->Type )
     {
         case ObjectType::SphereType:
@@ -18,14 +15,17 @@ __device__ CollisionResult Collider::Collide( Ray* R, Object* Obj )
 
         case ObjectType::PlaneType:
             return PlaneCollision( R, Obj );
-    }
 
-    return Res;
+		default:
+			CollisionResult Res;
+			Res.Hit = false;
+			return Res;
+    }
 }
 
 __device__ CollisionResult Collider::SphereCollision( Ray* R, Object* Obj )
 {
-    CollisionResult Res = CollisionResult( );
+    CollisionResult Res;
     Res.Hit = false;
 
     SphereObject* Sphere = &Obj->Sphere;
@@ -70,7 +70,7 @@ __device__ CollisionResult Collider::SphereCollision( Ray* R, Object* Obj )
 
 __device__ CollisionResult Collider::PlaneCollision( Ray* R, Object* Obj )
 {
-    CollisionResult Res = CollisionResult( );
+    CollisionResult Res;
     Res.Hit = false;
 
     PlaneObject* Plane = &Obj->Plane;

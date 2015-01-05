@@ -11,7 +11,6 @@
 #include "CollisionResult.h"
 #include "Collider.h"
 #include "CamData.h"
-#include "Light.h"
 
 #define PI 3.1415926535
 #define OneOverPI 0.31830988618
@@ -84,6 +83,8 @@ __device__ float3 Raytracer::TraceDirectLight( Ray* Ray )
 
 		L += ShadowRay( &Res ) * Res.HitObject->Material.Color;
 	}
+
+	return L;
 }
 
 __device__ float Raytracer::CalculateBDRF( MaterialType Type, CollisionResult Result, Ray* Ray )
@@ -91,8 +92,10 @@ __device__ float Raytracer::CalculateBDRF( MaterialType Type, CollisionResult Re
 	switch ( Type )
 	{
 		case Diffuse:
-			float cos_theta = VectorMath::Dot( Ray->Direction, Result.Normal );
-			return ( 2.0f * cos_theta ) * OneOverPI;
+			{
+				float cos_theta = VectorMath::Dot( Ray->Direction, Result.Normal );
+				return ( 2.0f * cos_theta ) * OneOverPI;
+			}
 		case Reflective:
 			return 1.0f;
 		default:
@@ -112,14 +115,16 @@ __device__ float3 Raytracer::ShadowRay( CollisionResult* Result )
 
 	float3 Start = Result->Position + Result->Normal * Bias;
 
-	Ray R = Ray( );
+	Ray R;
 	R.Start = Start;
 
 	switch ( L->Type )
 	{
 		case SphereType:
-			float3 RandomPos = L->Sphere.RandomPositionOnSphere( RandState );
-			R.Direction = VectorMath::Normalized( RandomPos - Start );
+			{
+				float3 RandomPos = L->Sphere.RandomPositionOnSphere( RandState );
+				R.Direction = VectorMath::Normalized( RandomPos - Start ); 
+			}
 			break;
 
 		case PlaneType:
@@ -133,7 +138,7 @@ __device__ float3 Raytracer::ShadowRay( CollisionResult* Result )
 	const CollisionResult Res = Raytracer::Trace( &R );
 
 	if ( Res.HitObject->ID == L->ID )
-		return L->Material.Radiance;
+		return L->Material.Radiance * abs( VectorMath::Dot( R.Direction, Result->Normal ) );
 
 	return float3( );
 }
@@ -152,7 +157,7 @@ __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray* R )
 
 		const Material Mat = Res.HitObject->Material;
 
-		if ( Res.HitObject->IsLightSource( ) && R->Depth == 0 )
+		if ( Res.HitObject->IsLightSource( ) && Depth == 0 )
 			return Mat.Radiance;
 
 		R->Depth += 1;
@@ -184,7 +189,6 @@ __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray* R )
 			continue;
 
 		Val += Raytracer::ShadowRay( &Res ) * Res.HitObject->Material.Color * Throughput;
-		Throughput = Throughput * CalculateBDRF( Res.HitObject->Material.Type, Res, R );
 	}
 
 	return Val;

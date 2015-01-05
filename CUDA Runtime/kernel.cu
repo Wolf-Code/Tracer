@@ -1,4 +1,5 @@
 #include "Raytracer.h"
+#define NSIGHT_CUDA_DEBUGGER 1
 
 extern "C"
 {
@@ -30,14 +31,14 @@ extern "C"
             curandState RandState;
             curand_init( Seed + ID, 0, 0, &RandState );
             
-            float JitteredX = clamp( x + ( curand_uniform( &RandState ) * 2.0f - 1.0f ) * 0.5f, 0, Camera.Width );
-            float JitteredY = clamp( y + ( curand_uniform( &RandState ) * 2.0f - 1.0f ) * 0.5f, 0, Camera.Height );
+            float JitteredX = x + ( curand_uniform( &RandState ) * 2.0f - 1.0f ) * 0.5f;
+            float JitteredY = y + ( curand_uniform( &RandState ) * 2.0f - 1.0f ) * 0.5f;
 
             Ray R = Camera.GetRay( JitteredX, JitteredY );
 			R.Depth = 0;
 
 			Raytracer Tracer = Raytracer( ObjectArray, Objects, Lights, LightCount, &RandState );
-			Output[ ID ] = Input[ ID ] + Tracer.RadianceIterative( MaxDepth, &R );
+			Output[ ID ] = Input[ ID ] + Tracer.Radiance<0>( &R );
         }
     }
 }
