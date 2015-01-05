@@ -1,3 +1,5 @@
+#ifndef __VECTORMATH_H__
+#define __VECTORMATH_H__
 #include <math.h>
 
 class VectorMath
@@ -151,3 +153,5 @@ __device__ float3 operator-( float3 Vector, float3 Vector2 )
 		Vector.z - Vector2.z
 		);
 }
+
+#endif

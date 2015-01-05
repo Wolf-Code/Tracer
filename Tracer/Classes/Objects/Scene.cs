@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Drawing.Design;
 using System.Linq;
 using Tracer.Classes.Util;
 using Tracer.CUDA;
+
+using SceneCUDAData = System.Tuple<Tracer.CUDA.CUDAObject[],Tracer.CUDA.CUDAObject[]>;
 
 namespace Tracer.Classes.Objects
 {
@@ -101,29 +102,44 @@ namespace Tracer.Classes.Objects
             return P;
         }
 
-        public CUDAObject [ ] ToCUDA( )
+        private CUDAObject ConvertToCUDA( GraphicsObject G )
         {
-            List<CUDAObject> Obj = new List<CUDAObject>( );
-            foreach ( GraphicsObject G in Objects.Where( O => O.Enabled ) )
+            CUDAObject O = new CUDAObject { Material = G.Material.ToCUDAMaterial( ) };
+
+            if ( G is Sphere )
             {
-                CUDAObject O = new CUDAObject { Material = G.Material.ToCUDAMaterial( ) };
-
-                if ( G is Sphere )
-                {
-                    O.Sphere = ( G as Sphere ).ToCUDASphere( );
-                    O.Type = CUDAObjectType.Sphere;
-                }
-
-                if ( G is Plane )
-                {
-                    O.Plane = ( G as Plane ).ToCUDAPlane( );
-                    O.Type = CUDAObjectType.Plane;
-                }
-
-                Obj.Add( O );
+                O.Sphere = ( G as Sphere ).ToCUDASphere( );
+                O.Type = CUDAObjectType.Sphere;
             }
 
-            return Obj.ToArray( );
+            if ( G is Plane )
+            {
+                O.Plane = ( G as Plane ).ToCUDAPlane( );
+                O.Type = CUDAObjectType.Plane;
+            }
+
+            return O;
+        }
+
+        public SceneCUDAData ToCUDA( )
+        {
+            List<CUDAObject> Obj = new List<CUDAObject>( );
+            List<CUDAObject> Lights = new List<CUDAObject>( );
+            foreach ( GraphicsObject G in Objects.Where( O => O.Enabled ) )
+            {
+                CUDAObject O = this.ConvertToCUDA( G );
+                O.ID = ( uint ) Objects.IndexOf( G );
+                Obj.Add( O );
+
+                if ( G.Material.Radiance.R > 0 || G.Material.Radiance.G > 0 || G.Material.Radiance.B > 0 )
+                {
+                    CUDAObject O2 = this.ConvertToCUDA( G );
+                    O2.ID = ( uint ) Objects.IndexOf( G );
+                    Lights.Add( O2 );
+                }
+            }
+
+            return new SceneCUDAData( Obj.ToArray(  ), Lights.ToArray(  ) );
         }
     }
 }

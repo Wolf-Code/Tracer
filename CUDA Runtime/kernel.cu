@@ -6,8 +6,11 @@ extern "C"
 
     __constant__ Object* ObjectArray;
     __constant__ unsigned int Objects;
+	__constant__ Object* Lights;
+	__constant__ unsigned int LightCount;
     __constant__ CamData Camera;
     __constant__ long Seed;
+	__constant__ unsigned int MaxDepth;
 
     __device__ float clamp( float X, float Min, float Max )
     {
@@ -31,8 +34,10 @@ extern "C"
             float JitteredY = clamp( y + ( curand_uniform( &RandState ) * 2.0f - 1.0f ) * 0.5f, 0, Camera.Height );
 
             Ray R = Camera.GetRay( JitteredX, JitteredY );
+			R.Depth = 0;
 
-            Output[ ID ] = Input[ ID ] + Raytracer::Radiance<0>( &R, ObjectArray, Objects, &RandState );
+			Raytracer Tracer = Raytracer( ObjectArray, Objects, Lights, LightCount, &RandState );
+			Output[ ID ] = Input[ ID ] + Tracer.RadianceIterative( MaxDepth, &R );
         }
     }
 }

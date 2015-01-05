@@ -11,6 +11,7 @@
 #include "CollisionResult.h"
 #include "Collider.h"
 #include "CamData.h"
+#include "Light.h"
 
 #define PI 3.1415926535
 #define OneOverPI 0.31830988618
@@ -19,14 +20,35 @@
 class Raytracer
 {
 public:
-    __device__ static CollisionResult Trace( Ray*, Object*, int );
-	__device__ static float CalculateBDRF( MaterialType, CollisionResult, Ray* );
+	__device__ Raytracer( Object*, unsigned int, Object*, unsigned int, curandState* );
+    __device__ CollisionResult Trace( Ray* );
+	__device__ float CalculateBDRF( MaterialType, CollisionResult, Ray* );
+	__device__ Object* GetRandomLight( );
+	__device__ float3 ShadowRay( CollisionResult* );
+	__device__ float3 RadianceIterative( unsigned int, Ray* );
+	__device__ float3 TraceDirectLight( Ray* );
+	__device__ float3 LEnvironment( Ray* );
 
     template <int>
-    __device__ static float3 Radiance( Ray*, Object*, int, curandState* );
+    __device__ float3 Radiance( Ray* );
+private:
+	curandState* RandState;
+	Object* Objects;
+	unsigned int ObjectCount;
+	Object* Lights;
+	unsigned int LightCount;
 };
 
-__device__ CollisionResult Raytracer::Trace( Ray* R, Object* Objects, int ObjectCount )
+__device__ Raytracer::Raytracer( Object* Objects, unsigned int ObjectCount, Object* Lights, unsigned int LightCount, curandState* RandState )
+{
+	this->Objects = Objects;
+	this->ObjectCount = ObjectCount;
+	this->Lights = Lights;
+	this->LightCount = LightCount;
+	this->RandState = RandState;
+}
+
+__device__ CollisionResult Raytracer::Trace( Ray* R )
 { 
     CollisionResult Res = CollisionResult( );
     Res.Hit = false;
@@ -39,6 +61,29 @@ __device__ CollisionResult Raytracer::Trace( Ray* R, Object* Objects, int Object
     }
 
     return Res;
+}
+
+__device__ float3 Raytracer::LEnvironment( Ray* Ray )
+{
+	return float3( );
+}
+
+__device__ float3 Raytracer::TraceDirectLight( Ray* Ray )
+{
+	CollisionResult Res = this->Trace( Ray );
+	float3 L = float3( );
+	float3 Throughput = VectorMath::MakeVector( 1, 1, 1 );
+
+	while ( Ray->Depth < 5 )
+	{
+		if ( !Res.Hit )
+		{
+			L += LEnvironment( Ray );
+			break;
+		}
+
+		L += ShadowRay( &Res ) * Res.HitObject->Material.Color;
+	}
 }
 
 __device__ float Raytracer::CalculateBDRF( MaterialType Type, CollisionResult Result, Ray* Ray )
@@ -55,18 +100,107 @@ __device__ float Raytracer::CalculateBDRF( MaterialType Type, CollisionResult Re
 	}
 }
 
-template <int depth>
-__device__ float3 Raytracer::Radiance( Ray* R, Object* Objects, int ObjectCount, curandState* RandState )
+__device__ Object* Raytracer::GetRandomLight( )
 {
-    const CollisionResult Res = Raytracer::Trace( R, Objects, ObjectCount );
+	unsigned int ID = ( unsigned int )roundf( curand_uniform( RandState ) * ( LightCount - 1 ) );
+	return &Objects[ 0 ];
+}
+
+__device__ float3 Raytracer::ShadowRay( CollisionResult* Result )
+{
+	Object* L = Raytracer::GetRandomLight( );
+
+	float3 Start = Result->Position + Result->Normal * Bias;
+
+	Ray R = Ray( );
+	R.Start = Start;
+
+	switch ( L->Type )
+	{
+		case SphereType:
+			float3 RandomPos = L->Sphere.RandomPositionOnSphere( RandState );
+			R.Direction = VectorMath::Normalized( RandomPos - Start );
+			break;
+
+		case PlaneType:
+			R.Direction = L->Plane.Normal * -1;
+			break;
+
+		default:
+			return float3( );
+	}
+
+	const CollisionResult Res = Raytracer::Trace( &R );
+
+	if ( Res.HitObject->ID == L->ID )
+		return L->Material.Radiance;
+
+	return float3( );
+}
+
+__device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray* R )
+{
+	int Depth = 0;
+	float3 Val = float3( );
+	float3 Throughput = VectorMath::MakeVector( 1, 1, 1 );
+
+	while ( Depth < MaxDepth )
+	{
+		CollisionResult Res = this->Trace( R );
+		if ( !Res.Hit )
+			return Val;
+
+		const Material Mat = Res.HitObject->Material;
+
+		if ( Res.HitObject->IsLightSource( ) && R->Depth == 0 )
+			return Mat.Radiance;
+
+		R->Depth += 1;
+		R->Start = Res.Position + Res.Normal * Bias;
+
+		float3 RandomDirection = VectorMath::RandomDirectionInSameDirection( Res.Normal, RandState );
+
+		switch ( Mat.Type )
+		{
+			case Diffuse:
+				R->Direction = RandomDirection;
+				break;
+
+			case Reflective:
+				float3 Ref = VectorMath::Reflect( R->Direction, Res.Normal );
+				float Glossyness = Mat.Glossyness;
+				if ( Glossyness > 0 )
+				{
+					float3 Rand = RandomDirection;
+					Ref = VectorMath::Normalized( Ref + Rand * Glossyness );
+				}
+				R->Direction = Ref;
+				R->Depth = 0;
+				break;
+		}
+		Depth++;
+
+		if ( Res.HitObject->Material.Type == Reflective )
+			continue;
+
+		Val += Raytracer::ShadowRay( &Res ) * Res.HitObject->Material.Color * Throughput;
+		Throughput = Throughput * CalculateBDRF( Res.HitObject->Material.Type, Res, R );
+	}
+
+	return Val;
+}
+
+template <int depth>
+__device__ float3 Raytracer::Radiance( Ray* R )
+{
+    const CollisionResult Res = this->Trace( R );
     if ( !Res.Hit )
         return float3( );
 
 	const Material Mat = Res.HitObject->Material;
 
-    const float3 Rad = Mat.Radiance;
-    if ( Rad.x >= 1 || Rad.y >= 1 || Rad.z >= 1 )
-        return Rad;
+	if ( Res.HitObject->IsLightSource( ) && R->Depth == 0 )
+		return Mat.Radiance;
 
     R->Depth += 1;
     R->Start = Res.Position + Res.Normal * Bias;
@@ -88,14 +222,15 @@ __device__ float3 Raytracer::Radiance( Ray* R, Object* Objects, int ObjectCount,
 				Ref = VectorMath::Normalized( Ref + Rand * Glossyness );
 			}
 			R->Direction = Ref;
+			R->Depth = 0;
 			break;
 	}
 
-	return Rad + Mat.Color * ( Radiance<depth + 1>( R, Objects, ObjectCount, RandState ) * CalculateBDRF( Mat.Type, Res, R ) );
+	return Mat.Radiance + Mat.Color * Radiance<depth + 1>( R ) * CalculateBDRF( Mat.Type, Res, R );
 }
 
 template<>
-__device__ float3 Raytracer::Radiance<5>( Ray* R, Object* Objects, int ObjectCount, curandState* RandState )
+__device__ float3 Raytracer::Radiance<5>( Ray* R )
 {
-    return float3( );
+	return float3( );
 }
