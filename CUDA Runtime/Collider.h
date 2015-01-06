@@ -8,19 +8,22 @@ public:
 
 __device__ CollisionResult Collider::Collide( Ray* R, Object* Obj )
 {
+	CollisionResult Res;
+	Res.Hit = false;
+
     switch ( Obj->Type )
     {
         case ObjectType::SphereType:
-            return SphereCollision( R, Obj );
+            Res = SphereCollision( R, Obj );
+			break;
 
         case ObjectType::PlaneType:
-            return PlaneCollision( R, Obj );
-
-		default:
-			CollisionResult Res;
-			Res.Hit = false;
-			return Res;
+            Res = PlaneCollision( R, Obj );
+			break;
     }
+
+	Res.Ray = R;
+	return Res;
 }
 
 __device__ CollisionResult Collider::SphereCollision( Ray* R, Object* Obj )

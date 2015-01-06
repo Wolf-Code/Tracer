@@ -5,4 +5,5 @@ struct CollisionResult
     float3 Normal;
     float Distance;
     Object* HitObject;
+	Ray* Ray;
 };

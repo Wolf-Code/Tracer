@@ -8,6 +8,7 @@ public:
     __device__ static float Dot( float3, float3 );
     __device__ static float Length( float3 );
     __device__ static void Normalize( float3* );
+	__device__ static float LargestComponent( float3* );
     __device__ static float3 Normalized( float3 );
     __device__ static float3 MakeVector( float, float, float );
     __device__ static float3 Reflect( float3, float3 );
@@ -23,10 +24,13 @@ __device__ float3 operator*( float3, float3 );
 __device__ float3 operator+( float3, float3 );
 __device__ void operator+=( float3&, float3 );
 __device__ float3 operator-( float3, float3 );
+__device__ bool operator==( float3, float3 );
 
 __device__ float VectorMath::Dot( float3 Vector, float3 Vector2 )
 {
-    return Vector.x * Vector2.x + Vector.y * Vector2.y + Vector.z * Vector2.z;
+    return	Vector.x * Vector2.x + 
+			Vector.y * Vector2.y + 
+			Vector.z * Vector2.z;
 }
 
 __device__ float VectorMath::Length( float3 Vector )
@@ -40,6 +44,11 @@ __device__ void VectorMath::Normalize( float3* Vector )
     Vector->x /= L;
     Vector->y /= L;
     Vector->z /= L;
+}
+
+__device__ float VectorMath::LargestComponent( float3* Vector )
+{
+	return fmaxf( fmaxf( Vector->x, Vector->y ), Vector->z );
 }
 
 __device__ float3 VectorMath::Normalized( float3 Vector )
@@ -152,6 +161,11 @@ __device__ float3 operator-( float3 Vector, float3 Vector2 )
 		Vector.y - Vector2.y,
 		Vector.z - Vector2.z
 		);
+}
+
+__device__ bool operator==( float3 Vector, float3 Vector2 )
+{
+	return Vector.x == Vector2.x && Vector.y == Vector2.y && Vector.z == Vector2.z;
 }
 
 #endif

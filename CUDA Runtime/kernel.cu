@@ -1,5 +1,4 @@
-#include "Raytracer.h"
-#define NSIGHT_CUDA_DEBUGGER 1
+#include "Raytracer2.h"
 
 extern "C"
 {
@@ -38,7 +37,7 @@ extern "C"
 			R.Depth = 0;
 
 			Raytracer Tracer = Raytracer( ObjectArray, Objects, Lights, LightCount, &RandState );
-			Output[ ID ] = Input[ ID ] + Tracer.Radiance<0>( &R );
+			Output[ ID ] = Input[ ID ] + Tracer.RadianceIterative( MaxDepth, &R );
         }
     }
 }

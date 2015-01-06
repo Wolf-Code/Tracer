@@ -248,6 +248,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <ClInclude Include="PlaneObject.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Raytracer.h" />
+    <ClInclude Include="Raytracer2.h" />
     <ClInclude Include="SphereObject.h" />
     <ClInclude Include="ObjectType.h" />
     <ClInclude Include="VectorMath.h" />
