@@ -37,7 +37,7 @@ extern "C"
 			R.Depth = 0;
 
 			Raytracer Tracer = Raytracer( ObjectArray, Objects, Lights, LightCount, &RandState );
-			Output[ ID ] = Input[ ID ] + Tracer.RadianceIterative( MaxDepth, &R );
+			Output[ ID ] = Input[ ID ] + Tracer.RadianceIterative( MaxDepth, R );
         }
     }
 }

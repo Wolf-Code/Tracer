@@ -4,12 +4,12 @@ struct Material
     float3 Radiance;
     MaterialType Type;
     float Glossyness;
-	__device__ float3 BRDF( float3, float3, float3 );
-	__device__ float CosTheta( float3, float3 );
+	__device__ float3& BRDF( const float3&, const float3&, const float3& );
+	__device__ float CosTheta( const float3&, const float3& );
 	__device__ float PDF( void );
 };
 
-__device__ float3 Material::BRDF( float3 In, float3 Out, float3 Normal )
+__device__ float3& Material::BRDF( const float3& In, const float3& Out, const float3& Normal )
 {
 	if ( this->Type == Diffuse )
 		return this->Color * OneOverPI;
@@ -21,10 +21,15 @@ __device__ float3 Material::BRDF( float3 In, float3 Out, float3 Normal )
 		else
 			return float3( );
 	}
+
+	return float3( );
 }
 
-__device__ float Material::CosTheta( float3 OutGoing, float3 Normal )
+__device__ float Material::CosTheta( const float3& OutGoing, const float3& Normal )
 {
+	if ( this->Type == Reflective )
+		return 1.0f;
+
 	return abs( VectorMath::Dot( OutGoing, Normal ) );
 }
 
@@ -35,4 +40,6 @@ __device__ float Material::PDF( void )
 
 	if ( this->Type == Reflective )
 		return 1.0f;
+
+	return 1.0f;
 }

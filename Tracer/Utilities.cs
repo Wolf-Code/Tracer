@@ -38,7 +38,9 @@ namespace Tracer
             Parallel.For( 0, WH, Var =>
             {
                 float3 Val = Array[ Var ] / Samples;
-
+                int X = Var % Width;
+                int Y = ( Var - X ) / Width;
+                //Console.WriteLine( "{0}, {1}: {2}", X, Y, Val );
                 Var *= 4;
                 ByteArray[ Var ] = ( byte ) MathHelper.Clamp( Val.z * 255, 0, 255 );
                 ByteArray[ Var + 1 ] = ( byte ) MathHelper.Clamp( Val.y * 255, 0, 255 );
