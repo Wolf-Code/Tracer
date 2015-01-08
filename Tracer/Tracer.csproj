@@ -107,9 +107,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <None Include="kernel.ptx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -138,6 +135,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('packages\OpenCL.Net.2.2.9.0\build\net40\OpenCL.Net.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\OpenCL.Net.2.2.9.0\build\net40\OpenCL.Net.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

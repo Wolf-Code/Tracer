@@ -32,8 +32,8 @@ extern "C"
             curandState RandState;
             curand_init( Seed + ID, 0, 0, &RandState );
             
-            float JitteredX = x + ( curand_uniform( &RandState ) * 2.0f - 1.0f ) * 0.5f;
-            float JitteredY = y + ( curand_uniform( &RandState ) * 2.0f - 1.0f ) * 0.5f;
+            float JitteredX = x + curand_uniform( &RandState );
+            float JitteredY = y + curand_uniform( &RandState );
 
             Ray R = Camera.GetRay( JitteredX, JitteredY );
 			R.Depth = 0;

@@ -132,14 +132,10 @@ namespace Tracer.Classes.Objects
                 Obj.Add( O );
 
                 if ( G.Material.Radiance.R > 0 || G.Material.Radiance.G > 0 || G.Material.Radiance.B > 0 )
-                {
-                    CUDAObject O2 = this.ConvertToCUDA( G );
-                    O2.ID = ( uint ) Objects.IndexOf( G );
-                    Lights.Add( O2 );
-                }
+                    Lights.Add( O );
             }
 
-            return new SceneCUDAData( Obj.ToArray(  ), Lights.ToArray(  ) );
+            return new SceneCUDAData( Obj.ToArray( ), Lights.ToArray( ) );
         }
     }
 }

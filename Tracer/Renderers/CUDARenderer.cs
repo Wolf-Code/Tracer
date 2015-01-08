@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using System.Windows.Forms;
 using ManagedCuda;
 using ManagedCuda.BasicTypes;
 using ManagedCuda.VectorTypes;
@@ -33,11 +34,35 @@ namespace Tracer.Renderers
         private void InitKernels( )
         {
             CudaContext cntxt = new CudaContext( );
-            CUmodule cumodule = cntxt.LoadModule( Path );
-            RenderKernel = new CudaKernel( "TraceKernelRegion", cumodule, cntxt )
+            //Add an info and error buffer to see what the linker wants to tell us:
+            CudaJitOptionCollection options = new CudaJitOptionCollection( );
+            CudaJOErrorLogBuffer err = new CudaJOErrorLogBuffer( 1024 );
+            CudaJOInfoLogBuffer info = new CudaJOInfoLogBuffer( 1024 );
+            options.Add( new CudaJOLogVerbose( true ) );
+            options.Add( err );
+            options.Add( info );
+            byte [ ] tempArray = null;
+            try
             {
-                BlockDimensions = new dim3( ThreadsPerBlock, ThreadsPerBlock )
-            };
+                CudaLinker linker = new CudaLinker( options );
+                linker.AddFile( @"kernel.ptx", CUJITInputType.PTX, null );
+                linker.AddFile( @"Material.ptx", CUJITInputType.PTX, null );
+                linker.AddFile( @"VectorMath.ptx", CUJITInputType.PTX, null );
+
+                //important: add the device runtime library!
+                linker.AddFile( @"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.0\lib\Win32\cudadevrt.lib",
+                    CUJITInputType.Library, null );
+                tempArray = linker.Complete( );
+                //MessageBox.Show( info.Value );
+
+                RenderKernel = cntxt.LoadKernelPTX( tempArray, "TraceKernelRegion" );
+                RenderKernel.BlockDimensions = new dim3( ThreadsPerBlock, ThreadsPerBlock );
+            }
+
+            catch ( Exception E )
+            {
+                Console.WriteLine( E.Message );
+            }
         }
 
         public void RenderImage( Scene Scn, uint Samples, uint Depth )
@@ -63,8 +88,8 @@ namespace Tracer.Renderers
 
             RenderKernel.SetConstantVariable( "ObjectArray", Obj.DevicePointer );
             RenderKernel.SetConstantVariable( "Objects", ( uint )Objs.Item1.Length );
-            //RenderKernel.SetConstantVariable( "Lights", Lights.DevicePointer );
-            //RenderKernel.SetConstantVariable( "LightCount", ( uint )Objs.Item2.Length );
+            RenderKernel.SetConstantVariable( "Lights", Lights.DevicePointer );
+            RenderKernel.SetConstantVariable( "LightCount", ( uint )Objs.Item2.Length );
             RenderKernel.SetConstantVariable( "Camera", Scn.Camera.ToCamData( ) );
             RenderKernel.SetConstantVariable( "MaxDepth", Depth );
 

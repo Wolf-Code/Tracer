@@ -13,8 +13,6 @@ __device__ float3 Material::BRDF( const float3& In, const float3& Out, const flo
 	{
 		if ( VectorMath::Reflect( In, Normal ) == Out )
 			return this->Color;
-		else
-			return float3( );
 	}
 
 	return float3( );

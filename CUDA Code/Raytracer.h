@@ -37,13 +37,7 @@ private:
 };
 
 __device__ Raytracer::Raytracer( Object* Objects, unsigned int ObjectCount, Object* Lights, unsigned int LightCount, curandState* RandState )
-{
-	this->Objects = Objects;
-	this->ObjectCount = ObjectCount;
-	this->Lights = Lights;
-	this->LightCount = LightCount;
-	this->RandState = RandState;
-}
+	:Objects( Objects ), ObjectCount( ObjectCount ), Lights( Lights ), LightCount( LightCount ), RandState( RandState ){ }
 
 __device__ CollisionResult Raytracer::Trace( Ray& R )
 {
@@ -74,8 +68,10 @@ __device__ float Raytracer::CalculateBDRF( MaterialType Type, CollisionResult Re
 			float cos_theta = VectorMath::Dot( Ray.Direction, Result.Normal );
 			return ( 2.0f * cos_theta ) * OneOverPI;
 		}
+
 		case Reflective:
 			return 1.0f;
+
 		default:
 			return 1.0f;
 	}
@@ -119,19 +115,19 @@ __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray& R )
 
 	while ( R.Depth < MaxDepth )
 	{
-		const CollisionResult& Res = this->Trace( R );
+		const CollisionResult Res = this->Trace( R );
 
 		if ( !Res.Hit )
 			return Val + this->LEnvironment( R ) * ThroughPut;
 
-		Material* Mat = &Res.HitObject->Material;
+		Material& Mat = Res.HitObject->Material;
 		
 		if ( Res.HitObject->IsLightSource( ) )
 		{
 			if ( PrimaryRay )
 			{
-				float3 Norm = VectorMath::Normalized( Mat->Radiance );
-				return Norm / VectorMath::LargestComponent( Norm ) *ThroughPut;
+				float3 Norm = VectorMath::Normalized( Mat.Radiance );
+				return Norm / VectorMath::LargestComponent( Norm ) * ThroughPut;
 			}
 
 			return Val;
@@ -139,7 +135,7 @@ __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray& R )
 
 
 		float3 NextDirection;
-		if ( Mat->Type == Reflective )
+		if ( Mat.Type == Reflective )
 			NextDirection = VectorMath::Reflect( R.Direction, Res.Normal );
 		else
 		{
@@ -147,14 +143,15 @@ __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray& R )
 			PrimaryRay = false;
 		}
 
-		float3 BDRF = Mat->BRDF( R.Direction, NextDirection, Res.Normal );
-		float cos_theta = Mat->CosTheta( NextDirection, Res.Normal );
-		float PDF = Mat->PDF( );
+		float3 BDRF = Mat.BRDF( R.Direction, NextDirection, Res.Normal );
+		float cos_theta = Mat.CosTheta( NextDirection, Res.Normal );
+		float PDF = Mat.PDF( );
 		float3 Mul = ( BDRF * cos_theta ) / PDF;
 		float3 Shadow = this->ShadowRay( Res );
 
-		Val = Shadow * Mul * ThroughPut;
+		Val += Shadow * Mul * ThroughPut;
 		ThroughPut *= Mul;
+
 		if ( VectorMath::LargestComponent( ThroughPut ) < Bias )
 			break;
 
