@@ -25,7 +25,7 @@ __device__ float3 Material::BRDF( float3 In, float3 Out, float3 Normal )
 
 __device__ float Material::CosTheta( float3 OutGoing, float3 Normal )
 {
-	return fmaxf( 0, VectorMath::Dot( OutGoing, Normal ) );
+	return abs( VectorMath::Dot( OutGoing, Normal ) );
 }
 
 __device__ float Material::PDF( void )

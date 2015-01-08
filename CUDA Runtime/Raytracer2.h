@@ -107,14 +107,15 @@ __device__ float3 Raytracer::ShadowRay( CollisionResult* Result )
 	if ( Res.HitObject->ID != L->ID )
 		return this->LEnvironment( &R );
 
-	return Res.HitObject->Material.Radiance * 
-		Result->HitObject->Material.BRDF( Result->Ray->Direction, DirToSample, Result->Normal ) * 
-		Result->HitObject->Material.CosTheta( DirToSample, Result->Normal );
+	float Dist = VectorMath::Length( Start - LightSamplePos );
+	float DistSquared = Dist * Dist;
+
+	return L->Material.Radiance / DistSquared;
 }
 
 __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray* R )
 {
-	float3 Val = float3( );
+	float3 Val = VectorMath::MakeVector( 0.0f, 0.0f, 0.0f );
 	float3 ThroughPut = VectorMath::MakeVector( 1, 1, 1 );
 	int DepthSinceNonDiffuse = 0;
 
@@ -136,28 +137,30 @@ __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray* R )
 		}
 
 
-		float3 RandomDirection = VectorMath::RandomDirectionInSameDirection( Res.Normal, RandState );
+		float3 NextDirection;
 		if ( Mat->Type == Reflective )
 		{
-			RandomDirection = VectorMath::Reflect( R->Direction, Res.Normal );
+			NextDirection = VectorMath::Reflect( R->Direction, Res.Normal );
 			DepthSinceNonDiffuse = 0;
 		}
+		else
+			NextDirection = VectorMath::RandomDirectionInSameDirection( Res.Normal, RandState );
 
-		ThroughPut = ThroughPut * Mat->Color;
-
-		Val += this->ShadowRay( &Res ) * ThroughPut;
-
-		float3 BDRF = Mat->BRDF( R->Direction, RandomDirection, Res.Normal );
-		float cos_theta = Mat->CosTheta( RandomDirection, Res.Normal );
+		float3 BDRF = Mat->BRDF( R->Direction, NextDirection, Res.Normal );
+		float cos_theta = Mat->CosTheta( NextDirection, Res.Normal );
 		float PDF = Mat->PDF( );
+		float3 Mul = ( BDRF * cos_theta ) / PDF;
+		float3 Shadow = this->ShadowRay( &Res );
 
-		ThroughPut = ThroughPut * ( BDRF * cos_theta ) / PDF;
-		if ( VectorMath::LargestComponent( &ThroughPut ) < Bias )
-			return Val;
+		Val += Shadow * Mul * ThroughPut;
+
+		ThroughPut *= Mul;
+		if ( VectorMath::LargestComponent( ThroughPut ) < Bias )
+			break;
 
 		R->Depth++;
 		R->Start = Res.Position + Res.Normal * Bias;
-		R->Direction = RandomDirection;
+		R->Direction = NextDirection;
 	}
 
 	return Val;
