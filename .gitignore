@@ -45,9 +45,9 @@ Tracer/obj/*
 Tracer/bin/*
 Tracer/Debug/*
 Tracer/Release/*
-CUDA Runtime/Debug/*
-CUDA Runtime/Release/*
-CUDA Runtime/bin/*
+CUDA Code/Debug/*
+CUDA Code/Release/*
+CUDA Code/bin/*
 *.sdf
 *.suo
 *.vspx

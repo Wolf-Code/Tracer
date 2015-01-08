@@ -1,0 +1,1 @@
+-nologo -c -TP /EHsc /W3 /nologo /O2 /Zi  /MD -I"C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v6.5/include" -I"C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v6.5/include" "-IC:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v6.5\bin/../include"   -EHsc "Release/kernel.cu.cpp.ii" 

@@ -37,9 +37,9 @@ namespace Tracer.Classes.Objects
                 };
 
 
-                Sphere Light = Scn.AddSphere( new Vector3( 0, 2000 + 180 - .15f, 0 ), 2000 );
+                Sphere Light = Scn.AddSphere( new Vector3( 0, 60, 0 ), 5 );
                 Light.Name = "Light";
-                Light.Material.Radiance = new Util.Color( 12f, 12f, 12f );
+                Light.Material.Radiance = new Util.Color( 4000, 4000, 4000 );
 
                 Plane Floor = Scn.AddPlane( new Vector3( 0, 1, 0 ), 0 );
                 Floor.Name = "Floor";

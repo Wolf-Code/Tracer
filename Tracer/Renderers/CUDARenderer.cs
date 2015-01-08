@@ -24,7 +24,7 @@ namespace Tracer.Renderers
             get { return Environment.CurrentDirectory + "\\kernel.ptx"; }
         }
 
-        private static Random RNG = new Random( );
+        private static readonly Random RNG = new Random( );
 
         private CudaKernel RenderKernel;
         private const int ThreadsPerBlock = 32;
