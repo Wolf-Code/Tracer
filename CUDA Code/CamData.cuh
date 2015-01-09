@@ -16,7 +16,7 @@ struct CamData
     float Width;
     float Height;
 
-	__device__ Ray GetRay( float X, float Y )
+	__device__ Ray CamData::GetRay( float X, float Y )
 	{
 		Ray R;
 		R.Depth = 0;

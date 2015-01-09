@@ -9,6 +9,15 @@ __device__ float VectorMath::Dot( const float3& Vector, const float3& Vector2 )
 		Vector.z * Vector2.z;
 }
 
+__device__ float3 VectorMath::Cross( const float3& Vector, const float3& Vector2 )
+{
+	float X = Vector.y * Vector2.z - Vector.z * Vector2.y;
+	float Y = Vector.z * Vector2.x - Vector.x * Vector2.z;
+	float Z = Vector.x * Vector2.y - Vector.y * Vector2.x;
+
+	return VectorMath::MakeVector( X, Y, Z );
+}
+
 __device__ float VectorMath::Length( const float3& Vector )
 {
 	return sqrt( VectorMath::Dot( Vector, Vector ) );

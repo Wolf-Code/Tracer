@@ -60,6 +60,7 @@
     <Compile Include="Classes\Objects\GraphicsObject.cs" />
     <Compile Include="Classes\Material.cs" />
     <Compile Include="Classes\MathHelper.cs" />
+    <Compile Include="Classes\Objects\Triangle.cs" />
     <Compile Include="Classes\Objects\Plane.cs" />
     <Compile Include="Classes\Objects\Scene.cs" />
     <Compile Include="Classes\Objects\Sphere.cs" />
@@ -69,6 +70,8 @@
     <Compile Include="Classes\Util\Vector3.cs" />
     <Compile Include="Content.cs" />
     <Compile Include="Classes\ControlCollectionEditor.cs" />
+    <Compile Include="CUDA\CUDATriangleObject.cs" />
+    <Compile Include="CUDA\CUDAVertex.cs" />
     <Compile Include="Interfaces\IDevice.cs" />
     <Compile Include="Output.cs" />
     <Compile Include="EventArgs\RendererFinishedEventArgs.cs" />
@@ -78,7 +81,7 @@
     <Compile Include="CUDA\CUDACamData.cs" />
     <Compile Include="CUDA\CUDAMaterial.cs" />
     <Compile Include="CUDA\CUDAObject.cs" />
-    <Compile Include="CUDA\CUDAPlane.cs" />
+    <Compile Include="CUDA\CUDAPlaneObject.cs" />
     <Compile Include="CUDA\CUDASphereObject.cs" />
     <Compile Include="CUDA\CUDAMaterialType.cs" />
     <Compile Include="CUDA\CUDAObjectType.cs" />

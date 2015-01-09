@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using Tracer.CUDA;
 
 namespace Tracer.Classes.Objects
 {
@@ -29,6 +30,8 @@ namespace Tracer.Classes.Objects
             this.Enabled = true;
             this.Material = new Material( );
         }
+
+        public abstract CUDAObject ToCUDA( );
 
         public override string ToString( )
         {

@@ -8,6 +8,7 @@ class VectorMath
 {
 public:
 	__device__ static float Dot( const float3&, const float3& );
+	__device__ static float3 Cross( const float3&, const float3& );
 	__device__ static float Length( const float3& );
 	__device__ static void Normalize( float3& );
 	__device__ static float LargestComponent( const float3& );

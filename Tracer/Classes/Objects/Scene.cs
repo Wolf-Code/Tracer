@@ -102,32 +102,13 @@ namespace Tracer.Classes.Objects
             return P;
         }
 
-        private CUDAObject ConvertToCUDA( GraphicsObject G )
-        {
-            CUDAObject O = new CUDAObject { Material = G.Material.ToCUDAMaterial( ) };
-
-            if ( G is Sphere )
-            {
-                O.Sphere = ( G as Sphere ).ToCUDASphere( );
-                O.Type = CUDAObjectType.Sphere;
-            }
-
-            if ( G is Plane )
-            {
-                O.Plane = ( G as Plane ).ToCUDAPlane( );
-                O.Type = CUDAObjectType.Plane;
-            }
-
-            return O;
-        }
-
         public SceneCUDAData ToCUDA( )
         {
             List<CUDAObject> Obj = new List<CUDAObject>( );
             List<CUDAObject> Lights = new List<CUDAObject>( );
             foreach ( GraphicsObject G in Objects.Where( O => O.Enabled ) )
             {
-                CUDAObject O = this.ConvertToCUDA( G );
+                CUDAObject O = G.ToCUDA( );
                 O.ID = ( uint ) Objects.IndexOf( G );
                 Obj.Add( O );
 

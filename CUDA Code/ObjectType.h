@@ -5,7 +5,8 @@
 enum ObjectType
 {
     SphereType = 0,
-    PlaneType = 1
+    PlaneType = 1,
+	TriangleType = 2
 };
 
 #endif

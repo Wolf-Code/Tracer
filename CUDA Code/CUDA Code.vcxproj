@@ -32,7 +32,9 @@
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Raytracer.h" />
     <ClInclude Include="SphereObject.h" />
+    <ClInclude Include="TriangleObject.h" />
     <ClInclude Include="VectorMath.cuh" />
+    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="kernel.cu">
@@ -46,7 +48,9 @@
     </CudaCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CamData.cu" />
+    <ClCompile Include="CamData.cu">
+      <FileType>Document</FileType>
+    </ClCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5A70F435-167A-49BA-BEE6-9B8AE67EF06E}</ProjectGuid>
@@ -160,6 +164,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
     <CudaCompile>
       <Keep>true</Keep>
       <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+      <Runtime>InheritFromHost</Runtime>
     </CudaCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
