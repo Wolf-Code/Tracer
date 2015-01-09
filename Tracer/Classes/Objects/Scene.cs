@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.Design;
 using System.Drawing.Design;
 using System.Linq;
 using Tracer.Classes.Util;
 using Tracer.CUDA;
+
+using SceneCUDAData = System.Tuple<Tracer.CUDA.CUDAObject[],Tracer.CUDA.CUDAObject[]>;
 
 namespace Tracer.Classes.Objects
 {
@@ -36,9 +37,9 @@ namespace Tracer.Classes.Objects
                 };
 
 
-                Sphere Light = Scn.AddSphere( new Vector3( 0, 2000 + 180 - .15f, 0 ), 2000 );
+                Sphere Light = Scn.AddSphere( new Vector3( 0, 60, 0 ), 5 );
                 Light.Name = "Light";
-                Light.Material.Radiance = new Util.Color( 12f, 12f, 12f );
+                Light.Material.Radiance = new Util.Color( 4000, 4000, 4000 );
 
                 Plane Floor = Scn.AddPlane( new Vector3( 0, 1, 0 ), 0 );
                 Floor.Name = "Floor";
@@ -101,29 +102,21 @@ namespace Tracer.Classes.Objects
             return P;
         }
 
-        public CUDAObject [ ] ToCUDA( )
+        public SceneCUDAData ToCUDA( )
         {
             List<CUDAObject> Obj = new List<CUDAObject>( );
+            List<CUDAObject> Lights = new List<CUDAObject>( );
             foreach ( GraphicsObject G in Objects.Where( O => O.Enabled ) )
             {
-                CUDAObject O = new CUDAObject { Material = G.Material.ToCUDAMaterial( ) };
-
-                if ( G is Sphere )
-                {
-                    O.Sphere = ( G as Sphere ).ToCUDASphere( );
-                    O.Type = CUDAObjectType.Sphere;
-                }
-
-                if ( G is Plane )
-                {
-                    O.Plane = ( G as Plane ).ToCUDAPlane( );
-                    O.Type = CUDAObjectType.Plane;
-                }
-
+                CUDAObject O = G.ToCUDA( );
+                O.ID = ( uint ) Objects.IndexOf( G );
                 Obj.Add( O );
+
+                if ( G.Material.Radiance.R > 0 || G.Material.Radiance.G > 0 || G.Material.Radiance.B > 0 )
+                    Lights.Add( O );
             }
 
-            return Obj.ToArray( );
+            return new SceneCUDAData( Obj.ToArray( ), Lights.ToArray( ) );
         }
     }
 }

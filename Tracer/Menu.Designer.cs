@@ -264,7 +264,6 @@
             // 
             this.Settings_Depth.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_Depth.Enabled = false;
             this.Settings_Depth.Location = new System.Drawing.Point(6, 38);
             this.Settings_Depth.Maximum = new decimal(new int[] {
             1000,
