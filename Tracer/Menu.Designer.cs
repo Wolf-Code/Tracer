@@ -43,8 +43,10 @@
             this.Tab_Render = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.Settings_AreaDivider = new System.Windows.Forms.NumericUpDown();
             this.Settings_Samples = new System.Windows.Forms.NumericUpDown();
             this.Settings_Depth = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.Button_Render = new System.Windows.Forms.Button();
             this.Tab_Scene = new System.Windows.Forms.TabPage();
@@ -60,8 +62,6 @@
             this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
             this.Image_Save = new System.Windows.Forms.ToolStripMenuItem();
             this.Notifier = new System.Windows.Forms.NotifyIcon(this.components);
-            this.label1 = new System.Windows.Forms.Label();
-            this.Settings_AreaDivider = new System.Windows.Forms.NumericUpDown();
             this.Status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -77,13 +77,13 @@
             this.tabControl1.SuspendLayout();
             this.Tab_Render.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_AreaDivider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Samples)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).BeginInit();
             this.Tab_Scene.SuspendLayout();
             this.Tab_Settings.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_AreaDivider)).BeginInit();
             this.SuspendLayout();
             // 
             // Status
@@ -240,6 +240,31 @@
             this.label4.TabIndex = 4;
             this.label4.Text = "Depth";
             // 
+            // Settings_AreaDivider
+            // 
+            this.Settings_AreaDivider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Settings_AreaDivider.Location = new System.Drawing.Point(6, 128);
+            this.Settings_AreaDivider.Maximum = new decimal(new int[] {
+            512,
+            0,
+            0,
+            0});
+            this.Settings_AreaDivider.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Settings_AreaDivider.Name = "Settings_AreaDivider";
+            this.Settings_AreaDivider.Size = new System.Drawing.Size(201, 22);
+            this.Settings_AreaDivider.TabIndex = 6;
+            this.Settings_AreaDivider.Value = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            this.Settings_AreaDivider.ValueChanged += new System.EventHandler(this.Settings_AreaDivider_ValueChanged);
+            // 
             // Settings_Samples
             // 
             this.Settings_Samples.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -289,6 +314,15 @@
             0,
             0});
             this.Settings_Depth.ValueChanged += new System.EventHandler(this.Settings_Depth_ValueChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 108);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(84, 17);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Area divider";
             // 
             // label5
             // 
@@ -427,40 +461,6 @@
             this.Notifier.Text = "Tracer";
             this.Notifier.Visible = true;
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 108);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 17);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Area divider";
-            // 
-            // Settings_AreaDivider
-            // 
-            this.Settings_AreaDivider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Settings_AreaDivider.Location = new System.Drawing.Point(6, 128);
-            this.Settings_AreaDivider.Maximum = new decimal(new int[] {
-            32,
-            0,
-            0,
-            0});
-            this.Settings_AreaDivider.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.Settings_AreaDivider.Name = "Settings_AreaDivider";
-            this.Settings_AreaDivider.Size = new System.Drawing.Size(201, 22);
-            this.Settings_AreaDivider.TabIndex = 6;
-            this.Settings_AreaDivider.Value = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-            this.Settings_AreaDivider.ValueChanged += new System.EventHandler(this.Settings_AreaDivider_ValueChanged);
-            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -488,6 +488,7 @@
             this.Tab_Render.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_AreaDivider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Samples)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Settings_Depth)).EndInit();
             this.Tab_Scene.ResumeLayout(false);
@@ -495,7 +496,6 @@
             this.groupBox1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Settings_AreaDivider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

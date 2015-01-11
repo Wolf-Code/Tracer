@@ -29,6 +29,7 @@ namespace Tracer.Renderers
         private CudaKernel RenderKernel;
         private const int ThreadsPerBlock = 32;
         private bool CancelThread;
+        private Scene Scn;
 
         private void InitKernels( )
         {
@@ -66,6 +67,7 @@ namespace Tracer.Renderers
 
         public void RenderImage( uint AreaDivider, Scene Scn, uint Samples, uint Depth )
         {
+            this.Scn = Scn;
             int W = ( int ) Scn.Camera.Resolution.X;
             int H = ( int ) Scn.Camera.Resolution.Y;
             int WH = W * H;
@@ -101,7 +103,7 @@ namespace Tracer.Renderers
             TimeSpan PrevTimeSpan = new TimeSpan( );
             TimeSpan Average = new TimeSpan( );
             int Areas = 0;
-            uint TotalAreas = XDivide * YDivide;
+            uint TotalAreas = ( XDivide + 1 ) * ( YDivide + 1 );
             long Seed = RNG.Next( 0, Int32.MaxValue );
             float3[ ] output = new float3[ WH ];
             Stopwatch Watch = new Stopwatch( );
@@ -117,12 +119,12 @@ namespace Tracer.Renderers
 
                     Watch.Start( );
 
-                    for ( int X = 0; X < XDivide; X++ )
+                    for ( int X = 0; X < XDivide + 1; X++ )
                     {
                         if ( CancelThread )
                             break;
 
-                        for ( int Y = 0; Y < YDivide; Y++ )
+                        for ( int Y = 0; Y < YDivide + 1; Y++ )
                         {
                             if ( CancelThread )
                                 break;
@@ -171,13 +173,25 @@ namespace Tracer.Renderers
 
         private void RenderRegion( uint Samples, ref long Seed, CudaDeviceVariable<float3> Input, CudaDeviceVariable<float3> Output, int StartX, int StartY, int W, int H )
         {
+            if ( StartX >= Scn.Camera.Resolution.X || StartY >= Scn.Camera.Resolution.Y )
+                return;
+
+            int EndX = StartX + W;
+            int EndY = StartY + H;
+
+            if ( EndX > Scn.Camera.Resolution.X )
+                EndX = ( int ) Scn.Camera.Resolution.X;
+
+            if ( EndY > Scn.Camera.Resolution.Y )
+                EndY = ( int ) Scn.Camera.Resolution.Y;
+
             RenderKernel.GridDimensions = new dim3( W / ThreadsPerBlock + 1, H / ThreadsPerBlock + 1 );
 
             CUdeviceptr InPTR = Input.DevicePointer;
             for ( int Q = 0; Q < Samples; Q++ )
             {
                 RenderKernel.SetConstantVariable( "Seed", Seed );
-                RenderKernel.Run( InPTR, StartX, StartY, StartX + W, StartY + H, Output.DevicePointer );
+                RenderKernel.Run( InPTR, StartX, StartY, EndX, EndY, Output.DevicePointer );
 
                 Seed += W * H;
 

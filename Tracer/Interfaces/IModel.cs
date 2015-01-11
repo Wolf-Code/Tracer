@@ -1,5 +1,6 @@
 ﻿using Tracer.Classes;
 using Tracer.Classes.Objects;
+using Tracer.Classes.Util;
 
 namespace Tracer.Interfaces
 {
@@ -7,8 +8,9 @@ namespace Tracer.Interfaces
     {
         Vertex [ ] Vertices { get; }
 
-        uint [ ] Indices { get; }
-
         Triangle [ ] ToTriangles( );
+
+        void SetPosition( Vector3 Position );
+        void SetScale( Vector3 Scale );
     }
 }

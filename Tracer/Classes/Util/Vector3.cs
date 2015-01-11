@@ -47,6 +47,13 @@ namespace Tracer.Classes.Util
             get { return ( float ) Math.Sqrt( LengthSquared ); }
         }
 
+        public Vector3( )
+        {
+            this.X = 0;
+            this.Y = 0;
+            this.Z = 0;
+        }
+
         public Vector3( float X, float Y, float Z )
         {
             this.X = X;

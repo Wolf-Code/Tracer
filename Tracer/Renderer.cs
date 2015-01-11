@@ -25,6 +25,7 @@ namespace Tracer
 
             Menu.Settings_Samples.Value = Settings.Default.Render_Samples;
             Menu.Settings_Depth.Value = Settings.Default.Render_MaxDepth;
+            Menu.Settings_AreaDivider.Value = Settings.Default.Render_AreaDivider;
 
             Scene = Scene.Default;
 
@@ -70,7 +71,8 @@ namespace Tracer
         {
             Menu.Perform( ( ) =>
             {
-                Menu.Status_Progress.Value = ( int ) ( E.TotalProgress * Menu.Status_Progress.Maximum );
+                Menu.Status_Progress.Value = Math.Min( Menu.Status_Progress.Maximum,
+                                                        ( int ) ( E.TotalProgress * Menu.Status_Progress.Maximum ) );
                 if ( E.TotalProgress < 1 )
                 {
                     Menu.Status_Label.Text =
