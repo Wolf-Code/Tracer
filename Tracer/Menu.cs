@@ -38,9 +38,16 @@ namespace Tracer
 
         private void Settings_Samples_ValueChanged( object sender, EventArgs e )
         {
-            Settings.Default[ "Render_Samples" ] = ( uint )Settings_Samples.Value;
+            Settings.Default[ "Render_Samples" ] = ( uint ) Settings_Samples.Value;
             Settings.Default.Save( );
         }
+
+        private void Settings_AreaDivider_ValueChanged(object sender, EventArgs e)
+        {
+            Settings.Default[ "Render_AreaDivider" ] = ( uint ) Settings_AreaDivider.Value;
+            Settings.Default.Save( );
+        }
+
 
         private void Scene_SaveButton_Click( object sender, EventArgs e )
         {

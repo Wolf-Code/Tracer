@@ -58,5 +58,17 @@ namespace Tracer.Properties {
                 this["Location_LastScene"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8")]
+        public uint Render_AreaDivider {
+            get {
+                return ((uint)(this["Render_AreaDivider"]));
+            }
+            set {
+                this["Render_AreaDivider"] = value;
+            }
+        }
     }
 }

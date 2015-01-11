@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using System.Windows.Forms;
 using ManagedCuda;
 using ManagedCuda.BasicTypes;
 using ManagedCuda.VectorTypes;
@@ -65,7 +64,7 @@ namespace Tracer.Renderers
             }
         }
 
-        public void RenderImage( Scene Scn, uint Samples, uint Depth )
+        public void RenderImage( uint AreaDivider, Scene Scn, uint Samples, uint Depth )
         {
             int W = ( int ) Scn.Camera.Resolution.X;
             int H = ( int ) Scn.Camera.Resolution.Y;
@@ -93,16 +92,16 @@ namespace Tracer.Renderers
             RenderKernel.SetConstantVariable( "Camera", Scn.Camera.ToCamData( ) );
             RenderKernel.SetConstantVariable( "MaxDepth", Depth );
 
-            int XDivide = 8;
-            int YDivide = 8;
+            uint XDivide = AreaDivider;
+            uint YDivide = AreaDivider;
 
-            int DivW = W / XDivide;
-            int DivH = H / YDivide;
+            int DivW = ( int )( W / XDivide );
+            int DivH = ( int )( H / YDivide );
 
             TimeSpan PrevTimeSpan = new TimeSpan( );
             TimeSpan Average = new TimeSpan( );
             int Areas = 0;
-            int TotalAreas = XDivide * YDivide;
+            uint TotalAreas = XDivide * YDivide;
             long Seed = RNG.Next( 0, Int32.MaxValue );
             float3[ ] output = new float3[ WH ];
             Stopwatch Watch = new Stopwatch( );
@@ -128,8 +127,7 @@ namespace Tracer.Renderers
                             if ( CancelThread )
                                 break;
 
-                            RenderRegion( Samples, ref Seed, CUDAVar_Input, CUDAVar_Output, X * DivW, Y * DivH, DivW,
-                                DivH );
+                            RenderRegion( Samples, ref Seed, CUDAVar_Input, CUDAVar_Output, X * DivW, Y * DivH, DivW, DivH );
                             Areas++;
 
                             TimeSpan S = Watch.Elapsed - PrevTimeSpan;
@@ -198,7 +196,7 @@ namespace Tracer.Renderers
             RenderThread = new Thread( ( ) =>
             {
                 InitKernels( );
-                RenderImage( Renderer.Scene, Settings.Default.Render_Samples, Settings.Default.Render_MaxDepth );
+                RenderImage( Settings.Default.Render_AreaDivider, Renderer.Scene, Settings.Default.Render_Samples, Settings.Default.Render_MaxDepth );
             } );
 
             RenderThread.Start( );

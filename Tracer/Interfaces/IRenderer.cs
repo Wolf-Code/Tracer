@@ -9,7 +9,7 @@ namespace Tracer.Interfaces
         event EventHandler<RendererProgressEventArgs> OnProgress;
         event EventHandler<RendererFinishedEventArgs> OnFinished;
  
-        void RenderImage( Scene Scn, uint Samples, uint Depth );
+        void RenderImage( uint AreaDivider, Scene Scn, uint Samples, uint Depth );
         void Cancel( );
         void Run( );
 

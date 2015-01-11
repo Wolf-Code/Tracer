@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using Tracer.Classes;
 using Tracer.Classes.Util;
 using Tracer.Interfaces;
@@ -24,6 +25,8 @@ namespace Tracer.Importers
                     while ( Line.Contains( "  " ) ) Line = Line.Replace( "  ", " " );
 
                     string [ ] Data = Line.Split( new [ ] { " " }, StringSplitOptions.RemoveEmptyEntries );
+                    if ( Data.Length <= 0 )
+                        continue;
 
                     switch ( Data[ 0 ] )
                     {
@@ -32,7 +35,7 @@ namespace Tracer.Importers
                             break;
 
                         case "f":
-                            ParseFaces( Data );
+                            ParseFaceLine( Data );
                             break;
                     }
                 }
@@ -41,18 +44,56 @@ namespace Tracer.Importers
             OBJModel Model = new OBJModel( Vertices.ToArray( ), Indices.ToArray( ) );
             Vertices.Clear( );
             Indices.Clear( );
+
             return Model;
         }
 
         private uint GetProperID( int ParsedID )
         {
+            // If the parsed ID is negative, it means we take vertex n - id
             if ( ParsedID < 0 )
                 ParsedID = Vertices.Count + ParsedID;
 
             return ( uint ) ParsedID;
         }
 
-        private void ParseFaces( string [ ] Data )
+        private void ParseFaceLine( string [ ] Data )
+        {
+            int SlashCount = Data[ 1 ].Count( O => O == '/' );
+
+            if ( SlashCount == 0 )
+                ParseFaceIndices( Data );
+
+            if ( SlashCount == 1 )
+                ParseFaceIndices_TextureCoordinates( Data );
+
+            if ( SlashCount == 2 )
+            {
+                bool DoubleSlash = Data[ 1 ].IndexOf( "//" ) >= 0;
+
+                if ( DoubleSlash )
+                    ParseFaceIndices_Normals( Data );
+                else
+                    ParseFaceIndices_TextureCoordinates_Normals( Data );
+            }
+        }
+
+        private void ParseFaceIndices_Normals( string [ ] Data )
+        {
+            
+        }
+
+        private void ParseFaceIndices_TextureCoordinates_Normals( string [ ] Data )
+        {
+            
+        }
+
+        private void ParseFaceIndices_TextureCoordinates( string [ ] Data )
+        {
+            
+        }
+
+        private void ParseFaceIndices( string [ ] Data )
         {
             uint BaseID = GetProperID( int.Parse( Data[ 1 ] ) );
 

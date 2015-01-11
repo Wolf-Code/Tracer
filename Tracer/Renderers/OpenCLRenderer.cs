@@ -72,7 +72,7 @@ namespace Tracer.Renderers
         {
         }
 
-        public void RenderImage( Scene Scn, uint Samples, uint Depth )
+        public void RenderImage( uint AreaDivider, Scene Scn, uint Samples, uint Depth )
         {
         }
 

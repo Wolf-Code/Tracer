@@ -60,6 +60,8 @@
             this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
             this.Image_Save = new System.Windows.Forms.ToolStripMenuItem();
             this.Notifier = new System.Windows.Forms.NotifyIcon(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.Settings_AreaDivider = new System.Windows.Forms.NumericUpDown();
             this.Status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -81,6 +83,7 @@
             this.Tab_Settings.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_AreaDivider)).BeginInit();
             this.SuspendLayout();
             // 
             // Status
@@ -216,12 +219,14 @@
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.Settings_AreaDivider);
             this.groupBox2.Controls.Add(this.Settings_Samples);
             this.groupBox2.Controls.Add(this.Settings_Depth);
+            this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Location = new System.Drawing.Point(7, 36);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(213, 113);
+            this.groupBox2.Size = new System.Drawing.Size(213, 158);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Settings";
@@ -422,6 +427,40 @@
             this.Notifier.Text = "Tracer";
             this.Notifier.Visible = true;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 108);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(84, 17);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Area divider";
+            // 
+            // Settings_AreaDivider
+            // 
+            this.Settings_AreaDivider.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Settings_AreaDivider.Location = new System.Drawing.Point(6, 128);
+            this.Settings_AreaDivider.Maximum = new decimal(new int[] {
+            32,
+            0,
+            0,
+            0});
+            this.Settings_AreaDivider.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Settings_AreaDivider.Name = "Settings_AreaDivider";
+            this.Settings_AreaDivider.Size = new System.Drawing.Size(201, 22);
+            this.Settings_AreaDivider.TabIndex = 6;
+            this.Settings_AreaDivider.Value = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            this.Settings_AreaDivider.ValueChanged += new System.EventHandler(this.Settings_AreaDivider_ValueChanged);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -456,6 +495,7 @@
             this.groupBox1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_AreaDivider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -493,6 +533,8 @@
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton2;
         private System.Windows.Forms.ToolStripMenuItem Image_Save;
         public System.Windows.Forms.NotifyIcon Notifier;
+        public System.Windows.Forms.NumericUpDown Settings_AreaDivider;
+        private System.Windows.Forms.Label label1;
 
     }
 }

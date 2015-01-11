@@ -11,5 +11,8 @@
     <Setting Name="Location_LastScene" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="Render_AreaDivider" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">8</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
