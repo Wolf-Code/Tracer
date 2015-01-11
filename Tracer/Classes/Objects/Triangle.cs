@@ -47,32 +47,38 @@ namespace Tracer.Classes.Objects
             this.Vertex3 = V3;
         }
 
-        public override CUDAObject ToCUDA( )
+        public override CUDAObject[] ToCUDA( )
         {
             Vector3 P1 = this.Vertex2 - this.Vertex1;
             Vector3 P2 = this.Vertex3 - this.Vertex1;
-            Vector3 Cross = P2.Cross( P1 );
-            Console.WriteLine("P1 {0}, P2 {1}, Cross {2}", P1, P2, Cross.Normalized(  ));
-            return new CUDAObject
+            Vector3 Cross = P2.Cross( P1 ).Normalized( );
+
+            return new [ ]
             {
-                Material = this.Material.ToCUDAMaterial( ),
-                Triangle = new CUDATriangleObject
+                new CUDAObject
                 {
-                    V1 = new CUDAVertex
+                    Material = this.Material.ToCUDAMaterial( ),
+                    Triangle = new CUDATriangleObject
                     {
-                        Position = this.Vertex1.ToFloat3( )
+                        V1 = new CUDAVertex
+                        {
+                            Position = this.Vertex1.ToFloat3( ),
+                            Normal = Cross.ToFloat3(  )
+                        },
+                        V2 = new CUDAVertex
+                        {
+                            Position = this.Vertex2.ToFloat3( ),
+                            Normal = Cross.ToFloat3(  )
+                        },
+                        V3 = new CUDAVertex
+                        {
+                            Position = this.Vertex3.ToFloat3( ),
+                            Normal = Cross.ToFloat3(  )
+                        },
+                        Normal = Cross.Normalized( ).ToFloat3( )
                     },
-                    V2 = new CUDAVertex
-                    {
-                        Position = this.Vertex2.ToFloat3( )
-                    },
-                    V3 = new CUDAVertex
-                    {
-                        Position = this.Vertex3.ToFloat3( )
-                    },
-                    Normal = Cross.Normalized(  ).ToFloat3(  )
-                },
-                Type = CUDAObjectType.Triangle
+                    Type = CUDAObjectType.Triangle
+                }
             };
         }
     }

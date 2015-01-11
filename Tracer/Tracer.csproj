@@ -60,6 +60,7 @@
     <Compile Include="Classes\Objects\GraphicsObject.cs" />
     <Compile Include="Classes\Material.cs" />
     <Compile Include="Classes\MathHelper.cs" />
+    <Compile Include="Classes\Objects\Mesh.cs" />
     <Compile Include="Classes\Objects\Triangle.cs" />
     <Compile Include="Classes\Objects\Plane.cs" />
     <Compile Include="Classes\Objects\Scene.cs" />
@@ -68,11 +69,17 @@
     <Compile Include="Classes\Util\Color.cs" />
     <Compile Include="Classes\Util\Vector2.cs" />
     <Compile Include="Classes\Util\Vector3.cs" />
+    <Compile Include="Classes\Vertex.cs" />
     <Compile Include="Content.cs" />
     <Compile Include="Classes\ControlCollectionEditor.cs" />
     <Compile Include="CUDA\CUDATriangleObject.cs" />
     <Compile Include="CUDA\CUDAVertex.cs" />
+    <Compile Include="Importers\ModelImporter.cs" />
+    <Compile Include="Importers\OBJImporter.cs" />
     <Compile Include="Interfaces\IDevice.cs" />
+    <Compile Include="Interfaces\IModel.cs" />
+    <Compile Include="Interfaces\IModelImporter.cs" />
+    <Compile Include="Models\OBJModel.cs" />
     <Compile Include="Output.cs" />
     <Compile Include="EventArgs\RendererFinishedEventArgs.cs" />
     <Compile Include="EventArgs\RendererProgressEventArgs.cs" />
@@ -130,6 +137,7 @@
   <ItemGroup>
     <None Include="Resources\image.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\OpenCL.Net.2.2.9.0\build\net40\OpenCL.Net.targets" Condition="Exists('packages\OpenCL.Net.2.2.9.0\build\net40\OpenCL.Net.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

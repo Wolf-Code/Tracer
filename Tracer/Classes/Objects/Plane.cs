@@ -38,17 +38,20 @@ namespace Tracer.Classes.Objects
             this.Name = "Plane";
         }
 
-        public override CUDAObject ToCUDA( )
+        public override CUDAObject [ ] ToCUDA( )
         {
-            return new CUDAObject
+            return new [ ]
             {
-                Material = this.Material.ToCUDAMaterial( ),
-                Plane = new CUDAPlaneObject
+                new CUDAObject
                 {
-                    Normal = this.Normal.ToFloat3( ),
-                    Offset = this.Offset
-                },
-                Type = CUDAObjectType.Plane
+                    Material = this.Material.ToCUDAMaterial( ),
+                    Plane = new CUDAPlaneObject
+                    {
+                        Normal = this.Normal.ToFloat3( ),
+                        Offset = this.Offset
+                    },
+                    Type = CUDAObjectType.Plane
+                }
             };
         }
     }

@@ -37,17 +37,20 @@ namespace Tracer.Classes.Objects
             this.Name = "Sphere";
         }
 
-        public override CUDAObject ToCUDA( )
+        public override CUDAObject [ ] ToCUDA( )
         {
-            return new CUDAObject
+            return new [ ]
             {
-                Material = this.Material.ToCUDAMaterial( ),
-                Sphere = new CUDASphereObject
+                new CUDAObject
                 {
-                    Position = this.Center.ToFloat3( ),
-                    Radius = this.Radius
-                },
-                Type = CUDAObjectType.Sphere
+                    Material = this.Material.ToCUDAMaterial( ),
+                    Sphere = new CUDASphereObject
+                    {
+                        Position = this.Center.ToFloat3( ),
+                        Radius = this.Radius
+                    },
+                    Type = CUDAObjectType.Sphere
+                }
             };
         }
     }

@@ -31,7 +31,7 @@ namespace Tracer.Classes.Objects
             this.Material = new Material( );
         }
 
-        public abstract CUDAObject ToCUDA( );
+        public abstract CUDAObject[ ] ToCUDA( );
 
         public override string ToString( )
         {

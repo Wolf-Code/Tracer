@@ -7,10 +7,11 @@
 class Collider
 {
 public:
-    __device__ static CollisionResult Collide( Ray&,Object* );
-    __device__ static CollisionResult SphereCollision(Ray&,Object* );
-    __device__ static CollisionResult PlaneCollision(Ray&,Object* );
-	__device__ static CollisionResult TriangleCollision(Ray&,Object* );
+	__device__ static CollisionResult Collide( Ray&, Object* );
+	__device__ static CollisionResult SphereCollision( Ray&, Object* );
+	__device__ static CollisionResult PlaneCollision( Ray&, Object* );
+	__device__ static CollisionResult TriangleCollision( Ray&, Vertex&, Vertex&, Vertex& );
+	__device__ static CollisionResult TriangleCollision( Ray&, Object* );
 };
 
 __device__ CollisionResult Collider::Collide( Ray& R, Object* Obj )
@@ -105,21 +106,20 @@ __device__ CollisionResult Collider::PlaneCollision( Ray& R, Object* Obj )
 	return Res;
 }
 
-__device__ CollisionResult Collider::TriangleCollision( Ray& R, Object* Obj )
+__device__ CollisionResult Collider::TriangleCollision( Ray& R, Vertex& V1, Vertex& V2, Vertex& V3 )
 {
 	CollisionResult Res;
 	Res.Hit = false;
-	const TriangleObject& Triangle = Obj->Triangle;
 
-	const float3 e1 = Triangle.V2.Position - Triangle.V1.Position;
-	const float3 e2 = Triangle.V3.Position - Triangle.V1.Position;
+	const float3 e1 = V2.Position - V1.Position;
+	const float3 e2 = V3.Position - V1.Position;
 	const float3 q = VectorMath::Cross( R.Direction, e2 );
 	const float a = VectorMath::Dot( e1, q );
 	//if(a < 0) return false; // Backface cull
 	if ( a > -Epsilon && a < Epsilon ) return Res;
 
 	const float f = 1.0f / a;
-	const float3 s = R.Start - Triangle.V1.Position;
+	const float3 s = R.Start - V1.Position;
 	const float u = f * VectorMath::Dot( s, q );
 	if ( u < 0.0 || u > 1.0 ) return Res;
 
@@ -133,9 +133,20 @@ __device__ CollisionResult Collider::TriangleCollision( Ray& R, Object* Obj )
 	Res.Distance = t;
 	Res.Position = R.Start + R.Direction * t;
 	const float w = 1.0f - ( u + v );
-	const float3 Normal = Obj->Triangle.Normal;
-	Res.Normal = VectorMath::Normalized( w*Normal + u*Normal + v*Normal );
+	Res.Normal = VectorMath::Normalized( w*V1.Normal + u*V2.Normal + v*V3.Normal );
+
+	if ( VectorMath::Dot( R.Direction, Res.Normal ) < 0 )
+		Res.Normal = Res.Normal * -1;
+
+	
 	Res.Hit = true;
+
+	return Res;
+}
+
+__device__ CollisionResult Collider::TriangleCollision( Ray& R, Object* Obj )
+{
+	CollisionResult Res = TriangleCollision( R, Obj->Triangle.V1, Obj->Triangle.V2, Obj->Triangle.V3 );
 	Res.HitObject = Obj;
 
 	return Res;

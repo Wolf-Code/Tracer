@@ -106,14 +106,19 @@ namespace Tracer.Classes.Objects
         {
             List<CUDAObject> Obj = new List<CUDAObject>( );
             List<CUDAObject> Lights = new List<CUDAObject>( );
+            uint ID = 0;
             foreach ( GraphicsObject G in Objects.Where( O => O.Enabled ) )
             {
-                CUDAObject O = G.ToCUDA( );
-                O.ID = ( uint ) Objects.IndexOf( G );
-                Obj.Add( O );
+                CUDAObject [ ] Objs = G.ToCUDA( );
+                foreach ( CUDAObject T in Objs )
+                {
+                    CUDAObject O = T;
+                    O.ID = ID++;
+                    Obj.Add( O );
 
-                if ( G.Material.Radiance.R > 0 || G.Material.Radiance.G > 0 || G.Material.Radiance.B > 0 )
-                    Lights.Add( O );
+                    if ( O.Material.Radiance.x > 0 || O.Material.Radiance.y > 0 || O.Material.Radiance.z > 0 )
+                        Lights.Add( O );
+                }
             }
 
             return new SceneCUDAData( Obj.ToArray( ), Lights.ToArray( ) );
