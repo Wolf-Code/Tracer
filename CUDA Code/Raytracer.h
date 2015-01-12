@@ -20,7 +20,7 @@
 class Raytracer
 {
 public:
-	__device__ Raytracer( Object*, unsigned int, Object*, unsigned int, curandState* );
+	__device__ Raytracer( Object*, unsigned int, unsigned int*, unsigned int, curandState* );
 	__device__ CollisionResult Trace( Ray& );
 	__device__ float CalculateBDRF( MaterialType, CollisionResult, Ray& );
 	__device__ Object* GetRandomLight( );
@@ -32,11 +32,11 @@ private:
 	curandState* RandState;
 	Object* Objects;
 	unsigned int ObjectCount;
-	Object* Lights;
+	unsigned int* Lights;
 	unsigned int LightCount;
 };
 
-__device__ Raytracer::Raytracer( Object* Objects, unsigned int ObjectCount, Object* Lights, unsigned int LightCount, curandState* RandState )
+__device__ Raytracer::Raytracer( Object* Objects, unsigned int ObjectCount, unsigned int* Lights, unsigned int LightCount, curandState* RandState )
 	:Objects( Objects ), ObjectCount( ObjectCount ), Lights( Lights ), LightCount( LightCount ), RandState( RandState ){ }
 
 __device__ CollisionResult Raytracer::Trace( Ray& R )
@@ -80,7 +80,7 @@ __device__ float Raytracer::CalculateBDRF( MaterialType Type, CollisionResult Re
 __device__ Object* Raytracer::GetRandomLight( )
 {
 	unsigned int ID = ( unsigned int )roundf( curand_uniform( RandState ) * ( LightCount - 1 ) );
-	return &Objects[ 0 ];
+	return &Objects[ Lights[ ID ] ];
 }
 
 __device__ float3 Raytracer::ShadowRay( const CollisionResult& Result )

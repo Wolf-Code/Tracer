@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using ManagedCuda;
 using ManagedCuda.BasicTypes;
@@ -9,7 +10,7 @@ using Tracer.Classes.Objects;
 using Tracer.CUDA;
 using Tracer.Interfaces;
 using Tracer.Properties;
-using SceneCUDAData = System.Tuple<Tracer.CUDA.CUDAObject[], Tracer.CUDA.CUDAObject[]>;
+using SceneCUDAData = System.Tuple<Tracer.CUDA.CUDAObject[], uint[]>;
 
 namespace Tracer.Renderers
 {
@@ -75,17 +76,17 @@ namespace Tracer.Renderers
             // Item1 = objects, Item2 = lights
             SceneCUDAData Objs = Scn.ToCUDA( );
 
-            CudaDeviceVariable<CUDAObject> Obj = new CudaDeviceVariable<CUDAObject>( Objs.Item1.Length );
-            Obj.CopyToDevice( Objs.Item1 );
-
-            CudaDeviceVariable<CUDAObject> Lights = new CudaDeviceVariable<CUDAObject>( Objs.Item2.Length );
-            Obj.CopyToDevice( Objs.Item2 );
-
             foreach ( CUDAObject O in Objs.Item1 )
                 Console.WriteLine( "Object {0}", O.ID );
 
-            foreach ( CUDAObject O in Objs.Item2 )
-                Console.WriteLine( "Light {0}", O.ID );
+            foreach ( uint O in Objs.Item2 )
+                Console.WriteLine( "Light {0}", O );
+
+            CudaDeviceVariable<CUDAObject> Obj = new CudaDeviceVariable<CUDAObject>( Objs.Item1.Length );
+            Obj.CopyToDevice( Objs.Item1 );
+
+            CudaDeviceVariable<uint> Lights = new CudaDeviceVariable<uint>( Objs.Item2.Length );
+            Lights.CopyToDevice( Objs.Item2 );
 
             RenderKernel.SetConstantVariable( "ObjectArray", Obj.DevicePointer );
             RenderKernel.SetConstantVariable( "Objects", ( uint )Objs.Item1.Length );

@@ -8,7 +8,7 @@ extern "C"
 
     __constant__ Object* ObjectArray;
     __constant__ unsigned int Objects;
-	__constant__ Object* Lights;
+	__constant__ unsigned int* Lights;
 	__constant__ unsigned int LightCount;
     __constant__ CamData Camera;
     __constant__ long Seed;

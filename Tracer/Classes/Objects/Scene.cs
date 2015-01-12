@@ -6,7 +6,7 @@ using System.Linq;
 using Tracer.Classes.Util;
 using Tracer.CUDA;
 
-using SceneCUDAData = System.Tuple<Tracer.CUDA.CUDAObject[],Tracer.CUDA.CUDAObject[]>;
+using SceneCUDAData = System.Tuple<Tracer.CUDA.CUDAObject[],uint[]>;
 
 namespace Tracer.Classes.Objects
 {
@@ -105,7 +105,7 @@ namespace Tracer.Classes.Objects
         public SceneCUDAData ToCUDA( )
         {
             List<CUDAObject> Obj = new List<CUDAObject>( );
-            List<CUDAObject> Lights = new List<CUDAObject>( );
+            List<uint> Lights = new List<uint>( );
             uint ID = 0;
             foreach ( GraphicsObject G in Objects.Where( O => O.Enabled ) )
             {
@@ -117,7 +117,7 @@ namespace Tracer.Classes.Objects
                     Obj.Add( O );
 
                     if ( O.Material.Radiance.x > 0 || O.Material.Radiance.y > 0 || O.Material.Radiance.z > 0 )
-                        Lights.Add( O );
+                        Lights.Add( O.ID );
                 }
             }
 
