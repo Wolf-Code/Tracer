@@ -22,7 +22,6 @@ class Raytracer
 public:
 	__device__ Raytracer( Object*, unsigned int, unsigned int*, unsigned int, curandState* );
 	__device__ CollisionResult Trace( Ray& );
-	__device__ float CalculateBDRF( MaterialType, CollisionResult, Ray& );
 	__device__ Object* GetRandomLight( );
 	__device__ float3 ShadowRay( const CollisionResult& );
 	__device__ float3 RadianceIterative( unsigned int, Ray& );
@@ -59,24 +58,6 @@ __device__ float3 Raytracer::LEnvironment( Ray& Ray )
 	return float3( );
 }
 
-__device__ float Raytracer::CalculateBDRF( MaterialType Type, CollisionResult Result, Ray& Ray )
-{
-	switch ( Type )
-	{
-		case Diffuse:
-		{
-			float cos_theta = VectorMath::Dot( Ray.Direction, Result.Normal );
-			return ( 2.0f * cos_theta ) * OneOverPI;
-		}
-
-		case Reflective:
-			return 1.0f;
-
-		default:
-			return 1.0f;
-	}
-}
-
 __device__ Object* Raytracer::GetRandomLight( )
 {
 	unsigned int ID = ( unsigned int )roundf( curand_uniform( RandState ) * ( LightCount - 1 ) );
@@ -87,10 +68,10 @@ __device__ float3 Raytracer::ShadowRay( const CollisionResult& Result )
 {
 	Object* L = Raytracer::GetRandomLight( );
 
-	float3 Start = Result.Position + Result.Normal * Bias;
+	const float3 Start = Result.Position + Result.Normal * Bias;
 
-	float3 LightSamplePos = L->Sphere.RandomPositionOnSphere( RandState );
-	float3 DirToSample = VectorMath::Normalized( LightSamplePos - Start );
+	const float3 LightSamplePos = L->Sphere.RandomPositionOnSphere( RandState );
+	const float3 DirToSample = VectorMath::Normalized( LightSamplePos - Start );
 
 	Ray R;
 	R.Start = Start;
@@ -101,8 +82,8 @@ __device__ float3 Raytracer::ShadowRay( const CollisionResult& Result )
 	if ( Res.HitObject->ID != L->ID )
 		return this->LEnvironment( R );
 
-	float Dist = VectorMath::Length( Start - LightSamplePos );
-	float DistSquared = Dist * Dist;
+	const float Dist = VectorMath::Length( Start - LightSamplePos );
+	const float DistSquared = Dist * Dist;
 
 	return ( L->Material.Radiance ) / DistSquared;
 }
@@ -133,21 +114,24 @@ __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray& R )
 			return Val;
 		}
 
+		float3 Shadow = this->ShadowRay( Res );
 
 		float3 NextDirection;
 		if ( Mat.Type == Reflective )
+		{
 			NextDirection = VectorMath::Reflect( R.Direction, Res.Normal );
+			Shadow = float3( );
+		}
 		else
 		{
 			NextDirection = VectorMath::RandomDirectionInSameDirection( Res.Normal, RandState );
 			PrimaryRay = false;
 		}
 
-		float3 BDRF = Mat.BRDF( R.Direction, NextDirection, Res.Normal );
-		float cos_theta = Mat.CosTheta( NextDirection, Res.Normal );
-		float PDF = Mat.PDF( );
-		float3 Mul = ( BDRF * cos_theta ) / PDF;
-		float3 Shadow = this->ShadowRay( Res );
+		const float3 BDRF = Mat.BRDF( R.Direction, NextDirection, Res.Normal );
+		const float cos_theta = Mat.CosTheta( NextDirection, Res.Normal );
+		const float PDF = Mat.PDF( );
+		const float3 Mul = ( BDRF * cos_theta ) / PDF;
 
 		Val += Shadow * Mul * ThroughPut;
 		ThroughPut *= Mul;

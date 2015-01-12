@@ -52,4 +52,4 @@ CUDA Code/bin/*
 *.suo
 *.vspx
 *.psess
-Tracer/Tracer.opensdf
+*.opensdf

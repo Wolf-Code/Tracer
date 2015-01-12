@@ -135,7 +135,7 @@ __device__ CollisionResult Collider::TriangleCollision( Ray& R, Vertex& V1, Vert
 	const float w = 1.0f - ( u + v );
 	Res.Normal = VectorMath::Normalized( w*V1.Normal + u*V2.Normal + v*V3.Normal );
 
-	if ( VectorMath::Dot( R.Direction, Res.Normal ) < 0 )
+	if ( VectorMath::Dot( R.Direction, Res.Normal ) > 0 )
 		Res.Normal = Res.Normal * -1;
 
 	
