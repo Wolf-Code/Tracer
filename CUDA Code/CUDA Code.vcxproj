@@ -26,6 +26,7 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="Material.cuh" />
     <ClInclude Include="MaterialType.h" />
+    <ClInclude Include="MeshObject.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectType.h" />
     <ClInclude Include="PlaneObject.h" />

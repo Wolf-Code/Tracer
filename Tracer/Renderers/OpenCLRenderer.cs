@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using OpenCL.Net;
 using Tracer.Classes.Objects;
 using Tracer.Interfaces;
+using Tracer.TracerEventArgs;
 
 namespace Tracer.Renderers
 {
     internal class OpenCLRenderer : IRenderer
     {
-        public event EventHandler<RendererProgressEventArgs> OnProgress;
         public event EventHandler<RendererFinishedEventArgs> OnFinished;
+        public event EventHandler<RenderSampleEventArgs> OnSampleFinished;
 
         private Device _device;
         private Context _context;

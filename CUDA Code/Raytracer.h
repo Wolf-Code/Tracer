@@ -11,6 +11,7 @@
 
 #include "SphereObject.h"
 #include "PlaneObject.h"
+#include "MeshObject.h"
 #include "Object.h"
 #include "CollisionResult.h"
 #include "Collider.h"
@@ -136,8 +137,10 @@ __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray& R )
 		Val += Shadow * Mul * ThroughPut;
 		ThroughPut *= Mul;
 
-		if ( VectorMath::LargestComponent( ThroughPut ) < Bias )
+		if ( VectorMath::LargestComponent( ThroughPut ) < Bias || curand_uniform( this->RandState ) > BDRF )
 			break;
+		else
+			ThroughPut = ThroughPut / BDRF;
 
 		R.Depth++;
 		R.Start = Res.Position + Res.Normal * Bias;

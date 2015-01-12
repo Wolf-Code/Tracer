@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using ManagedCuda;
 using Tracer.Classes.Util;
 using Tracer.CUDA;
 using Tracer.Importers;
@@ -40,7 +41,24 @@ namespace Tracer.Classes.Objects
                 Objs.AddRange( TObjs );
             }
 
-            return Objs.ToArray( );
+            CudaDeviceVariable<CUDATriangleObject> Ts = new CudaDeviceVariable<CUDATriangleObject>( Objs.Count );
+            Ts.CopyToDevice( Objs.Select( O => O.Triangle ).ToArray( ) );
+
+            CUDAMeshObject Mesh = new CUDAMeshObject
+            {
+                BoundingVolume = M.BoundingSphere( ).ToCUDA( )[ 0 ].Sphere,
+                TriangleCount = ( uint ) Objs.Count,
+                TrianglesPointer = Ts.DevicePointer
+            };
+
+            return new [ ]
+            {
+                new CUDAObject
+                {
+                    Type = CUDAObjectType.MeshType,
+                    Mesh = Mesh
+                }
+            };
         }
     }
 }

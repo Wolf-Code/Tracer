@@ -12,5 +12,7 @@ namespace Tracer.Interfaces
 
         void SetPosition( Vector3 Position );
         void SetScale( Vector3 Scale );
+
+        Sphere BoundingSphere( );
     }
 }

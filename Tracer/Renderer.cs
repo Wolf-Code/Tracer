@@ -4,6 +4,7 @@ using Tracer.Classes.Objects;
 using Tracer.Interfaces;
 using Tracer.Properties;
 using Tracer.Renderers;
+using Tracer.TracerEventArgs;
 
 namespace Tracer
 {
@@ -42,13 +43,41 @@ namespace Tracer
 
             RenderInstance = new CUDARenderer( );
 
-            RenderInstance.OnProgress += RendererOnProgress;
             RenderInstance.OnFinished += RendererOnFinished;
+            RenderInstance.OnSampleFinished += RenderInstance_OnSampleFinished;
 
             foreach ( IDevice Dev in RenderInstance.GetDevices( ) )
                 Menu.Settings_Devices.Items.Add( Dev );
 
             Menu.Settings_Devices.SelectedIndex = 0;
+        }
+
+        private static void RenderInstance_OnSampleFinished( object Sender, RenderSampleEventArgs E )
+        {
+            
+
+            Menu.Perform( ( ) =>
+            {
+                Menu.Status_Progress.Value = ( int ) ( E.Progress * Menu.Status_Progress.Maximum );
+
+                Menu.RenderImage.Image = E.Image;
+
+
+                if ( E.Progress < 1 )
+                {
+                    double Sample = Math.Round( E.TotalSamples * E.Progress );
+                    float RemainingProgress = ( 1.0f - E.Progress );
+                    long EstimatedTimeLeft = ( long ) ( RemainingProgress * E.TotalSamples * E.AverageSampleTime.Ticks );
+                    Menu.Status_Label.Text = new TimeSpan( EstimatedTimeLeft ).ToString( );
+
+                    Output.WriteLine( "Rendered sample {0} of {1} in {2}", Sample ,
+                        E.TotalSamples, E.Time );
+                }
+                else
+                {
+                    Menu.Status_Label.Text = Resources.Statuses_Drawing;
+                }
+            } );
         }
 
         private static void RendererOnFinished( object sender, RendererFinishedEventArgs e )
@@ -65,28 +94,6 @@ namespace Tracer
             if ( !IsWindowActive )
                 Menu.Notifier.ShowBalloonTip( 500, "Rendering finished", "Rendering took " + e.Time,
                     ToolTipIcon.Info );
-        }
-
-        private static void RendererOnProgress( object Sender, RendererProgressEventArgs E )
-        {
-            Menu.Perform( ( ) =>
-            {
-                Menu.Status_Progress.Value = Math.Min( Menu.Status_Progress.Maximum,
-                                                        ( int ) ( E.TotalProgress * Menu.Status_Progress.Maximum ) );
-                if ( E.TotalProgress < 1 )
-                {
-                    Menu.Status_Label.Text =
-                        new TimeSpan(
-                            ( long ) ( ( ( 1.0 - E.TotalProgress ) / E.Progress ) * E.AverageProgressTime.Ticks ) )
-                            .ToString( );
-                    Output.WriteLine( "Rendered image area {0} of {1} in {2}", ( int ) ( E.TotalProgress / E.Progress ),
-                        ( int ) ( 1f / E.Progress ), E.ProgressTime );
-                }
-                else
-                {
-                    Menu.Status_Label.Text = Resources.Statuses_Drawing;
-                }
-            } );
         }
 
         private static void OnRenderingEnded( )

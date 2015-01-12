@@ -8,10 +8,11 @@ class Collider
 {
 public:
 	__device__ static CollisionResult Collide( Ray&, Object* );
-	__device__ static CollisionResult SphereCollision( Ray&, Object* );
-	__device__ static CollisionResult PlaneCollision( Ray&, Object* );
-	__device__ static CollisionResult TriangleCollision( Ray&, Vertex&, Vertex&, Vertex& );
-	__device__ static CollisionResult TriangleCollision( Ray&, Object* );
+	__device__ static CollisionResult SphereCollision( Ray&, const SphereObject& );
+	__device__ static CollisionResult PlaneCollision( Ray&, const PlaneObject& );
+	__device__ static CollisionResult TriangleCollision( Ray&, const Vertex&, const Vertex&, const Vertex& );
+	__device__ static CollisionResult TriangleCollision( Ray&, const TriangleObject& );
+	__device__ static CollisionResult MeshCollision( Ray&, const MeshObject& );
 };
 
 __device__ CollisionResult Collider::Collide( Ray& R, Object* Obj )
@@ -22,28 +23,48 @@ __device__ CollisionResult Collider::Collide( Ray& R, Object* Obj )
     switch ( Obj->Type )
     {
         case ObjectType::SphereType:
-            Res = SphereCollision( R, Obj );
+            Res = SphereCollision( R, Obj->Sphere );
 			break;
 
         case ObjectType::PlaneType:
-            Res = PlaneCollision( R, Obj );
+            Res = PlaneCollision( R, Obj->Plane );
 			break;
 
 		case ObjectType::TriangleType:
-			Res = TriangleCollision( R, Obj );
+			Res = TriangleCollision( R, Obj->Triangle );
+			break;
+
+		case ObjectType::MeshType:
+			if ( SphereCollision( R, Obj->Mesh.BoundingVolume ).Hit )
+				Res = MeshCollision( R, Obj->Mesh );
 			break;
     }
 
 	Res.Ray = &R;
+	Res.HitObject = Obj;
 	return Res;
 }
 
-__device__ CollisionResult Collider::SphereCollision( Ray& R, Object* Obj )
+__device__ CollisionResult Collider::MeshCollision( Ray& R, const MeshObject& Mesh )
+{
+	CollisionResult Res;
+	Res.Hit = false;
+
+	for ( int Q = 0; Q < Mesh.TriangleCount; Q++ )
+	{
+		TriangleObject& T = Mesh.Triangles[ Q ];
+		CollisionResult TempRes = Collider::TriangleCollision( R, T.V1, T.V2, T.V3 );
+		if ( !Res.Hit || ( TempRes.Hit && TempRes.Distance < Res.Distance ) )
+			Res = TempRes;
+	}
+
+	return Res;
+}
+
+__device__ CollisionResult Collider::SphereCollision( Ray& R, const SphereObject& Sphere )
 {
     CollisionResult Res;
     Res.Hit = false;
-
-   SphereObject& Sphere = Obj->Sphere;
 
     const float A = VectorMath::Dot( R.Direction, R.Direction );
     const float B = 2 * VectorMath::Dot( R.Direction, R.Start - Sphere.Position );
@@ -78,17 +99,15 @@ __device__ CollisionResult Collider::SphereCollision( Ray& R, Object* Obj )
     Res.Hit = true;
     Res.Position = R.Start + R.Direction * Res.Distance;
     Res.Normal = VectorMath::Normalized( Res.Position - Sphere.Position );
-    Res.HitObject = Obj;
 
     return Res;
 }
 
-__device__ CollisionResult Collider::PlaneCollision( Ray& R, Object* Obj )
+__device__ CollisionResult Collider::PlaneCollision( Ray& R, const PlaneObject& Plane )
 {
 	CollisionResult Res;
 	Res.Hit = false;
 
-	const PlaneObject& Plane = Obj->Plane;
 	float Div = VectorMath::Dot( Plane.Normal, R.Direction );
 	if ( Div == 0 )
 		return Res;
@@ -98,7 +117,6 @@ __device__ CollisionResult Collider::PlaneCollision( Ray& R, Object* Obj )
 		return Res;
 
 	Res.Hit = true;
-	Res.HitObject = Obj;
 	Res.Distance = Distance;
 	Res.Normal = Plane.Normal;
 	Res.Position = R.Start + R.Direction * Distance;
@@ -106,7 +124,7 @@ __device__ CollisionResult Collider::PlaneCollision( Ray& R, Object* Obj )
 	return Res;
 }
 
-__device__ CollisionResult Collider::TriangleCollision( Ray& R, Vertex& V1, Vertex& V2, Vertex& V3 )
+__device__ CollisionResult Collider::TriangleCollision( Ray& R, const Vertex& V1, const Vertex& V2, const Vertex& V3 )
 {
 	CollisionResult Res;
 	Res.Hit = false;
@@ -138,16 +156,14 @@ __device__ CollisionResult Collider::TriangleCollision( Ray& R, Vertex& V1, Vert
 	if ( VectorMath::Dot( R.Direction, Res.Normal ) > 0 )
 		Res.Normal = Res.Normal * -1;
 
-	
 	Res.Hit = true;
 
 	return Res;
 }
 
-__device__ CollisionResult Collider::TriangleCollision( Ray& R, Object* Obj )
+__device__ CollisionResult Collider::TriangleCollision( Ray& R, const TriangleObject& Triangle )
 {
-	CollisionResult Res = TriangleCollision( R, Obj->Triangle.V1, Obj->Triangle.V2, Obj->Triangle.V3 );
-	Res.HitObject = Obj;
+	CollisionResult Res = TriangleCollision( R, Triangle.V1, Triangle.V2, Triangle.V3 );
 
 	return Res;
 }

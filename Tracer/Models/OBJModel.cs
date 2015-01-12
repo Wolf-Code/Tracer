@@ -12,16 +12,45 @@ namespace Tracer.Models
         private readonly Vector3 Center;
         private Vector3 Position;
         private Vector3 Scale;
+        private Vector3 Min, Max;
 
         public OBJModel( Vertex [ ] Vertices )
         {
             Center = new Vector3( );
 
             this.Vertices = Vertices;
+            Min = new Vector3( );
+            Max = new Vector3( );
             foreach ( Vertex V in Vertices )
+            {
                 Center += V.Position;
+                if ( V.Position.X < Min.X )
+                    Min.X = V.Position.X;
+
+                if ( V.Position.Y < Min.Y )
+                    Min.Y = V.Position.Y;
+
+                if ( V.Position.Z < Min.Z )
+                    Min.Z = V.Position.Z;
+
+
+
+                if ( V.Position.X > Max.X )
+                    Max.X = V.Position.X;
+
+                if ( V.Position.Y > Max.Y )
+                    Max.Y = V.Position.Y;
+
+                if ( V.Position.Z > Max.Z )
+                    Max.Z = V.Position.Z;
+            }
 
             Center /= Vertices.Length;
+        }
+
+        public Sphere BoundingSphere( )
+        {
+            return new Sphere( Center, ( Max - Min ).Length );
         }
 
         public Triangle [ ] ToTriangles( )

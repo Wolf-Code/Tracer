@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ManagedCuda.VectorTypes;
 using Tracer.Classes;
 using Tracer.Classes.Util;
+using Tracer.TracerEventArgs;
 
 namespace Tracer
 {
@@ -31,11 +32,10 @@ namespace Tracer
 
         public static Bitmap ConvertFloat3Array( uint Samples, int Width, int Height, float3 [ ] Array )
         {
-            int WH = Width * Height;
-            byte [ ] ByteArray = new byte[ WH * 4 ];
+            byte [ ] ByteArray = new byte[ Array.Length * 4 ];
 
             // Fill the byte array in parallel, to speed it up.
-            Parallel.For( 0, WH, Var =>
+            Parallel.For( 0, Array.Length, Var =>
             {
                 float3 Val = Array[ Var ] / Samples;
                 int X = Var % Width;
@@ -49,6 +49,35 @@ namespace Tracer
             } );
 
             return ConvertByteArray( Width, Height, ByteArray );
+        }
+
+        public static Bitmap ConvertSample( RenderSampleEventArgs Args )
+        {
+            byte [ ] ByteArray = new byte[ Args.Data.Length * 4 ];
+
+            // Fill the byte array in parallel, to speed it up.
+            Parallel.For( 0, Args.Data.Length, Var =>
+            {
+                float3 Val = Args.Data[ Var ];
+                int X = Var % Args.Width;
+                int Y = ( Var - X ) / Args.Width;
+                if ( X >= Args.StartX &&
+                     Y >= Args.StartY &&
+                     X < Args.EndX &&
+                     Y < Args.EndY )
+                    Val /= Args.AreaSampleCount;
+                else
+                    Val /= Args.TotalAreaSamples;
+
+                //Console.WriteLine( "{0}, {1}: {2}", X, Y, Val );
+                Var *= 4;
+                ByteArray[ Var ] = ( byte ) MathHelper.Clamp( Val.z * 255, 0, 255 );
+                ByteArray[ Var + 1 ] = ( byte ) MathHelper.Clamp( Val.y * 255, 0, 255 );
+                ByteArray[ Var + 2 ] = ( byte ) MathHelper.Clamp( Val.x * 255, 0, 255 );
+                ByteArray[ Var + 3 ] = 255;
+            } );
+
+            return ConvertByteArray( Args.Width, Args.Height, ByteArray );
         }
 
         public static Classes.Util.Color VectorToColor( Vector3 V )

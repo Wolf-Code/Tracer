@@ -17,10 +17,11 @@ extern "C"
         //      Which block # of T in B      ID of Thread
         int x = StartX + ( blockIdx.x * blockDim.x ) + threadIdx.x;
         int y = StartY + ( blockIdx.y * blockDim.y ) + threadIdx.y;
+		
 
         if ( x < EndX && y < EndY )
         {
-            int ID = y * ( int )Camera.Width + x;
+			int ID = y * ( int )Camera.Width + x;
 
             curandState RandState;
             curand_init( Seed + ID, 0, 0, &RandState );

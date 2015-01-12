@@ -6,7 +6,8 @@ enum ObjectType
 {
     SphereType = 0,
     PlaneType = 1,
-	TriangleType = 2
+	TriangleType = 2,
+	MeshType = 3
 };
 
 #endif

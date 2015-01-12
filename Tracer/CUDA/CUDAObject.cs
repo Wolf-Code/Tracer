@@ -10,6 +10,7 @@ namespace Tracer.CUDA
         public CUDASphereObject Sphere;
         public CUDAPlaneObject Plane;
         public CUDATriangleObject Triangle;
+        public CUDAMeshObject Mesh;
         public CUDAMaterial Material;
     }
 }

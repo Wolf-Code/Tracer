@@ -72,6 +72,7 @@
     <Compile Include="Classes\Vertex.cs" />
     <Compile Include="Content.cs" />
     <Compile Include="Classes\ControlCollectionEditor.cs" />
+    <Compile Include="CUDA\CUDAMeshObject.cs" />
     <Compile Include="CUDA\CUDATriangleObject.cs" />
     <Compile Include="CUDA\CUDAVertex.cs" />
     <Compile Include="Importers\ModelImporter.cs" />
@@ -81,8 +82,7 @@
     <Compile Include="Interfaces\IModelImporter.cs" />
     <Compile Include="Models\OBJModel.cs" />
     <Compile Include="Output.cs" />
-    <Compile Include="EventArgs\RendererFinishedEventArgs.cs" />
-    <Compile Include="EventArgs\RendererProgressEventArgs.cs" />
+    <Compile Include="TracerEventArgs\RendererFinishedEventArgs.cs" />
     <Compile Include="Renderers\CUDADevice.cs" />
     <Compile Include="Renderers\CUDARenderer.cs" />
     <Compile Include="CUDA\CUDACamData.cs" />
@@ -103,6 +103,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="Renderers\OpenCLRenderer.cs" />
+    <Compile Include="TracerEventArgs\RenderSampleEventArgs.cs" />
     <Compile Include="Utilities.cs" />
     <EmbeddedResource Include="Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>

@@ -8,6 +8,7 @@ namespace Tracer
     public partial class Menu : Form
     {
         private static Menu M;
+
         public Menu( )
         {
             InitializeComponent( );
@@ -42,7 +43,7 @@ namespace Tracer
             Settings.Default.Save( );
         }
 
-        private void Settings_AreaDivider_ValueChanged(object sender, EventArgs e)
+        private void Settings_AreaDivider_ValueChanged( object sender, EventArgs e )
         {
             Settings.Default[ "Render_AreaDivider" ] = ( uint ) Settings_AreaDivider.Value;
             Settings.Default.Save( );
@@ -94,7 +95,7 @@ namespace Tracer
             SceneProperties.SelectedObject = Renderer.Scene;
         }
 
-        private void Settings_Devices_SelectedIndexChanged(object sender, EventArgs e)
+        private void Settings_Devices_SelectedIndexChanged( object sender, EventArgs e )
         {
             IDevice Dev = Settings_Devices.SelectedItem as IDevice;
         }
@@ -107,19 +108,21 @@ namespace Tracer
                 Act( );
         }
 
-        private void Image_Save_Click(object sender, EventArgs e)
+        private void Image_Save_Click( object sender, EventArgs e )
         {
-            if (Renderer.Rendering) return;
-            if (this.RenderImage.Image == null) return;
+            if ( Renderer.Rendering ) return;
+            if ( this.RenderImage.Image == null ) return;
 
             SaveFileDialog Dialog = new SaveFileDialog
             {
                 Filter = "PNG (*.png)|*.png",
-                FileName = DateTime.Now.ToShortDateString() + "_" + DateTime.Now.ToLongTimeString().Replace(':', '-') + ".png"
+                FileName =
+                    DateTime.Now.ToShortDateString( ) + "_" + DateTime.Now.ToLongTimeString( ).Replace( ':', '-' ) +
+                    ".png"
             };
 
-            if (Dialog.ShowDialog() == DialogResult.OK)
-                this.RenderImage.Image.Save(Dialog.FileName);
+            if ( Dialog.ShowDialog( ) == DialogResult.OK )
+                this.RenderImage.Image.Save( Dialog.FileName );
         }
     }
 }

@@ -7,6 +7,7 @@
 #include "SphereObject.h"
 #include "PlaneObject.h"
 #include "TriangleObject.h"
+#include "MeshObject.h"
 #include "Material.cuh"
 
 struct Object
@@ -16,6 +17,7 @@ struct Object
     SphereObject Sphere;
     PlaneObject Plane;
 	TriangleObject Triangle;
+	MeshObject Mesh;
     Material Material;
 	__device__ bool IsLightSource( void );
 };
