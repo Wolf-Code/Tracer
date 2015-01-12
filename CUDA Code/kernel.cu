@@ -4,8 +4,6 @@
 
 extern "C"
 {
-    __device__ float clamp( float, float, float );
-
     __constant__ Object* ObjectArray;
     __constant__ unsigned int Objects;
 	__constant__ unsigned int* Lights;
@@ -13,11 +11,6 @@ extern "C"
     __constant__ CamData Camera;
     __constant__ long Seed;
 	__constant__ unsigned int MaxDepth;
-
-    __device__ float clamp( float X, float Min, float Max )
-    {
-        return fmaxf( Min, fminf( X, Max ) );
-    }
 
     __global__ void TraceKernelRegion( float3* Input, int StartX, int StartY, int EndX, int EndY, float3* Output )
     {

@@ -4,18 +4,18 @@
 #include "VectorMath.cuh"
 #include "Defines.h"
 
-__device__ float3 Material::BRDF( const float3& In, const float3& Out, const float3& Normal )
+__device__ float Material::BRDF( const float3& In, const float3& Out, const float3& Normal )
 {
 	if ( this->Type == Diffuse )
-		return this->Color * OneOverPI;
+		return OneOverPI;
 
 	if ( this->Type == Reflective )
 	{
 		if ( VectorMath::Reflect( In, Normal ) == Out )
-			return this->Color;
+			return 1.0f;
 	}
 
-	return float3( );
+	return 0.0f;
 }
 
 __device__ float Material::CosTheta( const float3& OutGoing, const float3& Normal )

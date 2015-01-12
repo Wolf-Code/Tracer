@@ -128,10 +128,10 @@ __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray& R )
 			PrimaryRay = false;
 		}
 
-		const float3 BDRF = Mat.BRDF( R.Direction, NextDirection, Res.Normal );
+		const float BDRF = Mat.BRDF( R.Direction, NextDirection, Res.Normal );
 		const float cos_theta = Mat.CosTheta( NextDirection, Res.Normal );
 		const float PDF = Mat.PDF( );
-		const float3 Mul = ( BDRF * cos_theta ) / PDF;
+		const float3 Mul = Mat.Color * ( BDRF * cos_theta ) / PDF;
 
 		Val += Shadow * Mul * ThroughPut;
 		ThroughPut *= Mul;
