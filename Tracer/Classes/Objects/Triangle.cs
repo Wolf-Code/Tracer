@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using ManagedCuda.VectorTypes;
 using Tracer.Classes.Util;
 using Tracer.CUDA;
 
@@ -51,7 +52,7 @@ namespace Tracer.Classes.Objects
         {
             Vector3 P1 = this.Vertex2 - this.Vertex1;
             Vector3 P2 = this.Vertex3 - this.Vertex1;
-            Vector3 Cross = P2.Cross( P1 ).Normalized( );
+            float3 Cross = P2.Cross( P1 ).Normalized( ).ToFloat3(  );
 
             return new [ ]
             {
@@ -63,19 +64,19 @@ namespace Tracer.Classes.Objects
                         V1 = new CUDAVertex
                         {
                             Position = this.Vertex1.ToFloat3( ),
-                            Normal = Cross.ToFloat3(  )
+                            Normal = Cross
                         },
                         V2 = new CUDAVertex
                         {
                             Position = this.Vertex2.ToFloat3( ),
-                            Normal = Cross.ToFloat3(  )
+                            Normal = Cross
                         },
                         V3 = new CUDAVertex
                         {
                             Position = this.Vertex3.ToFloat3( ),
-                            Normal = Cross.ToFloat3(  )
+                            Normal = Cross
                         },
-                        Normal = Cross.Normalized( ).ToFloat3( )
+                        Normal = Cross
                     },
                     Type = CUDAObjectType.Triangle
                 }

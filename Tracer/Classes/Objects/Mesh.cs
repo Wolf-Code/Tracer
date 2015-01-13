@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows.Forms.VisualStyles;
 using ManagedCuda;
 using Tracer.Classes.Util;
 using Tracer.CUDA;
@@ -55,6 +56,7 @@ namespace Tracer.Classes.Objects
             {
                 new CUDAObject
                 {
+                    Material = this.Material.ToCUDAMaterial(  ),
                     Type = CUDAObjectType.MeshType,
                     Mesh = Mesh
                 }

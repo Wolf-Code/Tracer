@@ -52,7 +52,7 @@ __device__ CollisionResult Collider::MeshCollision( Ray& R, const MeshObject& Me
 
 	for ( int Q = 0; Q < Mesh.TriangleCount; Q++ )
 	{
-		TriangleObject& T = Mesh.Triangles[ Q ];
+		const TriangleObject& T = Mesh.Triangles[ Q ];
 		CollisionResult TempRes = Collider::TriangleCollision( R, T.V1, T.V2, T.V3 );
 		if ( !Res.Hit || ( TempRes.Hit && TempRes.Distance < Res.Distance ) )
 			Res = TempRes;
