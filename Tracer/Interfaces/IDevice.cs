@@ -1,5 +1,4 @@
-﻿
-namespace Tracer
+﻿namespace Tracer.Interfaces
 {
     public interface IDevice
     {

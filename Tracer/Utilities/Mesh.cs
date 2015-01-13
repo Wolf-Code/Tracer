@@ -1,6 +1,5 @@
-﻿
-using System;
-using Tracer.Classes;
+﻿using System;
+using Tracer.Classes.ModelData;
 using Tracer.Classes.Util;
 
 namespace Tracer.Utilities
@@ -21,7 +20,6 @@ namespace Tracer.Utilities
 
                 if ( V.Position.Z < Min.Z )
                     Min.Z = V.Position.Z;
-
 
 
                 if ( V.Position.X > Max.X )

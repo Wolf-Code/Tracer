@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Windows.Forms.VisualStyles;
-using ManagedCuda;
 using Tracer.Classes.Util;
-using Tracer.CUDA;
-using Tracer.Importers;
 using Tracer.Interfaces;
+using Tracer.Structs.CUDA;
+using Tracer.Utilities;
 
-namespace Tracer.Classes.Objects
+namespace Tracer.Classes.SceneObjects
 {
     [Serializable]
     public class Mesh : GraphicsObject

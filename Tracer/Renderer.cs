@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Tracer.Classes.Objects;
+using Tracer.Classes.SceneObjects;
 using Tracer.Interfaces;
 using Tracer.Properties;
 using Tracer.Renderers;
 using Tracer.TracerEventArgs;
+using Tracer.Utilities;
 
 namespace Tracer
 {
@@ -28,8 +29,6 @@ namespace Tracer
             Menu.Settings_Samples.Value = Settings.Default.Render_Samples;
             Menu.Settings_Depth.Value = Settings.Default.Render_MaxDepth;
             Menu.Settings_AreaDivider.Value = Settings.Default.Render_AreaDivider;
-
-            Scene = Scene.Default;
 
             try
             {
@@ -77,6 +76,7 @@ namespace Tracer
                 }
             } );
         }
+
         private static void RendererOnFinished( object sender, RendererFinishedEventArgs e )
         {
             Menu.Perform( ( ) =>

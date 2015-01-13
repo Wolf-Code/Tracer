@@ -2,7 +2,7 @@
 using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection;
-using Tracer.Classes.Objects;
+using Tracer.Classes.SceneObjects;
 
 namespace Tracer.Classes
 {
@@ -13,7 +13,6 @@ namespace Tracer.Classes
         public ControlCollectionEditor( Type type )
             : base( type )
         {
-            
         }
 
         protected override Type [ ] CreateNewItemTypes( )

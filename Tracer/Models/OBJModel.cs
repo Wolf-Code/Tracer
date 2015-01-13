@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using Tracer.Classes;
-using Tracer.Classes.Objects;
+using Tracer.Classes.ModelData;
+using Tracer.Classes.SceneObjects;
 using Tracer.Classes.Util;
-using Tracer.CUDA;
 using Tracer.Interfaces;
+using Tracer.Structs.CUDA;
 
 namespace Tracer.Models
 {

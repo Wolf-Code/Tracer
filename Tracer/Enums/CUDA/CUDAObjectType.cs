@@ -1,4 +1,4 @@
-﻿namespace Tracer.CUDA
+﻿namespace Tracer.Enums.CUDA
 {
     public enum CUDAObjectType
     {

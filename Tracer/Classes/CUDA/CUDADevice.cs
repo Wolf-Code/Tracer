@@ -1,6 +1,7 @@
 using ManagedCuda;
+using Tracer.Interfaces;
 
-namespace Tracer.Renderers
+namespace Tracer.Classes.CUDA
 {
     public class CUDADevice : IDevice
     {

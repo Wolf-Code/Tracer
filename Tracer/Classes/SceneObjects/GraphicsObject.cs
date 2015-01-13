@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
-using Tracer.CUDA;
+using Tracer.Structs.CUDA;
 
-namespace Tracer.Classes.Objects
+namespace Tracer.Classes.SceneObjects
 {
     /// <summary>
     /// An abstract class for all objects which we can represent in the raytraced image.
@@ -31,7 +31,7 @@ namespace Tracer.Classes.Objects
             this.Material = new Material( );
         }
 
-        public abstract CUDAObject[ ] ToCUDA( );
+        public abstract CUDAObject [ ] ToCUDA( );
 
         public override string ToString( )
         {

@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
+using Tracer.Enums.CUDA;
 
-namespace Tracer.CUDA
+namespace Tracer.Structs.CUDA
 {
     [StructLayout( LayoutKind.Sequential )]
     public struct CUDAObject

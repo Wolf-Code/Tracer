@@ -1,9 +1,9 @@
 ﻿using System.Runtime.InteropServices;
 using ManagedCuda.VectorTypes;
 
-namespace Tracer.CUDA
+namespace Tracer.Structs.CUDA
 {
-    [StructLayout(LayoutKind.Sequential)]
+    [StructLayout( LayoutKind.Sequential )]
     public struct CUDACamData
     {
         public float3 Position;

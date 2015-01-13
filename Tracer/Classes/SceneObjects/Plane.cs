@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using Tracer.Classes.Util;
-using Tracer.CUDA;
+using Tracer.Enums.CUDA;
+using Tracer.Structs.CUDA;
 
-namespace Tracer.Classes.Objects
+namespace Tracer.Classes.SceneObjects
 {
     /// <summary>
     /// A plane object.

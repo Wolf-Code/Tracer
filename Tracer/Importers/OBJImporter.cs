@@ -4,29 +4,15 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Tracer.Classes;
+using Tracer.Classes.ModelData;
 using Tracer.Classes.Util;
 using Tracer.Interfaces;
 using Tracer.Models;
+using Tracer.Structs;
 
 namespace Tracer.Importers
 {
-    struct FaceData
-    {
-        public int Position;
-        public int Normal;
-        public int TextureCoordinate;
-    }
-
-    struct OBJImportedData
-    {
-        public Vector3 [ ] Positions;
-        public Vector3 [ ] Normals;
-        public Vector2 [ ] TextureCoordinates;
-        public FaceData [ ] Faces;
-    }
-
-    class OBJImporter : IModelImporter
+    internal class OBJImporter : IModelImporter
     {
         private readonly List<Vector3> Positions = new List<Vector3>( );
         private readonly List<Vector3> Normals = new List<Vector3>( );
@@ -67,7 +53,7 @@ namespace Tracer.Importers
                                 Meshes.Add( M );
                             }
 
-                            CurrentMesh = string.Join(" ", Data);
+                            CurrentMesh = string.Join( " ", Data );
                             break;
                     }
                 }
@@ -81,7 +67,7 @@ namespace Tracer.Importers
             }
 
 
-            OBJModel Model = new OBJModel( Meshes.ToArray(  ) );
+            OBJModel Model = new OBJModel( Meshes.ToArray( ) );
 
             return Model;
         }
@@ -122,7 +108,7 @@ namespace Tracer.Importers
             return int.Parse( Data );
         }
 
-        private int GetProperID( int ParsedID, ICollection Collection  )
+        private int GetProperID( int ParsedID, ICollection Collection )
         {
             // If the parsed ID is negative, it means we take vertex n - id
             if ( ParsedID < 0 )

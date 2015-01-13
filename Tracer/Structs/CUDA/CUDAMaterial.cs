@@ -1,7 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 using ManagedCuda.VectorTypes;
+using Tracer.Enums.CUDA;
 
-namespace Tracer.CUDA
+namespace Tracer.Structs.CUDA
 {
     [StructLayout( LayoutKind.Sequential )]
     public struct CUDAMaterial

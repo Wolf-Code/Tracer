@@ -1,6 +1,6 @@
 ﻿using Tracer.Classes.Util;
 
-namespace Tracer.Classes
+namespace Tracer.Classes.ModelData
 {
     public class Vertex
     {

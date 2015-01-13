@@ -1,11 +1,10 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel;
 
 namespace Tracer.Classes.Util
 {
     [Serializable]
-    [TypeConverter( typeof( ExpandableObjectConverter ) )]
+    [TypeConverter( typeof ( ExpandableObjectConverter ) )]
     public class Color
     {
         public static Color White
@@ -18,7 +17,7 @@ namespace Tracer.Classes.Util
             get { return new Color( 0f, 0f, 0f ); }
         }
 
-        [DisplayName("Red")]
+        [DisplayName( "Red" )]
         [Description( "The red component of the color." )]
         public float R { set; get; }
 
@@ -30,7 +29,7 @@ namespace Tracer.Classes.Util
         [Description( "The blue component of the color." )]
         public float B { set; get; }
 
-        [Browsable(false)]
+        [Browsable( false )]
         public byte bR
         {
             get { return ( byte ) ( R * 255f ); }

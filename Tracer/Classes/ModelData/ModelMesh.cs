@@ -1,13 +1,13 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using ManagedCuda;
-using Tracer.Classes.Objects;
+using Tracer.Classes.SceneObjects;
 using Tracer.Classes.Util;
-using Tracer.CUDA;
+using Tracer.Enums.CUDA;
 using Tracer.Interfaces;
+using Tracer.Structs.CUDA;
 
-namespace Tracer.Classes
+namespace Tracer.Classes.ModelData
 {
     public class ModelMesh
     {
@@ -45,7 +45,7 @@ namespace Tracer.Classes
             }
 
             CudaDeviceVariable<CUDATriangleObject> Triangles = new CudaDeviceVariable<CUDATriangleObject>( Ts.Count );
-            Triangles.CopyToDevice( Ts.ToArray(  ) );
+            Triangles.CopyToDevice( Ts.ToArray( ) );
             Tuple<Vector3, Vector3> MinMax = Utilities.Mesh.AABB( this );
 
             return new CUDAObject
@@ -59,7 +59,7 @@ namespace Tracer.Classes
                             ( )[
                                 0 ].Sphere
                 },
-                Material = this.Material.ToCUDAMaterial(  ),
+                Material = this.Material.ToCUDAMaterial( ),
                 Type = CUDAObjectType.MeshType
             };
         }

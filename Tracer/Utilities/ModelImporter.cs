@@ -1,10 +1,10 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Tracer.Importers;
 using Tracer.Interfaces;
 
-namespace Tracer.Importers
+namespace Tracer.Utilities
 {
     public static class ModelImporter
     {

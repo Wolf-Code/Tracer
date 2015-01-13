@@ -56,43 +56,45 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Camera.cs" />
-    <Compile Include="Classes\Objects\GraphicsObject.cs" />
+    <Compile Include="Classes\SceneObjects\Camera.cs" />
+    <Compile Include="Classes\SceneObjects\GraphicsObject.cs" />
     <Compile Include="Classes\Material.cs" />
-    <Compile Include="Classes\MathHelper.cs" />
-    <Compile Include="Classes\Objects\Mesh.cs" />
-    <Compile Include="Classes\Objects\Triangle.cs" />
-    <Compile Include="Classes\Objects\Plane.cs" />
-    <Compile Include="Classes\Objects\Scene.cs" />
-    <Compile Include="Classes\Objects\Sphere.cs" />
+    <Compile Include="Utilities\MathHelper.cs" />
+    <Compile Include="Classes\SceneObjects\Mesh.cs" />
+    <Compile Include="Classes\SceneObjects\Triangle.cs" />
+    <Compile Include="Classes\SceneObjects\Plane.cs" />
+    <Compile Include="Classes\SceneObjects\Scene.cs" />
+    <Compile Include="Classes\SceneObjects\Sphere.cs" />
     <Compile Include="Classes\Util\Angle.cs" />
     <Compile Include="Classes\Util\Color.cs" />
     <Compile Include="Classes\Util\Vector2.cs" />
     <Compile Include="Classes\Util\Vector3.cs" />
-    <Compile Include="Classes\Vertex.cs" />
-    <Compile Include="Content.cs" />
+    <Compile Include="Classes\ModelData\Vertex.cs" />
+    <Compile Include="Structs\FaceData.cs" />
+    <Compile Include="Structs\OBJImportedData.cs" />
+    <Compile Include="Utilities\Content.cs" />
     <Compile Include="Classes\ControlCollectionEditor.cs" />
-    <Compile Include="CUDA\CUDAMeshObject.cs" />
-    <Compile Include="CUDA\CUDATriangleObject.cs" />
-    <Compile Include="CUDA\CUDAVertex.cs" />
-    <Compile Include="Importers\ModelImporter.cs" />
+    <Compile Include="Structs\CUDA\CUDAMeshObject.cs" />
+    <Compile Include="Structs\CUDA\CUDATriangleObject.cs" />
+    <Compile Include="Structs\CUDA\CUDAVertex.cs" />
+    <Compile Include="Utilities\ModelImporter.cs" />
     <Compile Include="Importers\OBJImporter.cs" />
     <Compile Include="Interfaces\IDevice.cs" />
     <Compile Include="Interfaces\IModel.cs" />
     <Compile Include="Interfaces\IModelImporter.cs" />
-    <Compile Include="Classes\ModelMesh.cs" />
+    <Compile Include="Classes\ModelData\ModelMesh.cs" />
     <Compile Include="Models\OBJModel.cs" />
-    <Compile Include="Output.cs" />
+    <Compile Include="Utilities\Output.cs" />
     <Compile Include="TracerEventArgs\RendererFinishedEventArgs.cs" />
-    <Compile Include="Renderers\CUDADevice.cs" />
+    <Compile Include="Classes\CUDA\CUDADevice.cs" />
     <Compile Include="Renderers\CUDARenderer.cs" />
-    <Compile Include="CUDA\CUDACamData.cs" />
-    <Compile Include="CUDA\CUDAMaterial.cs" />
-    <Compile Include="CUDA\CUDAObject.cs" />
-    <Compile Include="CUDA\CUDAPlaneObject.cs" />
-    <Compile Include="CUDA\CUDASphereObject.cs" />
-    <Compile Include="CUDA\CUDAMaterialType.cs" />
-    <Compile Include="CUDA\CUDAObjectType.cs" />
+    <Compile Include="Structs\CUDA\CUDACamData.cs" />
+    <Compile Include="Structs\CUDA\CUDAMaterial.cs" />
+    <Compile Include="Structs\CUDA\CUDAObject.cs" />
+    <Compile Include="Structs\CUDA\CUDAPlaneObject.cs" />
+    <Compile Include="Structs\CUDA\CUDASphereObject.cs" />
+    <Compile Include="Enums\CUDA\CUDAMaterialType.cs" />
+    <Compile Include="Enums\CUDA\CUDAObjectType.cs" />
     <Compile Include="Interfaces\IRenderer.cs" />
     <Compile Include="Menu.cs">
       <SubType>Form</SubType>
@@ -120,6 +122,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

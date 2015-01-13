@@ -4,11 +4,11 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Linq;
 using Tracer.Classes.Util;
-using Tracer.CUDA;
+using Tracer.Enums.CUDA;
+using Tracer.Structs.CUDA;
+using SceneCUDAData = System.Tuple<Tracer.Structs.CUDA.CUDAObject [ ], uint [ ]>;
 
-using SceneCUDAData = System.Tuple<Tracer.CUDA.CUDAObject[],uint[]>;
-
-namespace Tracer.Classes.Objects
+namespace Tracer.Classes.SceneObjects
 {
     [Serializable]
     public class Scene

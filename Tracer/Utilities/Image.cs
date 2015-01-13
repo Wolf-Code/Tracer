@@ -3,7 +3,6 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using ManagedCuda.VectorTypes;
-using Tracer.Classes;
 
 namespace Tracer.Utilities
 {

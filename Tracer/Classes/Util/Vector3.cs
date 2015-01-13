@@ -32,7 +32,7 @@ namespace Tracer.Classes.Util
         /// <summary>
         /// The squared length of this vector.
         /// </summary>
-        [Browsable(false)]
+        [Browsable( false )]
         public float LengthSquared
         {
             get { return this.Dot( this ); }
@@ -41,7 +41,7 @@ namespace Tracer.Classes.Util
         /// <summary>
         /// The length of this vector.
         /// </summary>
-        [Browsable(false)]
+        [Browsable( false )]
         public float Length
         {
             get { return ( float ) Math.Sqrt( LengthSquared ); }

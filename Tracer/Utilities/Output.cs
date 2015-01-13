@@ -1,13 +1,13 @@
-﻿
-using System;
+﻿using System;
 using System.Linq;
 
-namespace Tracer
+namespace Tracer.Utilities
 {
     public static class Output
     {
         public static int MaxLines = 100;
         private static Menu Menu;
+
         public static void Initialize( Menu M )
         {
             Menu = M;

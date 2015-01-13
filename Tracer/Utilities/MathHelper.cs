@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tracer.Classes
+namespace Tracer.Utilities
 {
     public static class MathHelper
     {

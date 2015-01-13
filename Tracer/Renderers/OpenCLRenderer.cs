@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using OpenCL.Net;
-using Tracer.Classes.Objects;
+using Tracer.Classes.SceneObjects;
 using Tracer.Interfaces;
 using Tracer.TracerEventArgs;
 
@@ -71,7 +71,7 @@ namespace Tracer.Renderers
 
         public void Run( )
         {
-            Setup(  );
+            Setup( );
         }
 
         public void Cancel( )

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using Tracer.Classes.Objects;
+using Tracer.Classes.SceneObjects;
+using Tracer.Interfaces;
 using Tracer.Properties;
+using Tracer.Utilities;
 
 namespace Tracer
 {
@@ -125,7 +127,7 @@ namespace Tracer
                 this.RenderImage.Image.Save( Dialog.FileName );
         }
 
-        private void Render_NextArea_Click(object sender, EventArgs e)
+        private void Render_NextArea_Click( object sender, EventArgs e )
         {
             Renderer.NextArea( );
         }

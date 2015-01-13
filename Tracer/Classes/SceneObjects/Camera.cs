@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
 using Tracer.Classes.Util;
-using Tracer.CUDA;
+using Tracer.Structs.CUDA;
+using Tracer.Utilities;
 
-namespace Tracer.Classes
+namespace Tracer.Classes.SceneObjects
 {
     /// <summary>
     /// A camera class.
@@ -36,7 +37,7 @@ namespace Tracer.Classes
         /// <summary>
         /// The field of view of the camera.
         /// </summary>
-        [DisplayName( "Field of view" )]
+        [DisplayName( @"Field of view" )]
         [Description( "The amount of degrees the camera can see in front of it." )]
         public float FOV
         {
@@ -66,7 +67,7 @@ namespace Tracer.Classes
 
         public CUDACamData ToCamData( )
         {
-            CUDACamData Data = new CUDACamData( )
+            CUDACamData Data = new CUDACamData
             {
                 A = this.A,
                 Forward = this.Angle.Forward.ToFloat3( ),

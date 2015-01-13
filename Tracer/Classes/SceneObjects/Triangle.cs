@@ -2,9 +2,10 @@
 using System.ComponentModel;
 using ManagedCuda.VectorTypes;
 using Tracer.Classes.Util;
-using Tracer.CUDA;
+using Tracer.Enums.CUDA;
+using Tracer.Structs.CUDA;
 
-namespace Tracer.Classes.Objects
+namespace Tracer.Classes.SceneObjects
 {
     /// <summary>
     /// A triangle object.
@@ -48,11 +49,11 @@ namespace Tracer.Classes.Objects
             this.Vertex3 = V3;
         }
 
-        public override CUDAObject[] ToCUDA( )
+        public override CUDAObject [ ] ToCUDA( )
         {
             Vector3 P1 = this.Vertex2 - this.Vertex1;
             Vector3 P2 = this.Vertex3 - this.Vertex1;
-            float3 Cross = P2.Cross( P1 ).Normalized( ).ToFloat3(  );
+            float3 Cross = P2.Cross( P1 ).Normalized( ).ToFloat3( );
 
             return new [ ]
             {

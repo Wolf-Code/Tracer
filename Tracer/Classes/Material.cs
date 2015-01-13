@@ -2,7 +2,8 @@
 using System.ComponentModel;
 using ManagedCuda.VectorTypes;
 using Tracer.Classes.Util;
-using Tracer.CUDA;
+using Tracer.Enums.CUDA;
+using Tracer.Structs.CUDA;
 
 namespace Tracer.Classes
 {
