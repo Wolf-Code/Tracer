@@ -31,7 +31,9 @@ namespace Tracer.Importers
         private readonly List<Vector3> Positions = new List<Vector3>( );
         private readonly List<Vector3> Normals = new List<Vector3>( );
         private readonly List<Vector2> TextureCoordinates = new List<Vector2>( );
-        private readonly List<FaceData> Faces = new List<FaceData>( ); 
+        private readonly List<FaceData> Faces = new List<FaceData>( );
+        private readonly List<ModelMesh> Meshes = new List<ModelMesh>( );
+        private string CurrentMesh = string.Empty;
 
         public IModel Import( string Path )
         {
@@ -55,10 +57,37 @@ namespace Tracer.Importers
                         case "f":
                             ParseFaceLine( Data );
                             break;
+
+                        case "g":
+                            if ( this.Faces.Count > 0 )
+                            {
+                                ModelMesh M = this.CreateModelMesh( );
+                                M.Name = CurrentMesh;
+
+                                Meshes.Add( M );
+                            }
+
+                            CurrentMesh = string.Join(" ", Data);
+                            break;
                     }
                 }
             }
 
+            if ( Faces.Count > 0 )
+            {
+                ModelMesh M = this.CreateModelMesh( );
+                M.Name = CurrentMesh;
+                Meshes.Add( M );
+            }
+
+
+            OBJModel Model = new OBJModel( Meshes.ToArray(  ) );
+
+            return Model;
+        }
+
+        private ModelMesh CreateModelMesh( )
+        {
             List<Vertex> Vertices = new List<Vertex>( );
             for ( int Q = 0; Q < Faces.Count; Q++ )
             {
@@ -78,9 +107,9 @@ namespace Tracer.Importers
                 Vertices.Add( V );
             }
 
-            OBJModel Model = new OBJModel( Vertices.ToArray( ) );
+            Faces.Clear( );
 
-            return Model;
+            return new ModelMesh( Vertices.ToArray( ) );
         }
 
         private float ParseFloat( string Data )

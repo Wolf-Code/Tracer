@@ -205,7 +205,7 @@ namespace Tracer.Renderers
 
                 TimeSpan RenderSampleTime = Watch.Elapsed;
                 Average = new TimeSpan( ( DateTime.Now - this.Start ).Ticks / this.Samples );
-                Image = Utilities.FillBitmapArea( Image, Samples, StartX, StartY, W, H, Data );
+                Image = Utilities.Image.FillBitmapArea( Image, ( uint )( Q + 1 ), StartX, StartY, W, H, Data );
 
                 if ( OnSampleFinished != null )
                     OnSampleFinished( this, new RenderSampleEventArgs

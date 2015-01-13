@@ -1,72 +1,55 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Tracer.Classes;
 using Tracer.Classes.Objects;
 using Tracer.Classes.Util;
+using Tracer.CUDA;
 using Tracer.Interfaces;
 
 namespace Tracer.Models
 {
     public class OBJModel : IModel
     {
-        public Vertex [ ] Vertices { private set; get; }
-        private readonly Vector3 Center;
-        private Vector3 Position;
-        private Vector3 Scale;
+        public ModelMesh [ ] Meshes { private set; get; }
+        public Vector3 Position { private set; get; }
+        public Vector3 Scale { private set; get; }
         private Vector3 Min, Max;
 
-        public OBJModel( Vertex [ ] Vertices )
+        public OBJModel( ModelMesh [ ] Meshes )
         {
-            Center = new Vector3( );
+            this.Meshes = Meshes;
+            foreach ( ModelMesh M in this.Meshes )
+                M.SetParent( this );
 
-            this.Vertices = Vertices;
-            Min = new Vector3( );
-            Max = new Vector3( );
-            foreach ( Vertex V in Vertices )
+            Tuple<Vector3, Vector3> MinMax = Utilities.Mesh.AABB( Meshes[ 0 ] );
+            Min = MinMax.Item1;
+            Max = MinMax.Item2;
+
+            for ( int Q = 1; Q < Meshes.Length; Q++ )
             {
-                Center += V.Position;
-                if ( V.Position.X < Min.X )
-                    Min.X = V.Position.X;
+                MinMax = Utilities.Mesh.AABB( Meshes[ Q ] );
+                Vector3 TempMin = MinMax.Item1;
+                Vector3 TempMax = MinMax.Item2;
 
-                if ( V.Position.Y < Min.Y )
-                    Min.Y = V.Position.Y;
+                Min.X = Math.Min( TempMin.X, Min.X );
+                Min.Y = Math.Min( TempMin.Y, Min.Y );
+                Min.Z = Math.Min( TempMin.Z, Min.Z );
 
-                if ( V.Position.Z < Min.Z )
-                    Min.Z = V.Position.Z;
-
-
-
-                if ( V.Position.X > Max.X )
-                    Max.X = V.Position.X;
-
-                if ( V.Position.Y > Max.Y )
-                    Max.Y = V.Position.Y;
-
-                if ( V.Position.Z > Max.Z )
-                    Max.Z = V.Position.Z;
+                Max.X = Math.Min( TempMax.X, Max.X );
+                Max.Y = Math.Min( TempMax.Y, Max.Y );
+                Max.Z = Math.Min( TempMax.Z, Max.Z );
             }
-
-            Center /= Vertices.Length;
         }
 
         public Sphere BoundingSphere( )
         {
-            return new Sphere( Center, ( Max - Min ).Length );
+            return new Sphere( ( Min + Max ) / 2, ( Max - Min ).Length );
         }
 
-        public Triangle [ ] ToTriangles( )
+        public CUDAObject [ ] ToCuda( )
         {
-            List<Triangle> Ts = new List<Triangle>( );
-            for ( int Q = 0; Q < Vertices.Length; Q += 3 )
-            {
-                Vertex V1 = Vertices[ Q ];
-                Vertex V2 = Vertices[ Q + 1 ];
-                Vertex V3 = Vertices[ Q + 2 ];
-
-                Triangle T = new Triangle( this.Position + V1.Position, this.Position + V2.Position, this.Position + V3.Position );
-                Ts.Add( T );
-            }
-
-            return Ts.ToArray( );
+            return this.Meshes.Select( O => O.ToCUDA( ) ).ToArray( );
         }
 
         public void SetPosition( Vector3 Position )

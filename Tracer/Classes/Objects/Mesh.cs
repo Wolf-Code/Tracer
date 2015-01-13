@@ -34,33 +34,9 @@ namespace Tracer.Classes.Objects
             M.SetPosition( this.Position );
             M.SetScale( this.Scale );
 
-            Triangle [ ] Triangles = M.ToTriangles( );
+            CUDAObject [ ] Meshes = M.ToCuda( );
 
-            List<CUDAObject> Objs = new List<CUDAObject>( );
-            foreach ( CUDAObject [ ] TObjs in Triangles.Select( T => T.ToCUDA( ) ) )
-            {
-                Objs.AddRange( TObjs );
-            }
-
-            CudaDeviceVariable<CUDATriangleObject> Ts = new CudaDeviceVariable<CUDATriangleObject>( Objs.Count );
-            Ts.CopyToDevice( Objs.Select( O => O.Triangle ).ToArray( ) );
-
-            CUDAMeshObject Mesh = new CUDAMeshObject
-            {
-                BoundingVolume = M.BoundingSphere( ).ToCUDA( )[ 0 ].Sphere,
-                TriangleCount = ( uint ) Objs.Count,
-                TrianglesPointer = Ts.DevicePointer
-            };
-
-            return new [ ]
-            {
-                new CUDAObject
-                {
-                    Material = this.Material.ToCUDAMaterial(  ),
-                    Type = CUDAObjectType.MeshType,
-                    Mesh = Mesh
-                }
-            };
+            return Meshes;
         }
     }
 }

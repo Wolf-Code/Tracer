@@ -105,7 +105,8 @@
     <Compile Include="Renderer.cs" />
     <Compile Include="Renderers\OpenCLRenderer.cs" />
     <Compile Include="TracerEventArgs\RenderSampleEventArgs.cs" />
-    <Compile Include="Utilities.cs" />
+    <Compile Include="Utilities\Image.cs" />
+    <Compile Include="Utilities\Mesh.cs" />
     <EmbeddedResource Include="Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
     </EmbeddedResource>
