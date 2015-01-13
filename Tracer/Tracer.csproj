@@ -80,6 +80,7 @@
     <Compile Include="Interfaces\IDevice.cs" />
     <Compile Include="Interfaces\IModel.cs" />
     <Compile Include="Interfaces\IModelImporter.cs" />
+    <Compile Include="Classes\ModelMesh.cs" />
     <Compile Include="Models\OBJModel.cs" />
     <Compile Include="Output.cs" />
     <Compile Include="TracerEventArgs\RendererFinishedEventArgs.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Threading;
 using ManagedCuda;
 using ManagedCuda.BasicTypes;
@@ -33,7 +34,7 @@ namespace Tracer.Renderers
         private const int ThreadsPerBlock = 32;
         private bool CancelThread;
         private Scene Scn;
-        private Bitmap LastImage;
+        private Bitmap Image;
         private Stopwatch Watch;
         private uint TotalSamples;
         private uint Samples;
@@ -80,7 +81,7 @@ namespace Tracer.Renderers
             int W = ( int ) Scn.Camera.Resolution.X;
             int H = ( int ) Scn.Camera.Resolution.Y;
             int WH = W * H;
-            LastImage = new Bitmap( W, H );
+            this.Image = new Bitmap( W, H, PixelFormat.Format32bppArgb );
             this.Start = DateTime.Now;
 
             // Item1 = objects, Item2 = lights
@@ -114,16 +115,15 @@ namespace Tracer.Renderers
             this.Samples = 0;
             this.TotalSamples = ( XDivide ) * ( YDivide ) * Samples;
             long Seed = RNG.Next( 0, Int32.MaxValue );
-            float3[ ] output = new float3[ WH ];
             this.Watch = new Stopwatch( );
 
             // init parameters
-            using ( CudaDeviceVariable<float3> CUDAVar_Output = new CudaDeviceVariable<float3>( WH ) )
+            using ( CudaDeviceVariable<float3> CUDAVar_Output = new CudaDeviceVariable<float3>( DivW * DivH ) )
             {
                 // run cuda method
-                using ( CudaDeviceVariable<float3> CUDAVar_Input = new CudaDeviceVariable<float3>( WH ) )
+                using ( CudaDeviceVariable<float3> CUDAVar_Input = new CudaDeviceVariable<float3>( DivW * DivH ) )
                 {
-                    float3 [ ] In = new float3[ WH ];
+                    float3 [ ] In = new float3[ DivW * DivH ];
                     CUDAVar_Input.CopyToDevice( In );
                     CUDAVar_Output.CopyToDevice( In );
 
@@ -142,9 +142,6 @@ namespace Tracer.Renderers
                         }
                     }
                 }
-
-                // copy return to host
-                CUDAVar_Output.CopyToHost( output );
             }
 
             Obj.Dispose( );
@@ -155,7 +152,7 @@ namespace Tracer.Renderers
                 {
                     AverageProgressTime = new TimeSpan((DateTime.Now-Start).Ticks/this.TotalSamples),
                     Time = DateTime.Now-Start,
-                    Image = LastImage
+                    Image = this.Image
                 } );
 
             if ( CancelThread )
@@ -195,44 +192,40 @@ namespace Tracer.Renderers
                 this.Watch.Restart( );
 
                 RenderKernel.SetConstantVariable( "Seed", Seed );
-                RenderKernel.Run( InPTR, StartX, StartY, EndX, EndY, Output.DevicePointer );
+                RenderKernel.Run( InPTR, StartX, StartY, W, H, Output.DevicePointer );
 
 
                 this.Samples++;
                 Seed += W * H;
 
-                float3 [ ] Data = new float3[ ( int ) ( Scn.Camera.Resolution.X * Scn.Camera.Resolution.Y ) ];
+                float3 [ ] Data = new float3[ W * H ];
                 Output.CopyToHost( Data );
 
                 this.Watch.Stop( );
 
                 TimeSpan RenderSampleTime = Watch.Elapsed;
                 Average = new TimeSpan( ( DateTime.Now - this.Start ).Ticks / this.Samples );
-
-                RenderSampleEventArgs E = new RenderSampleEventArgs
-                {
-                    Data = Data,
-                    AreaSampleCount = Q + 1,
-                    TotalAreaSamples = ( int ) Samples,
-                    StartX = StartX,
-                    StartY = StartY,
-                    EndX = EndX,
-                    EndY = EndY,
-                    Width = ( int ) Scn.Camera.Resolution.X,
-                    Height = ( int ) Scn.Camera.Resolution.Y,
-
-                    AverageSampleTime = Average,
-                    TotalSamples = ( int ) this.TotalSamples,
-                    Progress = ( float ) this.Samples / this.TotalSamples,
-                    Time = RenderSampleTime
-                };
-
-
-                LastImage = Utilities.ConvertSample( E );
-                E.Image = LastImage;
+                Image = Utilities.FillBitmapArea( Image, Samples, StartX, StartY, W, H, Data );
 
                 if ( OnSampleFinished != null )
-                    OnSampleFinished.Invoke( this, E );
+                    OnSampleFinished( this, new RenderSampleEventArgs
+                    {
+                        Data = Data,
+                        AreaSampleCount = Q + 1,
+                        TotalAreaSamples = ( int ) Samples,
+                        StartX = StartX,
+                        StartY = StartY,
+                        EndX = EndX,
+                        EndY = EndY,
+                        Width = ( int ) Scn.Camera.Resolution.X,
+                        Height = ( int ) Scn.Camera.Resolution.Y,
+
+                        AverageSampleTime = Average,
+                        TotalSamples = ( int ) this.TotalSamples,
+                        Progress = ( float ) this.Samples / this.TotalSamples,
+                        Time = RenderSampleTime,
+                        Image = Image
+                    } );
 
                 InPTR = Output.DevicePointer;
             }

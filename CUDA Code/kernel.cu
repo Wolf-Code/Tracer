@@ -12,22 +12,22 @@ extern "C"
     __constant__ long Seed;
 	__constant__ unsigned int MaxDepth;
 
-    __global__ void TraceKernelRegion( float3* Input, int StartX, int StartY, int EndX, int EndY, float3* Output )
+    __global__ void TraceKernelRegion( float3* Input, int StartX, int StartY, int Width, int Height, float3* Output )
     {
         //      Which block # of T in B      ID of Thread
-        int x = StartX + ( blockIdx.x * blockDim.x ) + threadIdx.x;
-        int y = StartY + ( blockIdx.y * blockDim.y ) + threadIdx.y;
+        int x = ( blockIdx.x * blockDim.x ) + threadIdx.x;
+        int y = ( blockIdx.y * blockDim.y ) + threadIdx.y;
 		
 
-        if ( x < EndX && y < EndY )
+        if ( x < Width && y < Height )
         {
-			int ID = y * ( int )Camera.Width + x;
+			int ID = y * Width + x;
 
             curandState RandState;
             curand_init( Seed + ID, 0, 0, &RandState );
             
-            float JitteredX = x + curand_uniform( &RandState );
-            float JitteredY = y + curand_uniform( &RandState );
+            float JitteredX = ( StartX + x ) + curand_uniform( &RandState );
+            float JitteredY = ( StartY + y ) + curand_uniform( &RandState );
 
             Ray R = Camera.GetRay( JitteredX, JitteredY );
 			R.Depth = 0;

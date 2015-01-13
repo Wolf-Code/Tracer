@@ -64,12 +64,6 @@ namespace Tracer.Classes.Util
             get { return new Color( Math.Min( 1f, this.R ), Math.Min( 1f, this.G ), Math.Min( 1f, this.B ) ); }
         }
 
-        [Browsable( false )]
-        public Color Normalized
-        {
-            get { return Utilities.VectorToColor( Utilities.ColorToVector( this ).Normalized( ) ); }
-        }
-
         public Color( float R, float G, float B )
         {
             this.R = R;

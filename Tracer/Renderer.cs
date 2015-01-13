@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Tracer.Classes.Objects;
 using Tracer.Interfaces;
@@ -54,14 +55,11 @@ namespace Tracer
 
         private static void RenderInstance_OnSampleFinished( object Sender, RenderSampleEventArgs E )
         {
-            
-
             Menu.Perform( ( ) =>
             {
                 Menu.Status_Progress.Value = ( int ) ( E.Progress * Menu.Status_Progress.Maximum );
 
-                Menu.RenderImage.Image = E.Image;
-
+                Menu.RenderImage.Image = new Bitmap( E.Image );
 
                 if ( E.Progress < 1 )
                 {
@@ -70,7 +68,7 @@ namespace Tracer
                     long EstimatedTimeLeft = ( long ) ( RemainingProgress * E.TotalSamples * E.AverageSampleTime.Ticks );
                     Menu.Status_Label.Text = new TimeSpan( EstimatedTimeLeft ).ToString( );
 
-                    Output.WriteLine( "Rendered sample {0} of {1} in {2}", Sample ,
+                    Output.WriteLine( "Rendered sample {0} of {1} in {2}", Sample,
                         E.TotalSamples, E.Time );
                 }
                 else
@@ -79,7 +77,6 @@ namespace Tracer
                 }
             } );
         }
-
         private static void RendererOnFinished( object sender, RendererFinishedEventArgs e )
         {
             Menu.Perform( ( ) =>
