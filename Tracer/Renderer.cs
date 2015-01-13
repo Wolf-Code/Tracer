@@ -111,6 +111,14 @@ namespace Tracer
             Output.WriteLine( "Canceling rendering. Finishing area.." );
         }
 
+        public static void NextArea( )
+        {
+            if ( !Rendering )
+                return;
+
+            RenderInstance.NextArea( );
+        }
+
         public static void RenderImage( )
         {
             if ( Rendering )

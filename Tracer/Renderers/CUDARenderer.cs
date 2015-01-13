@@ -39,6 +39,7 @@ namespace Tracer.Renderers
         private uint Samples;
         private TimeSpan Average;
         private DateTime Start;
+        private bool SkipToNextArea;
 
         private void InitKernels( )
         {
@@ -184,6 +185,13 @@ namespace Tracer.Renderers
                 if ( CancelThread )
                     return;
 
+                if ( SkipToNextArea )
+                {
+                    this.Samples += ( uint ) ( Samples - Q );
+                    SkipToNextArea = false;
+                    return;
+                }
+
                 this.Watch.Restart( );
 
                 RenderKernel.SetConstantVariable( "Seed", Seed );
@@ -234,6 +242,11 @@ namespace Tracer.Renderers
         {
             //RenderThread.Abort( );
             CancelThread = true;
+        }
+
+        public void NextArea( )
+        {
+            this.SkipToNextArea = true;
         }
 
         public void Run( )

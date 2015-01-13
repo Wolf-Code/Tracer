@@ -64,6 +64,11 @@ namespace Tracer.Renderers
             CheckErr( error, "Cl.CreateContext" );
         }
 
+        public void NextArea( )
+        {
+            throw new NotImplementedException( );
+        }
+
         public void Run( )
         {
             Setup(  );

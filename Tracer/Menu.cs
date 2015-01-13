@@ -124,5 +124,10 @@ namespace Tracer
             if ( Dialog.ShowDialog( ) == DialogResult.OK )
                 this.RenderImage.Image.Save( Dialog.FileName );
         }
+
+        private void Render_NextArea_Click(object sender, EventArgs e)
+        {
+            Renderer.NextArea( );
+        }
     }
 }

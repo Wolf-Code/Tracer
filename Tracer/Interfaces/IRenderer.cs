@@ -12,6 +12,7 @@ namespace Tracer.Interfaces
  
         void RenderImage( uint AreaDivider, Scene Scn, uint Samples, uint Depth );
         void Cancel( );
+        void NextArea( );
         void Run( );
 
         List<IDevice> GetDevices( );

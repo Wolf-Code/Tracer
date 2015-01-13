@@ -48,6 +48,7 @@
             this.Settings_Depth = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.Render_NextArea = new System.Windows.Forms.Button();
             this.Button_Render = new System.Windows.Forms.Button();
             this.Tab_Scene = new System.Windows.Forms.TabPage();
             this.SceneProperties = new System.Windows.Forms.PropertyGrid();
@@ -205,6 +206,7 @@
             // Tab_Render
             // 
             this.Tab_Render.Controls.Add(this.groupBox2);
+            this.Tab_Render.Controls.Add(this.Render_NextArea);
             this.Tab_Render.Controls.Add(this.Button_Render);
             this.Tab_Render.Location = new System.Drawing.Point(4, 25);
             this.Tab_Render.Name = "Tab_Render";
@@ -224,7 +226,7 @@
             this.groupBox2.Controls.Add(this.Settings_Depth);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.label5);
-            this.groupBox2.Location = new System.Drawing.Point(7, 36);
+            this.groupBox2.Location = new System.Drawing.Point(7, 65);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(213, 158);
             this.groupBox2.TabIndex = 8;
@@ -332,6 +334,18 @@
             this.label5.Size = new System.Drawing.Size(62, 17);
             this.label5.TabIndex = 4;
             this.label5.Text = "Samples";
+            // 
+            // Render_NextArea
+            // 
+            this.Render_NextArea.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Render_NextArea.Location = new System.Drawing.Point(7, 36);
+            this.Render_NextArea.Name = "Render_NextArea";
+            this.Render_NextArea.Size = new System.Drawing.Size(213, 23);
+            this.Render_NextArea.TabIndex = 0;
+            this.Render_NextArea.Text = "Next area";
+            this.Render_NextArea.UseVisualStyleBackColor = true;
+            this.Render_NextArea.Click += new System.EventHandler(this.Render_NextArea_Click);
             // 
             // Button_Render
             // 
@@ -535,6 +549,7 @@
         public System.Windows.Forms.NotifyIcon Notifier;
         public System.Windows.Forms.NumericUpDown Settings_AreaDivider;
         private System.Windows.Forms.Label label1;
+        public System.Windows.Forms.Button Render_NextArea;
 
     }
 }
