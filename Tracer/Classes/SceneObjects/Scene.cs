@@ -39,35 +39,35 @@ namespace Tracer.Classes.SceneObjects
 
                 Sphere Light = Scn.AddSphere( new Vector3( 0, 60, 0 ), 5 );
                 Light.Name = "Light";
-                Light.Material.Radiance = new Util.Color( 4000, 4000, 4000 );
+                Light.Material.Radiance = new Color( 500, 500, 500 );
 
                 Plane Floor = Scn.AddPlane( new Vector3( 0, 1, 0 ), 0 );
                 Floor.Name = "Floor";
-                Floor.Material.Color = new Util.Color( 1f, 1f, 1f );
+                Floor.Material.Color = new Color( 1f, 1f, 1f );
 
                 Plane Front = Scn.AddPlane( new Vector3( 0, 0, 1 ), 90 );
                 Front.Name = "Front";
-                Front.Material.Color = new Util.Color( 1f, 1f, 1f );
+                Front.Material.Color = new Color( 1f, 1f, 1f );
 
                 Plane Back = Scn.AddPlane( new Vector3( 0, 0, -1 ), 90 );
                 Back.Name = "Back";
-                Back.Material.Color = new Util.Color( 1f, 1f, 1f );
+                Back.Material.Color = new Color( 1f, 1f, 1f );
 
                 Plane Ceiling = Scn.AddPlane( new Vector3( 0, -1, 0 ), 180 );
                 Ceiling.Name = "Ceiling";
-                Ceiling.Material.Color = new Util.Color( 1f, 1f, 1f );
+                Ceiling.Material.Color = new Color( 1f, 1f, 1f );
 
                 Plane Left = Scn.AddPlane( new Vector3( 1, 0, 0 ), 90 );
                 Left.Name = "Left";
-                Left.Material.Color = new Util.Color( 1f, .5f, .5f );
+                Left.Material.Color = new Color( 1f, .5f, .5f );
 
                 Plane Right = Scn.AddPlane( new Vector3( -1, 0, 0 ), 90 );
                 Right.Name = "Right";
-                Right.Material.Color = new Util.Color( .5f, .5f, 1f );
+                Right.Material.Color = new Color( .5f, .5f, 1f );
 
                 Sphere WhiteSphere = Scn.AddSphere( new Vector3( -40, 30, -40 ), 30 );
                 WhiteSphere.Name = "White sphere";
-                WhiteSphere.Material.Color = new Util.Color( 1f, 1f, 1f );
+                WhiteSphere.Material.Color = new Color( 1f, 1f, 1f );
 
                 Sphere MirrorSphere = Scn.AddSphere( new Vector3( 40, 20, -20 ), 20 );
                 MirrorSphere.Name = "Mirror sphere";
@@ -82,8 +82,8 @@ namespace Tracer.Classes.SceneObjects
 
         public Scene( )
         {
-            this.Objects = new List<GraphicsObject>( );
-            this.Camera = new Camera( );
+            Objects = new List<GraphicsObject>( );
+            Camera = new Camera( );
         }
 
         public Sphere AddSphere( Vector3 Position, float Radius )

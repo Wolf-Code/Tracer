@@ -11,10 +11,12 @@ using Tracer.Classes.CUDA;
 using Tracer.Classes.SceneObjects;
 using Tracer.Interfaces;
 using Tracer.Properties;
+using Tracer.Structs;
 using Tracer.Structs.CUDA;
 using Tracer.TracerEventArgs;
 using Tracer.Utilities;
 using SceneCUDAData = System.Tuple<Tracer.Structs.CUDA.CUDAObject [ ], uint [ ]>;
+using Timer = Utilib.Diagnostics.Timer;
 
 namespace Tracer.Renderers
 {
@@ -37,10 +39,9 @@ namespace Tracer.Renderers
         private bool CancelThread;
         private Scene Scn;
         private Bitmap Image;
-        private Stopwatch Watch;
+        private Timer Timer;
         private uint TotalSamples;
         private uint Samples;
-        private TimeSpan Average;
         private DateTime Start;
         private bool SkipToNextArea;
 
@@ -81,13 +82,13 @@ namespace Tracer.Renderers
 
         #endregion
 
-        public void RenderImage( uint AreaDivider, Scene Scn, uint Samples, uint Depth )
+        public void RenderImage( ref RenderSettings RenderSetting, Scene Scn )
         {
             this.Scn = Scn;
             int W = ( int ) Scn.Camera.Resolution.X;
             int H = ( int ) Scn.Camera.Resolution.Y;
-            this.Image = new Bitmap( W, H, PixelFormat.Format32bppArgb );
-            this.Start = DateTime.Now;
+            Image = new Bitmap( W, H, PixelFormat.Format32bppArgb );
+            Start = DateTime.Now;
 
             // Item1 = objects, Item2 = lights
             Output.WriteLine( "Building scene." );
@@ -104,18 +105,18 @@ namespace Tracer.Renderers
             RenderKernel.SetConstantVariable( "Lights", Lights.DevicePointer );
             RenderKernel.SetConstantVariable( "LightCount", ( uint ) Objs.Item2.Length );
             RenderKernel.SetConstantVariable( "Camera", Scn.Camera.ToCamData( ) );
-            RenderKernel.SetConstantVariable( "MaxDepth", Depth );
+            RenderKernel.SetConstantVariable( "MaxDepth", RenderSetting.MaxDepth );
 
-            uint XDivide = AreaDivider;
-            uint YDivide = AreaDivider;
+            uint XDivide = RenderSetting.AreaDivider;
+            uint YDivide = RenderSetting.AreaDivider;
 
             int DivW = ( int ) ( W / XDivide );
             int DivH = ( int ) ( H / YDivide );
 
             this.Samples = 0;
-            this.TotalSamples = ( XDivide ) * ( YDivide ) * Samples;
+            TotalSamples = ( XDivide ) * ( YDivide ) * RenderSetting.Samples;
             long Seed = RNG.Next( 0, Int32.MaxValue );
-            this.Watch = new Stopwatch( );
+            Timer = new Timer( );
 
             Output.WriteLine( "Starting render." );
             // init parameters
@@ -138,7 +139,8 @@ namespace Tracer.Renderers
                             if ( CancelThread )
                                 break;
 
-                            RenderRegion( Samples, ref Seed, CUDAVar_Input, CUDAVar_Output, X * DivW, Y * DivH, DivW,
+                            RenderRegion( ref RenderSetting, ref Seed, CUDAVar_Input, CUDAVar_Output, X * DivW, Y * DivH,
+                                DivW,
                                 DivH );
                             Seed += DivW * DivH;
                         }
@@ -152,79 +154,69 @@ namespace Tracer.Renderers
             if ( OnFinished != null )
                 OnFinished.Invoke( null, new RendererFinishedEventArgs
                 {
-                    AverageProgressTime = new TimeSpan( ( DateTime.Now - Start ).Ticks / this.TotalSamples ),
+                    AverageProgressTime = new TimeSpan( ( DateTime.Now - Start ).Ticks / TotalSamples ),
                     Time = DateTime.Now - Start,
-                    Image = this.Image
+                    Image = Image
                 } );
 
             if ( CancelThread )
                 CancelThread = false;
         }
 
-        private void RenderRegion( uint Samples, ref long Seed, CudaDeviceVariable<float3> Input,
+        private void RenderRegion( ref RenderSettings RenderSetting, ref long Seed, CudaDeviceVariable<float3> Input,
             CudaDeviceVariable<float3> Output, int StartX, int StartY, int W, int H )
         {
             if ( StartX >= Scn.Camera.Resolution.X || StartY >= Scn.Camera.Resolution.Y )
                 return;
 
-            int EndX = StartX + W;
-            int EndY = StartY + H;
-
-            if ( EndX > Scn.Camera.Resolution.X )
-                EndX = ( int ) Scn.Camera.Resolution.X;
-
-            if ( EndY > Scn.Camera.Resolution.Y )
-                EndY = ( int ) Scn.Camera.Resolution.Y;
-
             RenderKernel.GridDimensions = new dim3( W / ThreadsPerBlock + 1, H / ThreadsPerBlock + 1 );
 
             CUdeviceptr InPTR = Input.DevicePointer;
-            for ( int Q = 0; Q < Samples; Q++ )
+
+            uint Q = 0;
+            while( Q < RenderSetting.Samples )
             {
                 if ( CancelThread )
                     return;
 
+                uint SamplesToRender = Math.Min( RenderSetting.SamplesPerRender, RenderSetting.Samples - Q );
+
                 if ( SkipToNextArea )
                 {
-                    this.Samples += ( uint ) ( Samples - Q );
+                    this.Samples += RenderSetting.Samples - Q;
                     SkipToNextArea = false;
                     return;
                 }
 
-                this.Watch.Restart( );
+                Timer.StartRound( );
 
-                RenderKernel.SetConstantVariable( "Seed", Seed );
-                RenderKernel.Run( InPTR, StartX, StartY, W, H, Output.DevicePointer );
+                RenderKernel.Run( SamplesToRender, Seed, InPTR, StartX, StartY, W, H,
+                    Output.DevicePointer );
 
-
-                this.Samples++;
-                Seed += W * H;
+                this.Samples += SamplesToRender;
+                Seed += ( W * H ) * SamplesToRender;
 
                 float3 [ ] Data = new float3[ W * H ];
                 Output.CopyToHost( Data );
 
-                this.Watch.Stop( );
+                Q += SamplesToRender;
 
-                TimeSpan RenderSampleTime = Watch.Elapsed;
-                Average = new TimeSpan( ( DateTime.Now - this.Start ).Ticks / this.Samples );
-                Image = Utilities.Image.FillBitmapArea( Image, ( uint ) ( Q + 1 ), StartX, StartY, W, H, Data );
+                Bitmap OldImage = Image;
+                Image = Utilities.Image.FillBitmapArea( Image, Q, StartX, StartY, W, H, Data );
+                OldImage.Dispose( );
+
+                TimeSpan RenderTime = Timer.StopRound( );
 
                 if ( OnSampleFinished != null )
                     OnSampleFinished( this, new RenderSampleEventArgs
                     {
                         Data = Data,
-                        AreaSampleCount = Q + 1,
-                        TotalAreaSamples = ( int ) Samples,
-                        StartX = StartX,
-                        StartY = StartY,
-                        EndX = EndX,
-                        EndY = EndY,
-                        Width = ( int ) Scn.Camera.Resolution.X,
-                        Height = ( int ) Scn.Camera.Resolution.Y,
-                        AverageSampleTime = Average,
-                        TotalSamples = ( int ) this.TotalSamples,
-                        Progress = ( float ) this.Samples / this.TotalSamples,
-                        Time = RenderSampleTime,
+                        AreaSampleCount = ( int ) Q,
+                        TotalAreaSamples = ( int ) RenderSetting.Samples,
+                        AverageSampleTime = Timer.Average,
+                        TotalSamples = ( int ) TotalSamples,
+                        Progress = ( float ) this.Samples / TotalSamples,
+                        Time = RenderTime,
                         Image = Image
                     } );
 
@@ -240,7 +232,7 @@ namespace Tracer.Renderers
 
         public void NextArea( )
         {
-            this.SkipToNextArea = true;
+            SkipToNextArea = true;
         }
 
         public void Run( )
@@ -248,8 +240,14 @@ namespace Tracer.Renderers
             RenderThread = new Thread( ( ) =>
             {
                 InitKernels( );
-                RenderImage( Settings.Default.Render_AreaDivider, Renderer.Scene, Settings.Default.Render_Samples,
-                    Settings.Default.Render_MaxDepth );
+                RenderSettings Setting = new RenderSettings
+                {
+                    AreaDivider = Settings.Default.Render_AreaDivider,
+                    Samples = Settings.Default.Render_Samples,
+                    MaxDepth = Settings.Default.Render_MaxDepth,
+                    SamplesPerRender = Settings.Default.Render_SamplesPerRender
+                };
+                RenderImage( ref Setting, Renderer.Scene );
             } );
 
             RenderThread.Start( );
@@ -268,7 +266,7 @@ namespace Tracer.Renderers
 
         public void Dispose( )
         {
-            this.Image.Dispose( );
+            Image.Dispose( );
         }
     }
 }

@@ -27,15 +27,15 @@ namespace Tracer.Classes.SceneObjects
 
         protected GraphicsObject( )
         {
-            this.Enabled = true;
-            this.Material = new Material( );
+            Enabled = true;
+            Material = new Material( );
         }
 
         public abstract CUDAObject [ ] ToCUDA( );
 
         public override string ToString( )
         {
-            return this.Name;
+            return Name;
         }
     }
 }

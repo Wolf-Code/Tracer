@@ -39,8 +39,8 @@ namespace Tracer.Classes
             {
                 Color = new float3( Color.R, Color.G, Color.B ),
                 Radiance = new float3( Radiance.R, Radiance.G, Radiance.B ),
-                Type = this.Type,
-                Glossyness = this.Glossyness
+                Type = Type,
+                Glossyness = Glossyness
             };
         }
     }

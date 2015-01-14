@@ -60,7 +60,7 @@ namespace Tracer.Classes.Util
         [Browsable( false )]
         public Color Clamped
         {
-            get { return new Color( Math.Min( 1f, this.R ), Math.Min( 1f, this.G ), Math.Min( 1f, this.B ) ); }
+            get { return new Color( Math.Min( 1f, R ), Math.Min( 1f, G ), Math.Min( 1f, B ) ); }
         }
 
         public Color( float R, float G, float B )
@@ -72,7 +72,7 @@ namespace Tracer.Classes.Util
 
         public override string ToString( )
         {
-            return string.Format( "( {0}, {1}, {2} )", this.R, this.G, this.B );
+            return string.Format( "( {0}, {1}, {2} )", R, G, B );
         }
 
         #region Operators

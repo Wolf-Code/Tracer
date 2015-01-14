@@ -35,7 +35,7 @@ namespace Tracer.Classes.Util
         [Browsable( false )]
         public float LengthSquared
         {
-            get { return this.Dot( this ); }
+            get { return Dot( this ); }
         }
 
         /// <summary>
@@ -49,9 +49,9 @@ namespace Tracer.Classes.Util
 
         public Vector3( )
         {
-            this.X = 0;
-            this.Y = 0;
-            this.Z = 0;
+            X = 0;
+            Y = 0;
+            Z = 0;
         }
 
         public Vector3( float X, float Y, float Z )
@@ -63,7 +63,7 @@ namespace Tracer.Classes.Util
 
         public float3 ToFloat3( )
         {
-            return new float3( this.X, this.Y, this.Z );
+            return new float3( X, Y, Z );
         }
 
         /// <summary>
@@ -71,10 +71,10 @@ namespace Tracer.Classes.Util
         /// </summary>
         public void Normalize( )
         {
-            float L = this.Length;
-            this.X /= L;
-            this.Y /= L;
-            this.Z /= L;
+            float L = Length;
+            X /= L;
+            Y /= L;
+            Z /= L;
         }
 
         /// <summary>
@@ -83,9 +83,9 @@ namespace Tracer.Classes.Util
         /// <returns>A normalized copy of this vector.</returns>
         public Vector3 Normalized( )
         {
-            float L = this.Length;
+            float L = Length;
 
-            return new Vector3( this.X, this.Y, this.Z ) / L;
+            return new Vector3( X, Y, Z ) / L;
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Tracer.Classes.Util
         /// <returns>The dot product between the two vectors.</returns>
         public float Dot( Vector3 V2 )
         {
-            return this.X * V2.X + this.Y * V2.Y + this.Z * V2.Z;
+            return X * V2.X + Y * V2.Y + Z * V2.Z;
         }
 
         /// <summary>
@@ -114,7 +114,7 @@ namespace Tracer.Classes.Util
 
         public override string ToString( )
         {
-            return string.Format( "( {0}, {1}, {2} )", this.X, this.Y, this.Z );
+            return string.Format( "( {0}, {1}, {2} )", X, Y, Z );
         }
 
         #region Operators

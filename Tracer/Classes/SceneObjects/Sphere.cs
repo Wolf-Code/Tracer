@@ -26,16 +26,16 @@ namespace Tracer.Classes.SceneObjects
 
         public Sphere( )
         {
-            this.Center = new Vector3( 0, 0, 0 );
-            this.Radius = 20f;
-            this.Name = "Sphere";
+            Center = new Vector3( 0, 0, 0 );
+            Radius = 20f;
+            Name = "Sphere";
         }
 
         public Sphere( Vector3 Position, float Radius )
         {
-            this.Center = Position;
+            Center = Position;
             this.Radius = Radius;
-            this.Name = "Sphere";
+            Name = "Sphere";
         }
 
         public override CUDAObject [ ] ToCUDA( )
@@ -44,11 +44,11 @@ namespace Tracer.Classes.SceneObjects
             {
                 new CUDAObject
                 {
-                    Material = this.Material.ToCUDAMaterial( ),
+                    Material = Material.ToCUDAMaterial( ),
                     Sphere = new CUDASphereObject
                     {
-                        Position = this.Center.ToFloat3( ),
-                        Radius = this.Radius
+                        Position = Center.ToFloat3( ),
+                        Radius = Radius
                     },
                     Type = CUDAObjectType.Sphere
                 }

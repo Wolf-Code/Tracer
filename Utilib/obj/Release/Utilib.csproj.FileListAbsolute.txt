@@ -1,0 +1,5 @@
+D:\Documents\GitHub\Tracer\Utilib\bin\Release\Utilib.dll
+D:\Documents\GitHub\Tracer\Utilib\bin\Release\Utilib.pdb
+D:\Documents\GitHub\Tracer\Utilib\obj\Release\Utilib.csprojResolveAssemblyReference.cache
+D:\Documents\GitHub\Tracer\Utilib\obj\Release\Utilib.dll
+D:\Documents\GitHub\Tracer\Utilib\obj\Release\Utilib.pdb

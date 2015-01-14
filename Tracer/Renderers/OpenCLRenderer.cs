@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using OpenCL.Net;
 using Tracer.Classes.SceneObjects;
 using Tracer.Interfaces;
+using Tracer.Structs;
 using Tracer.TracerEventArgs;
 
 namespace Tracer.Renderers
@@ -78,7 +79,7 @@ namespace Tracer.Renderers
         {
         }
 
-        public void RenderImage( uint AreaDivider, Scene Scn, uint Samples, uint Depth )
+        public void RenderImage( ref RenderSettings RenderSetting, Scene Scn )
         {
         }
 

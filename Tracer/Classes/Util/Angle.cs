@@ -121,7 +121,7 @@ namespace Tracer.Classes.Util
             {
                 if ( RefreshRight )
                 {
-                    m_Right = this.Forward.Cross( this.Up );
+                    m_Right = Forward.Cross( Up );
                     RefreshRight = false;
                 }
 
@@ -131,7 +131,7 @@ namespace Tracer.Classes.Util
 
         public override string ToString( )
         {
-            return string.Format( "( {0}, {1}, {2} )", this.Pitch, this.Yaw, this.Roll );
+            return string.Format( "( {0}, {1}, {2} )", Pitch, Yaw, Roll );
         }
     }
 }

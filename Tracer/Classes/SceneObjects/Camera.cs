@@ -53,15 +53,15 @@ namespace Tracer.Classes.SceneObjects
 
         public Camera( )
         {
-            this.Resolution = new Vector2( 1920, 1080 );
-            this.FOV = 90;
-            this.Angle = new Angle( );
-            this.Position = new Vector3( 0, 0, 0 );
+            Resolution = new Vector2( 1920, 1080 );
+            FOV = 90;
+            Angle = new Angle( );
+            Position = new Vector3( 0, 0, 0 );
         }
 
         public Camera( int Width, int Height, float FOV ) : this( )
         {
-            this.Resolution = new Vector2( Width, Height );
+            Resolution = new Vector2( Width, Height );
             this.FOV = FOV;
         }
 
@@ -69,13 +69,13 @@ namespace Tracer.Classes.SceneObjects
         {
             CUDACamData Data = new CUDACamData
             {
-                A = this.A,
-                Forward = this.Angle.Forward.ToFloat3( ),
-                Height = this.Resolution.Y,
-                Position = this.Position.ToFloat3( ),
-                Right = this.Angle.Right.ToFloat3( ),
-                Up = this.Angle.Up.ToFloat3( ),
-                Width = this.Resolution.X
+                A = A,
+                Forward = Angle.Forward.ToFloat3( ),
+                Height = Resolution.Y,
+                Position = Position.ToFloat3( ),
+                Right = Angle.Right.ToFloat3( ),
+                Up = Angle.Up.ToFloat3( ),
+                Width = Resolution.X
             };
 
             return Data;
@@ -83,7 +83,7 @@ namespace Tracer.Classes.SceneObjects
 
         public override string ToString( )
         {
-            return this.Resolution.ToString( );
+            return Resolution.ToString( );
         }
     }
 }

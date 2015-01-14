@@ -20,7 +20,12 @@ __device__ float3 VectorMath::Cross( const float3& Vector, const float3& Vector2
 
 __device__ float VectorMath::Length( const float3& Vector )
 {
-	return sqrt( VectorMath::Dot( Vector, Vector ) );
+	return sqrt( VectorMath::LengthSquared( Vector ) );
+}
+
+__device__ float VectorMath::LengthSquared( const float3& Vector )
+{
+	return VectorMath::Dot( Vector, Vector );
 }
 
 __device__ void VectorMath::Normalize( float3& Vector )
@@ -150,6 +155,20 @@ __device__ void operator*=( float3& Vector, const float3& Vector2 )
 	Vector.x *= Vector2.x;
 	Vector.y *= Vector2.y;
 	Vector.z *= Vector2.z;
+}
+
+__device__ void operator/=( float3& Vector, const float3& Vector2 )
+{
+	Vector.x /= Vector2.x;
+	Vector.y /= Vector2.y;
+	Vector.z /= Vector2.z;
+}
+
+__device__ void operator/=( float3& Vector, const float Divider )
+{
+	Vector.x /= Divider;
+	Vector.y /= Divider;
+	Vector.z /= Divider;
 }
 
 __device__ float3 operator-( const float3& Vector, const float3& Vector2 )

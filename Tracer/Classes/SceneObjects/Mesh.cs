@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Drawing.Design;
+using System.Windows.Forms.Design;
 using Tracer.Classes.Util;
 using Tracer.Interfaces;
 using Tracer.Structs.CUDA;
@@ -10,7 +12,7 @@ namespace Tracer.Classes.SceneObjects
     [Serializable]
     public class Mesh : GraphicsObject
     {
-        [Editor( typeof ( System.Windows.Forms.Design.FileNameEditor ), typeof ( System.Drawing.Design.UITypeEditor ) )]
+        [Editor( typeof ( FileNameEditor ), typeof ( UITypeEditor ) )]
         [Description( "The path to the model file" )]
         public string Path { set; get; }
 
@@ -20,15 +22,15 @@ namespace Tracer.Classes.SceneObjects
 
         public Mesh( )
         {
-            this.Position = new Vector3( );
-            this.Scale = new Vector3( 1, 1, 1 );
+            Position = new Vector3( );
+            Scale = new Vector3( 1, 1, 1 );
         }
 
         public override CUDAObject [ ] ToCUDA( )
         {
             IModel M = ModelImporter.Load( Path );
-            M.SetPosition( this.Position );
-            M.SetScale( this.Scale );
+            M.SetPosition( Position );
+            M.SetScale( Scale );
 
             CUDAObject [ ] Meshes = M.ToCuda( );
 

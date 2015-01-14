@@ -63,6 +63,8 @@
             this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
             this.Image_Save = new System.Windows.Forms.ToolStripMenuItem();
             this.Notifier = new System.Windows.Forms.NotifyIcon(this.components);
+            this.label2 = new System.Windows.Forms.Label();
+            this.Settings_SamplesPerRender = new System.Windows.Forms.NumericUpDown();
             this.Status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -85,6 +87,7 @@
             this.Tab_Settings.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_SamplesPerRender)).BeginInit();
             this.SuspendLayout();
             // 
             // Status
@@ -221,14 +224,16 @@
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.Settings_SamplesPerRender);
             this.groupBox2.Controls.Add(this.Settings_AreaDivider);
             this.groupBox2.Controls.Add(this.Settings_Samples);
             this.groupBox2.Controls.Add(this.Settings_Depth);
+            this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Location = new System.Drawing.Point(7, 65);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(213, 158);
+            this.groupBox2.Size = new System.Drawing.Size(213, 201);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Settings";
@@ -475,6 +480,40 @@
             this.Notifier.Text = "Tracer";
             this.Notifier.Visible = true;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 153);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(133, 17);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Samples per render";
+            // 
+            // Settings_SamplesPerRender
+            // 
+            this.Settings_SamplesPerRender.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.Settings_SamplesPerRender.Location = new System.Drawing.Point(6, 173);
+            this.Settings_SamplesPerRender.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.Settings_SamplesPerRender.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Settings_SamplesPerRender.Name = "Settings_SamplesPerRender";
+            this.Settings_SamplesPerRender.Size = new System.Drawing.Size(201, 22);
+            this.Settings_SamplesPerRender.TabIndex = 6;
+            this.Settings_SamplesPerRender.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.Settings_SamplesPerRender.ValueChanged += new System.EventHandler(this.Settings_SamplesPerRender_ValueChanged);
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -510,6 +549,7 @@
             this.groupBox1.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Settings_SamplesPerRender)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -550,6 +590,8 @@
         public System.Windows.Forms.NumericUpDown Settings_AreaDivider;
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.Button Render_NextArea;
+        public System.Windows.Forms.NumericUpDown Settings_SamplesPerRender;
+        private System.Windows.Forms.Label label2;
 
     }
 }

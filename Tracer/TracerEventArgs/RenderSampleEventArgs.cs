@@ -10,12 +10,6 @@ namespace Tracer.TracerEventArgs
         public Bitmap Image;
         public int AreaSampleCount;
         public int TotalAreaSamples;
-        public int StartX;
-        public int StartY;
-        public int EndX;
-        public int EndY;
-        public int Width;
-        public int Height;
 
         public TimeSpan AverageSampleTime;
         public TimeSpan Time;

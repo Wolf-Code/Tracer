@@ -29,6 +29,7 @@ namespace Tracer
             Menu.Settings_Samples.Value = Settings.Default.Render_Samples;
             Menu.Settings_Depth.Value = Settings.Default.Render_MaxDepth;
             Menu.Settings_AreaDivider.Value = Settings.Default.Render_AreaDivider;
+            Menu.Settings_SamplesPerRender.Value = Settings.Default.Render_SamplesPerRender;
 
             try
             {

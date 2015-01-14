@@ -59,6 +59,7 @@
     <Compile Include="Classes\SceneObjects\Camera.cs" />
     <Compile Include="Classes\SceneObjects\GraphicsObject.cs" />
     <Compile Include="Classes\Material.cs" />
+    <Compile Include="Structs\RenderSettings.cs" />
     <Compile Include="Utilities\MathHelper.cs" />
     <Compile Include="Classes\SceneObjects\Mesh.cs" />
     <Compile Include="Classes\SceneObjects\Triangle.cs" />
@@ -143,7 +144,12 @@
   <ItemGroup>
     <None Include="Resources\image.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Utilib\Utilib.csproj">
+      <Project>{da8f1942-5275-430c-a61e-c186c8192dde}</Project>
+      <Name>Utilib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\OpenCL.Net.2.2.9.0\build\net40\OpenCL.Net.targets" Condition="Exists('packages\OpenCL.Net.2.2.9.0\build\net40\OpenCL.Net.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

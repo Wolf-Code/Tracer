@@ -70,5 +70,17 @@ namespace Tracer.Properties {
                 this["Render_AreaDivider"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public uint Render_SamplesPerRender {
+            get {
+                return ((uint)(this["Render_SamplesPerRender"]));
+            }
+            set {
+                this["Render_SamplesPerRender"] = value;
+            }
+        }
     }
 }

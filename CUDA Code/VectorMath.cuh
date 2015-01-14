@@ -10,6 +10,7 @@ public:
 	__device__ static float Dot( const float3&, const float3& );
 	__device__ static float3 Cross( const float3&, const float3& );
 	__device__ static float Length( const float3& );
+	__device__ static float LengthSquared( const float3& );
 	__device__ static void Normalize( float3& );
 	__device__ static float LargestComponent( const float3& );
 	__device__ static float3 Normalized( const float3& );
@@ -28,6 +29,8 @@ __device__ float3 operator*( const float3&, const float3& );
 __device__ float3 operator+( const float3&, const float3& );
 __device__ void operator+=( float3&, const float3& );
 __device__ void operator*=( float3&, const float3& );
+__device__ void operator/=( float3&, const float3& );
+__device__ void operator/=( float3&, const float );
 __device__ float3 operator-( const float3&, const float3& );
 __device__ bool operator==( const float3&, const float3& );
 

@@ -5,6 +5,7 @@ using Tracer.Classes.SceneObjects;
 using Tracer.Classes.Util;
 using Tracer.Interfaces;
 using Tracer.Structs.CUDA;
+using Mesh = Tracer.Utilities.Mesh;
 
 namespace Tracer.Models
 {
@@ -21,13 +22,13 @@ namespace Tracer.Models
             foreach ( ModelMesh M in this.Meshes )
                 M.SetParent( this );
 
-            Tuple<Vector3, Vector3> MinMax = Utilities.Mesh.AABB( Meshes[ 0 ] );
+            Tuple<Vector3, Vector3> MinMax = Mesh.AABB( Meshes[ 0 ] );
             Min = MinMax.Item1;
             Max = MinMax.Item2;
 
             for ( int Q = 1; Q < Meshes.Length; Q++ )
             {
-                MinMax = Utilities.Mesh.AABB( Meshes[ Q ] );
+                MinMax = Mesh.AABB( Meshes[ Q ] );
                 Vector3 TempMin = MinMax.Item1;
                 Vector3 TempMax = MinMax.Item2;
 
@@ -48,7 +49,7 @@ namespace Tracer.Models
 
         public CUDAObject [ ] ToCuda( )
         {
-            return this.Meshes.Select( O => O.ToCUDA( ) ).ToArray( );
+            return Meshes.Select( O => O.ToCUDA( ) ).ToArray( );
         }
 
         public void SetPosition( Vector3 Position )

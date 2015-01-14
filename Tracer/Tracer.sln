@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracer", "Tracer.csproj", "
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CUDA Code", "..\CUDA Code\CUDA Code.vcxproj", "{5A70F435-167A-49BA-BEE6-9B8AE67EF06E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilib", "..\Utilib\Utilib.csproj", "{DA8F1942-5275-430C-A61E-C186C8192DDE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,6 +64,24 @@ Global
 		{5A70F435-167A-49BA-BEE6-9B8AE67EF06E}.Release|Win32.Build.0 = Release|Win32
 		{5A70F435-167A-49BA-BEE6-9B8AE67EF06E}.Release|x64.ActiveCfg = Release|x64
 		{5A70F435-167A-49BA-BEE6-9B8AE67EF06E}.Release|x64.Build.0 = Release|x64
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.DebugForm|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.DebugForm|Any CPU.Build.0 = Debug|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.DebugForm|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.DebugForm|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.DebugForm|Win32.ActiveCfg = Debug|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.DebugForm|x64.ActiveCfg = Debug|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.Release|Win32.ActiveCfg = Release|Any CPU
+		{DA8F1942-5275-430C-A61E-C186C8192DDE}.Release|x64.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

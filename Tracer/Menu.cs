@@ -51,6 +51,12 @@ namespace Tracer
             Settings.Default.Save( );
         }
 
+        private void Settings_SamplesPerRender_ValueChanged(object sender, EventArgs e)
+        {
+            Settings.Default[ "Render_SamplesPerRender" ] = ( uint ) Settings_SamplesPerRender.Value;
+            Settings.Default.Save( );
+        }
+
 
         private void Scene_SaveButton_Click( object sender, EventArgs e )
         {
@@ -113,7 +119,7 @@ namespace Tracer
         private void Image_Save_Click( object sender, EventArgs e )
         {
             if ( Renderer.Rendering ) return;
-            if ( this.RenderImage.Image == null ) return;
+            if ( RenderImage.Image == null ) return;
 
             SaveFileDialog Dialog = new SaveFileDialog
             {
@@ -124,7 +130,7 @@ namespace Tracer
             };
 
             if ( Dialog.ShowDialog( ) == DialogResult.OK )
-                this.RenderImage.Image.Save( Dialog.FileName );
+                RenderImage.Image.Save( Dialog.FileName );
         }
 
         private void Render_NextArea_Click( object sender, EventArgs e )

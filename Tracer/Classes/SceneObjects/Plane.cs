@@ -27,16 +27,16 @@ namespace Tracer.Classes.SceneObjects
 
         public Plane( )
         {
-            this.Normal = new Vector3( 0, 1, 0 );
-            this.Offset = 0;
-            this.Name = "Plane";
+            Normal = new Vector3( 0, 1, 0 );
+            Offset = 0;
+            Name = "Plane";
         }
 
         public Plane( Vector3 Normal, float Offset )
         {
             this.Normal = Normal;
             this.Offset = Offset;
-            this.Name = "Plane";
+            Name = "Plane";
         }
 
         public override CUDAObject [ ] ToCUDA( )
@@ -45,11 +45,11 @@ namespace Tracer.Classes.SceneObjects
             {
                 new CUDAObject
                 {
-                    Material = this.Material.ToCUDAMaterial( ),
+                    Material = Material.ToCUDAMaterial( ),
                     Plane = new CUDAPlaneObject
                     {
-                        Normal = this.Normal.ToFloat3( ),
-                        Offset = this.Offset
+                        Normal = Normal.ToFloat3( ),
+                        Offset = Offset
                     },
                     Type = CUDAObjectType.Plane
                 }

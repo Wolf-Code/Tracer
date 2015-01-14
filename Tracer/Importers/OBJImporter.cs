@@ -45,9 +45,9 @@ namespace Tracer.Importers
                             break;
 
                         case "g":
-                            if ( this.Faces.Count > 0 )
+                            if ( Faces.Count > 0 )
                             {
-                                ModelMesh M = this.CreateModelMesh( );
+                                ModelMesh M = CreateModelMesh( );
                                 M.Name = CurrentMesh;
 
                                 Meshes.Add( M );
@@ -61,7 +61,7 @@ namespace Tracer.Importers
 
             if ( Faces.Count > 0 )
             {
-                ModelMesh M = this.CreateModelMesh( );
+                ModelMesh M = CreateModelMesh( );
                 M.Name = CurrentMesh;
                 Meshes.Add( M );
             }

@@ -6,6 +6,7 @@ using Tracer.Classes.Util;
 using Tracer.Enums.CUDA;
 using Tracer.Interfaces;
 using Tracer.Structs.CUDA;
+using Mesh = Tracer.Utilities.Mesh;
 
 namespace Tracer.Classes.ModelData
 {
@@ -19,12 +20,12 @@ namespace Tracer.Classes.ModelData
         public ModelMesh( Vertex [ ] Vertices )
         {
             this.Vertices = Vertices;
-            this.Material = new Material( );
+            Material = new Material( );
         }
 
         public void SetParent( IModel Model )
         {
-            this.Parent = Model;
+            Parent = Model;
         }
 
         public CUDAObject ToCUDA( )
@@ -46,7 +47,7 @@ namespace Tracer.Classes.ModelData
 
             CudaDeviceVariable<CUDATriangleObject> Triangles = new CudaDeviceVariable<CUDATriangleObject>( Ts.Count );
             Triangles.CopyToDevice( Ts.ToArray( ) );
-            Tuple<Vector3, Vector3> MinMax = Utilities.Mesh.AABB( this );
+            Tuple<Vector3, Vector3> MinMax = Mesh.AABB( this );
 
             return new CUDAObject
             {
@@ -59,7 +60,7 @@ namespace Tracer.Classes.ModelData
                             ( )[
                                 0 ].Sphere
                 },
-                Material = this.Material.ToCUDAMaterial( ),
+                Material = Material.ToCUDAMaterial( ),
                 Type = CUDAObjectType.MeshType
             };
         }
