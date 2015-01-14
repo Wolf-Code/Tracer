@@ -48,6 +48,10 @@ Tracer/Release/*
 CUDA Code/Debug/*
 CUDA Code/Release/*
 CUDA Code/bin/*
+Utilib/bin/*
+Utilib/obj/*
+Utilib/Debug/*
+Utilib/Release/*
 *.sdf
 *.suo
 *.vspx

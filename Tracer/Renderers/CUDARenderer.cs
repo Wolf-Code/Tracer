@@ -198,7 +198,7 @@ namespace Tracer.Renderers
 
                 float3 [ ] Data = new float3[ W * H ];
                 Output.CopyToHost( Data );
-
+                
                 Q += SamplesToRender;
 
                 Bitmap OldImage = Image;

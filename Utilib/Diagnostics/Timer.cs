@@ -22,6 +22,9 @@ namespace Utilib.Diagnostics
             Rounds = 0;
         }
 
+        /// <summary>
+        /// Starts a round.
+        /// </summary>
         public void StartRound( )
         {
             Watch.Start( );
