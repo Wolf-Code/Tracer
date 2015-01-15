@@ -69,9 +69,24 @@ __device__ float3 Raytracer::ShadowRay( const CollisionResult& Result )
 {
 	Object* L = Raytracer::GetRandomLight( );
 
+	float3 Normal = Result.Normal;
+	if ( VectorMath::Dot( Result.Ray->Direction, Normal ) > 0 )
+		Normal = Normal * -1;
+
 	const float3 Start = Result.Position + Result.Normal * Bias;
 
-	const float3 LightSamplePos = L->Sphere.RandomPositionOnSphere( RandState );
+	float3 LightSamplePos = float3( );
+	switch ( L->Type )
+	{
+		case SphereType:
+			LightSamplePos = L->Sphere.RandomPositionOnSphere( RandState );
+			break;
+
+		case MeshType:
+			LightSamplePos = L->Mesh.RandomPositionOnMesh( RandState );
+			break;
+	}
+	
 	const float3 DirToSample = VectorMath::Normalized( LightSamplePos - Start );
 
 	Ray R;
@@ -109,8 +124,9 @@ __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray& R )
 		{
 			if ( PrimaryRay )
 			{
-				float3 Norm = VectorMath::Normalized( Mat.Radiance );
-				return Norm / VectorMath::LargestComponent( Norm ) * ThroughPut;
+				//float3 Norm = VectorMath::Normalized( Mat.Radiance );
+				//return Norm / VectorMath::LargestComponent( Norm ) * ThroughPut;
+				return Mat.Radiance;
 			}
 
 			return Val;

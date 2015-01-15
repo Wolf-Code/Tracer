@@ -23,6 +23,12 @@ namespace Tracer.Classes.ModelData
             Material = new Material( );
         }
 
+        public ModelMesh( Vertex [ ] Vertices, Material Mat )
+        {
+            this.Vertices = Vertices;
+            Material = Mat;
+        }
+
         public void SetParent( IModel Model )
         {
             Parent = Model;
@@ -56,9 +62,8 @@ namespace Tracer.Classes.ModelData
                     TriangleCount = ( uint ) Ts.Count,
                     TrianglesPointer = Triangles.DevicePointer,
                     BoundingVolume =
-                        new Sphere( ( MinMax.Item1 + MinMax.Item2 ) / 2, ( MinMax.Item2 - MinMax.Item1 ).Length ).ToCUDA
-                            ( )[
-                                0 ].Sphere
+                        new Sphere( ( MinMax.Item1 + MinMax.Item2 ) / 2, ( MinMax.Item2 - MinMax.Item1 ).Length )
+                            .ToCUDA( )[ 0 ].Sphere
                 },
                 Material = Material.ToCUDAMaterial( ),
                 Type = CUDAObjectType.MeshType

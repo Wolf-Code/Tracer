@@ -14,7 +14,19 @@ struct TriangleObject
 
 __device__ float3 TriangleObject::RandomPositionOnTriangle( curandState* RandState ) 
 { 
-	return V1.Position;
+	const float3 e1 = V2.Position - V1.Position;
+	const float3 e2 = V3.Position - V1.Position;
+
+	float R = curand_uniform( RandState );
+	float S = curand_uniform( RandState );
+
+	if ( R + S >= 1 )
+	{
+		R = 1 - R;
+		S = 1 - S;
+	}
+
+	return V1.Position + e1 * R + e2 * S;
 }
 
 #endif

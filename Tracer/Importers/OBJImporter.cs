@@ -20,9 +20,12 @@ namespace Tracer.Importers
         private readonly List<FaceData> Faces = new List<FaceData>( );
         private readonly List<ModelMesh> Meshes = new List<ModelMesh>( );
         private string CurrentMesh = string.Empty;
+        private string CurrentMaterial = string.Empty;
+        private OBJMaterialData MaterialData;
 
         public IModel Import( string Path )
         {
+            
             using ( StreamReader Reader = new StreamReader( Path ) )
             {
                 while ( !Reader.EndOfStream )
@@ -33,9 +36,19 @@ namespace Tracer.Importers
                     string [ ] Data = Line.Split( new [ ] { " " }, StringSplitOptions.RemoveEmptyEntries );
                     if ( Data.Length <= 0 )
                         continue;
-
+                    
                     switch ( Data[ 0 ] )
                     {
+                        case "mtllib":
+                            string [ ] Split = Path.Split( '\\' );
+                            MaterialData =
+                                new OBJMaterialData( string.Join( "\\", Split, 0, Split.Length - 1 ) + "\\" + Data[ 1 ] );
+                            break;
+
+                        case "usemtl":
+                            CurrentMaterial = Data[ 1 ];
+                            break;
+
                         case "v":
                             AddVertex( Data );
                             break;
@@ -95,15 +108,15 @@ namespace Tracer.Importers
 
             Faces.Clear( );
 
-            return new ModelMesh( Vertices.ToArray( ) );
+            return new ModelMesh( Vertices.ToArray( ), MaterialData.GetMaterial( CurrentMaterial ) );
         }
 
-        private float ParseFloat( string Data )
+        public static float ParseFloat( string Data )
         {
             return float.Parse( Data, CultureInfo.InvariantCulture );
         }
 
-        private int ParseInt( string Data )
+        public static int ParseInt( string Data )
         {
             return int.Parse( Data );
         }

@@ -70,6 +70,13 @@ namespace Tracer.Classes.Util
             this.B = B;
         }
 
+        public Color( )
+        {
+            this.R = 0.0f;
+            this.G = 0.0f;
+            this.B = 0.0f;
+        }
+
         public override string ToString( )
         {
             return string.Format( "( {0}, {1}, {2} )", R, G, B );
