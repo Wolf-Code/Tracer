@@ -85,7 +85,7 @@ __device__ float3 Raytracer::ShadowRay( const CollisionResult& Result )
 
 	const float DistSquared = VectorMath::LengthSquared( Start - LightSamplePos );
 
-	return ( L->Material.Radiance ) / DistSquared;
+	return L->Material.Radiance / DistSquared;
 }
 
 __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray& R )
@@ -94,6 +94,7 @@ __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray& R )
 	float3 ThroughPut = VectorMath::MakeVector( 1, 1, 1 );
 	bool PrimaryRay = true;
 	float3& LastPosition = R.Start;
+	float PreviousChance = 1.0f;
 
 	while ( R.Depth < MaxDepth )
 	{
@@ -134,14 +135,13 @@ __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray& R )
 		const float PDF = Mat.PDF( );
 		const float3 Mul = Mat.Color * ( BDRF * cos_theta ) / PDF;
 
-		Val += Shadow * Mul * ThroughPut;
+		Val += Shadow * Mul * ThroughPut / PreviousChance;
 		ThroughPut *= Mul;
 
-		const float& Chance = BDRF;
-		if ( VectorMath::LargestComponent( ThroughPut ) < Bias || curand_uniform( this->RandState ) > Chance )
+		PreviousChance = BDRF;
+
+		if ( curand_uniform( this->RandState ) > PreviousChance || VectorMath::LargestComponent( ThroughPut ) < Epsilon )
 			break;
-		else
-			ThroughPut /= Chance;
 
 		R.Depth++;
 		R.Start = Res.Position + Res.Normal * Bias;

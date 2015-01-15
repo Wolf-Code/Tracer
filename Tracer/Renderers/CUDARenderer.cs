@@ -213,7 +213,7 @@ namespace Tracer.Renderers
                         Data = Data,
                         AreaSampleCount = ( int ) Q,
                         TotalAreaSamples = ( int ) RenderSetting.Samples,
-                        AverageSampleTime = Timer.Average,
+                        AverageSampleTime = new TimeSpan( Timer.Average.Ticks / SamplesToRender ),
                         TotalSamples = ( int ) TotalSamples,
                         Progress = ( float ) this.Samples / TotalSamples,
                         Time = RenderTime,
