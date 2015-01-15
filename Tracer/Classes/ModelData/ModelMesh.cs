@@ -44,16 +44,16 @@ namespace Tracer.Classes.ModelData
                 Vertex V3 = Vertices[ Q + 2 ];
 
                 Triangle T = new Triangle(
-                    Parent.Position + V1.Position,
-                    Parent.Position + V2.Position,
-                    Parent.Position + V3.Position );
+                    Parent.Position + ( V1.Position * Parent.Scale ),
+                    Parent.Position + ( V2.Position * Parent.Scale ),
+                    Parent.Position + ( V3.Position * Parent.Scale ) );
 
                 Ts.Add( T.ToCUDA( )[ 0 ].Triangle );
             }
 
             CudaDeviceVariable<CUDATriangleObject> Triangles = new CudaDeviceVariable<CUDATriangleObject>( Ts.Count );
             Triangles.CopyToDevice( Ts.ToArray( ) );
-            Tuple<Vector3, Vector3> MinMax = Mesh.AABB( this );
+            Tuple<Vector3, Vector3> MinMax = Mesh.AABB( this, this.Parent.Scale );
 
             return new CUDAObject
             {

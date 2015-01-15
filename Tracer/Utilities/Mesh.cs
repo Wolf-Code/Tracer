@@ -6,7 +6,7 @@ namespace Tracer.Utilities
 {
     public static class Mesh
     {
-        public static Tuple<Vector3, Vector3> AABB( ModelMesh M )
+        public static Tuple<Vector3, Vector3> AABB( ModelMesh M, Vector3 Scale )
         {
             Vector3 Min = new Vector3( );
             Vector3 Max = new Vector3( );
@@ -32,7 +32,7 @@ namespace Tracer.Utilities
                     Max.Z = V.Position.Z;
             }
 
-            return new Tuple<Vector3, Vector3>( Min, Max );
+            return new Tuple<Vector3, Vector3>( Min * Scale, Max * Scale );
         }
     }
 }

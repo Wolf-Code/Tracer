@@ -153,6 +153,17 @@ namespace Tracer.Classes.Util
         }
 
         /// <summary>
+        /// Multiplies a vector by a vector.
+        /// </summary>
+        /// <param name="V"></param>
+        /// <param name="V2"></param>
+        /// <returns></returns>
+        public static Vector3 operator *( Vector3 V, Vector3 V2 )
+        {
+            return new Vector3( V.X * V2.X, V.Y * V2.Y, V.Z * V2.Z );
+        }
+
+        /// <summary>
         /// Adds together two vectors.
         /// </summary>
         /// <param name="V1"></param>

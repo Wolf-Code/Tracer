@@ -16,7 +16,7 @@ namespace Tracer.Models
             public float Ni;
             public float illum;
             public Color Ka = new Color( );
-            public Color Kd = new Color( );
+            public Color Kd = new Color( 1, 1, 1 );
             public Color Ks = new Color( );
             public Color Ke = new Color( );
         }
@@ -26,6 +26,9 @@ namespace Tracer.Models
 
         public OBJMaterialData( string Path )
         {
+            if ( !File.Exists( Path ) )
+                return;
+
             using ( StreamReader Reader = new StreamReader( Path ) )
             {
                 while ( !Reader.EndOfStream )
@@ -35,6 +38,9 @@ namespace Tracer.Models
 
         public Material GetMaterial( string Name )
         {
+            if ( !Materials.ContainsKey( Name ) )
+                return new Material( );
+
             return new Material
             {
                 Color = Materials[ Name ].Kd,

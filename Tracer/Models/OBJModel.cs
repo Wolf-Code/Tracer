@@ -22,13 +22,13 @@ namespace Tracer.Models
             foreach ( ModelMesh M in this.Meshes )
                 M.SetParent( this );
 
-            Tuple<Vector3, Vector3> MinMax = Mesh.AABB( Meshes[ 0 ] );
+            Tuple<Vector3, Vector3> MinMax = Mesh.AABB( Meshes[ 0 ], new Vector3( 1, 1, 1 ) );
             Min = MinMax.Item1;
             Max = MinMax.Item2;
 
             for ( int Q = 1; Q < Meshes.Length; Q++ )
             {
-                MinMax = Mesh.AABB( Meshes[ Q ] );
+                MinMax = Mesh.AABB( Meshes[ Q ], new Vector3( 1, 1, 1 ) );
                 Vector3 TempMin = MinMax.Item1;
                 Vector3 TempMax = MinMax.Item2;
 

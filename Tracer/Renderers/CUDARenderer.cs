@@ -94,6 +94,37 @@ namespace Tracer.Renderers
             Output.WriteLine( "Building scene." );
             SceneCUDAData Objs = Scn.ToCUDA( );
 
+            uint XDivide = RenderSetting.AreaDivider;
+            uint YDivide = RenderSetting.AreaDivider;
+
+            int DivW = ( int ) ( W / XDivide );
+            int DivH = ( int ) ( H / YDivide );
+            
+            this.Samples = 0;
+            TotalSamples = ( XDivide ) * ( YDivide ) * RenderSetting.Samples;
+
+            if ( Objs.Item2.Length <= 0 )
+            {
+                using ( Graphics G = Graphics.FromImage( Image ) )
+                {
+                    G.DrawString( "No lights in the scene.", new Font( new Font( "Arial", 12f ), FontStyle.Bold ),
+                        new SolidBrush( Color.Red ), 0, 0 );
+                }
+                OnRenderFinished( );
+                return;
+            }
+
+            if ( Objs.Item1.Length <= 0 )
+            {
+                using ( Graphics G = Graphics.FromImage( Image ) )
+                {
+                    G.DrawString( "No objects in the scene.", new Font( new Font( "Arial", 12f ), FontStyle.Bold ),
+                        new SolidBrush( Color.Red ), 0, 0 );
+                }
+                OnRenderFinished( );
+                return;
+            }
+
             CudaDeviceVariable<CUDAObject> Obj = new CudaDeviceVariable<CUDAObject>( Objs.Item1.Length );
             Obj.CopyToDevice( Objs.Item1 );
 
@@ -107,14 +138,6 @@ namespace Tracer.Renderers
             RenderKernel.SetConstantVariable( "Camera", Scn.Camera.ToCamData( ) );
             RenderKernel.SetConstantVariable( "MaxDepth", RenderSetting.MaxDepth );
 
-            uint XDivide = RenderSetting.AreaDivider;
-            uint YDivide = RenderSetting.AreaDivider;
-
-            int DivW = ( int ) ( W / XDivide );
-            int DivH = ( int ) ( H / YDivide );
-
-            this.Samples = 0;
-            TotalSamples = ( XDivide ) * ( YDivide ) * RenderSetting.Samples;
             long Seed = RNG.Next( 0, Int32.MaxValue );
             Timer = new Timer( );
 
@@ -151,6 +174,11 @@ namespace Tracer.Renderers
             Obj.Dispose( );
             Lights.Dispose( );
 
+            OnRenderFinished( );
+        }
+
+        private void OnRenderFinished( )
+        {
             if ( OnFinished != null )
                 OnFinished.Invoke( null, new RendererFinishedEventArgs
                 {
