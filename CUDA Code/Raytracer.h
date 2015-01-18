@@ -126,7 +126,7 @@ __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray& R )
 			{
 				//float3 Norm = VectorMath::Normalized( Mat.Radiance );
 				//return Norm / VectorMath::LargestComponent( Norm ) * ThroughPut;
-				return Mat.Radiance;
+				return Mat.Radiance * ThroughPut;
 			}
 
 			return Val;
@@ -154,7 +154,7 @@ __device__ float3 Raytracer::RadianceIterative( unsigned int MaxDepth, Ray& R )
 		Val += Shadow * Mul * ThroughPut / PreviousChance;
 		ThroughPut *= Mul;
 
-		PreviousChance = BDRF;
+		PreviousChance = VectorMath::LargestComponent( Mat.Color );
 
 		if ( curand_uniform( this->RandState ) > PreviousChance || VectorMath::LargestComponent( ThroughPut ) < Epsilon )
 			break;

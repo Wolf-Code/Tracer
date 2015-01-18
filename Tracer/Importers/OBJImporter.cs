@@ -57,6 +57,7 @@ namespace Tracer.Importers
                             ParseFaceLine( Data );
                             break;
 
+                        case "o":
                         case "g":
                             if ( Faces.Count > 0 )
                             {
